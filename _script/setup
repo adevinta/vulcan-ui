@@ -1,0 +1,6 @@
+#!/bin/sh
+
+# Copyright 2021 Adevinta
+
+npm install
+npm run-script build

@@ -1,0 +1,12 @@
+#!/bin/sh
+
+# Copyright 2021 Adevinta
+
+set -e
+
+npm ci
+
+# requires license-checker:
+# npm install -g license-checker
+license-checker --relativeLicensePath --json --customPath .licenses/customFormat.json | \
+sed '/^\s*"path":/d' > .licenses/cache

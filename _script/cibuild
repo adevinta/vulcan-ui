@@ -1,0 +1,24 @@
+#!/bin/sh
+
+# Copyright 2021 Adevinta
+
+set -e
+
+EXCLUDED_LICS='MIT,Zlib,BSD,ISC,Apache-2.0,OFL-1.1,CC0-1.0,CC-BY-3.0,CC-BY-4.0,Artistic-2.0,Unlicense'
+
+echo "Building…"
+date "+%H:%M:%S"
+
+_script/setup
+
+echo "Checking licenses…"
+date "+%H:%M:%S"
+
+if [ $(license-checker --exclude $EXCLUDED_LICS | wc -l) -gt 1 ]; then
+    echo "Error checking licenses:"
+    license-checker --exclude $EXCLUDED_LICS
+else
+    echo "Success checking licenses"
+fi
+
+date "+%H:%M:%S"
