@@ -1,0 +1,117 @@
+<!--
+Copyright 2021 Adevinta
+-->
+
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Vulcan</title>
+    <link rel="shortcut icon" type="image/png" href="../images/vulcan-logo-small.png">
+    <link rel="stylesheet" href='../../node_modules/font-awesome/css/font-awesome.css'>
+    <link rel="stylesheet" href='../../node_modules/bulma/css/bulma.css'>
+    <link rel="stylesheet" href='../style.css'>
+  </head>
+
+  <body>
+    <section class="section">
+      <div class="container">
+        <div class="content">
+
+          <h2>Supported Asset Types</h2>
+
+          <table class="table is-bordered">
+
+            <thead>
+              <tr>
+                <th>Asset Type</th>
+                <th>Example</th>
+              </tr>
+            </thead>
+
+            <tbody>
+
+              <tr>
+                <td><code>IP</code></td>
+                <td><code>127.0.0.1</code></td>
+              </tr>
+
+              <tr>
+                <td><code>IPRange</code></td>
+                <td><code>10.0.0.0/16</code></td>
+              </tr>
+
+              <tr>
+                <td><code>Hostname</code></td>
+                <td><code>www.adevinta.com</code></td>
+              </tr>
+
+              <tr>
+                <td><code>DomainName</code> (it has a <a href="https://en.wikipedia.org/wiki/SOA_record">SOA record</a>)</td>
+                <td><code>adevinta.com</code></td>
+              </tr>
+
+              <tr>
+                <td><code>WebAddress</code></td>
+                <td><code>https://www.adevinta.com</code></td>
+              </tr>
+
+              <tr>
+                <td><code>AWSAccount</code></td>
+                <td><code>arn:aws:iam::111111111111:root</code></td>
+              </tr>
+
+              <tr>
+                <td><code>DockerImage</code></td>
+                <td><code>registry.hub.docker.com/organisation/image:latest</code></td>
+              </tr>
+
+              <tr>
+                <td><code>GitRepository</code></td>
+                <td><code>https://github.com/organisation/repository.git</code></td>
+              </tr>
+
+            </tbody>
+
+          </table>
+
+          <p>
+          Asset types are automatically detected when you add an asset using the <a href="./add-assets.html">UI</a>. If you want to force a specific asset type you should use the <a href="${UI_DOCS_API_LINK}">API</a>, but generally we recommend you to use the auto-detection. Why?
+          </p>
+
+          <p>
+          For example when you add an asset that matches a <code>WebAddress</code>, at least two are created: one <code>WebAddress</code> and one <code>Hostname</code>. In some cases a <code>DomainName</code> asset is created too. For example if you add <code>https://adevinta.com/</code>, the assets created are:
+          <ul>
+            <li><code>WebAddress</code> &#8594; <code>https://adevinta.com/</code></li>
+            <li><code>Hostname</code> &#8594; <code>adevinta.com</code></li>
+            <li><code>DomainName</code> &#8594; <code>adevinta.com</code></li>
+          </ul>
+          </p>
+
+          <h2>How am I scanned?</h2>
+
+          <p>
+          When you add a new asset it is automatically added to the <code>Default</code> group. Using the <a href="${UI_DOCS_API_LINK}">API</a> you can move it to other groups.
+          </p>
+
+          <p>
+          Every month the assets you have in the <code>Default</code> and the <code>Sensitive</code> groups are scanned automatically. For every scanned asset, the appropriate checks are executed depending on its type.
+          </p>
+
+          <p>
+          There are some special cases that you should consider:
+          <ul>
+            <li><code>IPRanges</code> are <b>not scanned by default</b> now. If you want them to be scanned contact the <a href="mailto:${UI_CONTACT_EMAIL}">Vulcan crew</a>.</li>
+            <li>In order to be able to scan AWS accounts, the <a href="${UI_DOCS_AUDITROLE_LINK}">Security Audit Role</a> needs to be created in the account.</li>
+          </ul>
+          </p>
+
+        </div>
+      </div>
+    </section>
+
+  </body>
+
+</html>

@@ -1,0 +1,58 @@
+{
+  "name": "vulcan-ui",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "git@github.com:adevinta/vulcan-ui.git",
+  "author": "Adevinta Security Team <security@adevinta.com>",
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "prewatch": "rm -rf dist && mkdir -p dist && cp -r src/config.json dist/config.json",
+    "prebuild": "rm -rf dist && mkdir -p dist && cp -r src/config.json dist/config.json",
+    "preserve": "rm -rf dist && mkdir -p dist && cp -r src/config.json dist/config.json",
+    "build": "parcel build src/*.html src/**/*.html --detailed-report",
+    "watch": "parcel watch src/*.html src/**/*.html",
+    "serve": "parcel serve src/*.html src/**/*.html"
+  },
+  "dependencies": {
+    "@babel/polyfill": "^7.11.5",
+    "@ts-stack/markdown": "^1.2.0",
+    "@types/jquery": "^3.5.1",
+    "axios": "^0.21.1",
+    "buefy": "^0.8.20",
+    "bulma": "^0.7.5",
+    "bulma-extensions": "^6.2.7",
+    "bulma-tooltip": "^3.0.2",
+    "cronstrue": "^1.108.0",
+    "datatables-bulma": "^1.0.1",
+    "datatables-bulma-jquery": "0.0.1",
+    "font-awesome": "^4.7.0",
+    "jquery": "^3.5.1",
+    "jquery-datatables-checkboxes": "^1.2.12",
+    "vue": "^2.6.12",
+    "vue-class-component": "^7.2.6",
+    "vue-hot-reload-api": "^2.3.4",
+    "vue-property-decorator": "^9.0.2",
+    "vue-router": "^3.4.9",
+    "vue-showdown": "^2.4.1",
+    "vue-simple-markdown": "^1.1.4"
+  },
+  "devDependencies": {
+    "@vue/component-compiler-utils": "^3.2.0",
+    "babel-core": "^6.26.3",
+    "babel-plugin-transform-async-to-generator": "^6.24.1",
+    "babel-plugin-transform-runtime": "^6.23.0",
+    "babel-preset-env": "^1.7.0",
+    "node-sass": "^4.14.1",
+    "npm": "^6.14.8",
+    "parcel": "^1.12.4",
+    "prettier": "1.14.2",
+    "sass": "^1.26.11",
+    "transform-runtime": "0.0.0",
+    "typescript": "^3.9.7",
+    "vue-template-compiler": "^2.6.11"
+  },
+  "browserslist": [
+    "last 2 versions"
+  ]
+}

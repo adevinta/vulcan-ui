@@ -1,0 +1,130 @@
+<!--
+Copyright 2021 Adevinta
+-->
+
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Vulcan Add Assets</title>
+  <link rel="shortcut icon" type="image/png" href="../images/vulcan-logo-small.png">
+  <link rel="stylesheet" href='../../node_modules/font-awesome/css/font-awesome.css'>
+  <link rel="stylesheet" href='../../node_modules/bulma/css/bulma.css'>
+  <link rel="stylesheet" href='../style.css'>
+  <script src="./add-assets.js"></script>
+</head>
+
+<body>
+
+  <article id="sessionExpired" class="message is-danger" style="display: none">
+    <div class="message-header has-text-centered">
+      <p>Session expired</p>
+    </div>
+    <div id="sessionExpiredBody" class="message-body has-text-centered">
+      Oops it seems your session has expired.
+      <BR>
+      <a id="linkRelogin" href="" target="_self">Log in to vulcan</a>
+    </div>
+  </article>
+  <article id="errorDlg" class="message is-danger" style="display: none">
+    <div class="message-header">
+      <p>Error</p>
+      <button id="errorClose" class="delete" aria-label="delete"></button>
+    </div>
+    <div id="errorBody" class="has-text-centered message-body">
+    </div>
+  </article>
+
+  <div id="loading" class="container">
+    <section class="hero">
+      <div class="hero-body is-paddingless">
+        <div class="columns is-mobile is-multiline">
+          <div class="column has-text-centered" style="min-width:300px">
+            <img src="../images/vulcan-logo.png" style="width:200px; margin:40px" />
+            <br>
+            <h2 class="subtitle" style="margin-top:-18px">
+              Loading data ...
+            </h2>
+            <img src="../images/spinner.gif" />
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+  <BR />
+  <div id="main" style="display:none">
+    <div class="columns">
+      <div class="column has-text-centered">
+        <h1 id="team" class="title">
+        </h1>
+        <h2 class="subtitle">
+          Paste the assets you want to add (one per line) and press the add button.
+        </h2>
+      </div>
+    </div>
+
+
+    <div class="container">
+      <div class="columns">
+        <div class="column has-text-centered">
+          <textarea id="assets" rows="15" cols="10" class="textarea" placeholder="example.com&#x0a;127.0.0.1/32&#x0a;127.0.0.1/24"></textarea>
+
+        </div>
+      </div>
+      <div class="columns">
+        <div class="column">
+          <div class="buttons is-centered">
+            <a id="back" class="button" href="edit-assets.html">
+              <span class="icon is-small">
+                <i class="fa fa-arrow-left"></i>
+              </span>
+              <span>Back</span>
+            </a>
+            <a id="add" class="button">
+              <span class="icon is-small">
+                <i class="fa fa-plus"></i>
+              </span>
+              <span>Add</span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal" is-active>
+      <div class="modal-background"></div>
+      <div class="modal-content">
+
+      </div>
+      <button class="modal-close is-large" aria-label="close"></button>
+    </div>
+
+    <div class="modal ">
+      <div class="modal-background"></div>
+      <div class="modal-card">
+        <header class="modal-card-head">
+          <div class="modal-card-title">
+            <p class="">Add Assets</p>
+          </div>
+        </header>
+        <section class="modal-card-body">
+          <div id="results" class="content">
+
+          </div>
+        </section>
+        <footer class="modal-card-foot">
+          <button id="modal-close" class="button">Accept</button>
+          <div id="modal-close-rolfp">
+            <span>One last thing!</span>
+            <br>
+            <button class="button">Classify AWS accounts</button>
+          </div>
+        </footer>
+      </div>
+    </div>
+
+  </div>
+
+</body>
+
+</html>

@@ -1,0 +1,73 @@
+/*
+Copyright 2021 Adevinta
+*/
+
+// Import Bulma's core
+@import "~bulma/sass/utilities/_all";
+// Set your colors
+$primary: #00d1b2;
+$primary-invert: findColorInvert($primary);
+$twitter: #4099FF;
+$twitter-invert: findColorInvert($twitter);
+$table-row-hover-background-color: #E3F2F1;
+
+// Setup $colors to use as bulma classes (e.g. 'is-twitter')
+$colors: ("white": ($white, $black),
+    "black": ($black, $white),
+    "light": ($light, $light-invert),
+    "dark": ($dark, $dark-invert),
+    "primary": ($primary, $primary-invert),
+    "info": ($info, $info-invert),
+    "success": ($success, $success-invert),
+    "warning": ($warning, $warning-invert),
+    "danger": ($danger, $danger-invert),
+    "twitter": ($twitter, $twitter-invert));
+
+// Links
+$link: $primary;
+$link-invert: $primary-invert;
+$link-focus-border: $primary;
+
+// Import Bulma and Buefy styles
+@import "~bulma";
+@import "~buefy/src/scss/buefy";
+
+.live-report .table tr.is-selected {
+    color: #000;
+    background-color: hsl(0, 0%, 96%);
+}
+
+.live-report .detail ul:not(.pagination-list) {
+    list-style: disc outside;
+}
+
+.live-report .detail li:not(.pagination .pagination-list) {
+    margin-left: 20px;
+}
+
+.live-report .detail p:not(.pagination-list) {
+    margin-bottom: 10px;
+}
+
+.live-report a .reference {
+    margin-right: 10px;
+}
+
+.table-pagination {
+    .select:not(.is-multiple):not(.is-loading)::after {
+        border-color: #3273dc;
+    }
+
+    .show-label {
+        padding-top: 18px;
+        padding-right: 8px
+    }
+
+    .select-container {
+        padding-left: 0px
+    }
+}
+
+.showcursor{
+    cursor: pointer;
+}

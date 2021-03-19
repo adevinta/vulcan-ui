@@ -1,0 +1,9 @@
+version: "2"
+services:
+  vulcan-ui:
+    image: "vulcan-ui"
+    working_dir: /app
+    volumes:
+      - ./src:/app/src
+    ports:
+      - "8081:1234"

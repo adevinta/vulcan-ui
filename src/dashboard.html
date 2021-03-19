@@ -1,0 +1,118 @@
+<!--
+Copyright 2021 Adevinta
+-->
+
+<meta charset="UTF-8">
+<head>
+  <title>Vulcan Dashboard</title>
+  <link rel="shortcut icon" type="image/png" href="./images/vulcan-logo-small.png">
+  <link rel="stylesheet" href='../node_modules/font-awesome/css/font-awesome.css'>
+  <link rel="stylesheet" href="../node_modules/bulma/css/bulma.css">
+  <link rel="stylesheet" href='./style.css'>
+  <link rel="stylesheet" href="../node_modules/bulma-extensions/dist/css/bulma-extensions.min.css">
+  <link rel="stylesheet" href="../node_modules/bulma-extensions/bulma-tooltip/dist/css/bulma-tooltip.min.css">
+  <link rel="stylesheet" href="../node_modules/bulma-tooltip/dist/css/bulma-tooltip.min.css">
+  <script src="../node_modules/bulma-extensions/dist/js/bulma-extensions.min.js"></script>
+  <script src="https://cdn.plot.ly/plotly-1.56.0.min.js" charset="utf-8"></script>
+  <script src="./dashboard.js"></script>
+  <style>.section{padding-top: 0px !important}</style>
+</head>
+<body>
+  <br>
+  <div id="main">
+    <div class="columns">
+      <div class="column has-text-centered">
+        <h1 id="team" class="title">
+        </h1>
+      </div>
+    </div>
+    <div class="container">
+      <div class="card" style="margin-bottom: 50px;">
+        <header class="card-header">
+          <p class="card-header-title is-size-5">Dashboard</p>
+        </header>
+        <div id="dashboard" class="card-content">
+          <section class="section">
+            <div class="card">
+              <header class="card-header">
+                <p class="card-header-title">
+                Vulnerability Fixing<span class="icon is-small has-tooltip-right has-tooltip-multiline" style="margin-left: .3em; color: #aaaaaa; font-weight: normal;" data-tooltip="A vulnerability is registered as fixed when it is no longer found by a scan. For this reason, a fixed vulnerability will not be registered as such until a scan is ran against the affected asset. This section shows the all time fixing ratio and the change in open and fixed issues in the last 45 days."><i class="fa fa-question-circle"></i></span>
+                </p>
+              </header>
+              <div class="card-content">
+                <div class="columns">
+                  <div class="column is-one-quarter has-text-centered">
+                    <div id="fixing-critical" style="width:300px;height:200px;"></div>
+                  </div>
+                  <div class="column is-one-quarter has-text-centered">
+                    <div id="fixing-high" style="width:300px;height:200px;"></div>
+                  </div>
+                  <div class="column is-one-quarter has-text-centered">
+                    <div id="fixing-medium" style="width:300px;height:200px;"></div>
+                  </div>
+                  <div class="column is-one-quarter has-text-centered">
+                    <div id="fixing-low" style="width:300px;height:200px;"></div>
+                  </div>
+                </div>
+                <div class="columns">
+                  <div class="column is-one-quarter has-text-centered">
+                    <div id="change-critical" style="width:300px;height:100px;"></div>
+                  </div>
+                  <div class="column is-one-quarter has-text-centered">
+                    <div id="change-high" style="width:300px;height:100px;"></div>
+                  </div>
+                  <div class="column is-one-quarter has-text-centered">
+                    <div id="change-medium" style="width:300px;height:100px;"></div>
+                  </div>
+                  <div class="column is-one-quarter has-text-centered">
+                    <div id="change-low" style="width:300px;height:100px;"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+          <section class="section">
+            <div class="card">
+              <header class="card-header">
+                <p class="card-header-title">
+                Mean Time to Remediate<span class="icon is-small has-tooltip-right has-tooltip-multiline" style="margin-left: .3em; color: #aaaaaa; font-weight: normal;" data-tooltip="The MTTR metric measures the average time elapsed since a vulnerability is reported and until it is fixed. The official recommendation from the Security Team is that critical and high severity vulnerabilities should be fixed in less than 30 days. The small number represents the change in MTTR in the last 45 days."><i class="fa fa-question-circle"></i></span>
+                </p>
+              </header>
+              <div class="card-content">
+                <div class="columns">
+                  <div class="column is-one-quarter has-text-centered">
+                    <div id="mttr-critical" style="width:300px;height:200px;"></div>
+                  </div>
+                  <div class="column is-one-quarter has-text-centered">
+                    <div id="mttr-high" style="width:300px;height:200px;"></div>
+                  </div>
+                  <div class="column is-one-quarter has-text-centered">
+                    <div id="mttr-medium" style="width:300px;height:200px;"></div>
+                  </div>
+                  <div class="column is-one-quarter has-text-centered">
+                    <div id="mttr-low" style="width:300px;height:200px;"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+          <section class="section">
+            <div class="card">
+              <header class="card-header">
+                <p class="card-header-title">
+                Assets
+                </p>
+              </header>
+              <div class="card-content">
+                <div class="columns">
+                  <div class="column is-full has-text-centered">
+                    <div id="size" style="width:1200px;height:150px;"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+        </div>
+      </div>
+    </div>
+</body>

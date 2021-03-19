@@ -1,0 +1,225 @@
+<!--
+Copyright 2021 Adevinta
+-->
+
+<!DOCTYPE html>
+<html>
+
+    <head>
+        <title>Vulcan</title>
+        <link rel="shortcut icon" type="image/png" href="images/vulcan-logo-small.png">
+        <link rel="stylesheet" href='../node_modules/font-awesome/css/font-awesome.css'>
+        <link rel="stylesheet" href='../node_modules/bulma/css/bulma.css'>
+        <link rel="stylesheet" href='style.css'>
+        <script src="./index.js"></script>
+    </head>
+
+    <body>
+        <div class="container" id="main">
+            <div class="columns is-vcentered">
+                <div class="column is-3">
+                    <img src="./images/vulcan-logo.png" style="width:150px; margin:40px">
+                </div>
+                <div class="column is-5">
+                    <h1 class="title">
+                        Vulcan
+                    </h1>
+                    <h2 class="subtitle" style="margin-top:-18px">
+                        The security platform by Adevinta
+                    </h2>
+                </div>
+                <div class="column is-4">
+                    <div class="columns is-vcentered">
+                        <div class="column is-3">
+                            <i class="fa fa-4x fa-sitemap is-pulled-right"></i>
+                        </div>
+                        <div class="column is-9">
+                            <label class="label" style="margin-right: 10px;">Select Team: </label>
+                            <div class="select">
+                                <select id="teamsList"></select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="columns is-mobile is-multiline">
+                <div id="body" class="container has-text-centered">
+                    <div class="columns is-variable is-8 is-multiline is-desktop">
+                        <div class="column is-one-half">
+                            <div class="columns is-variable is-8 is-one-half">
+                                <div class="column is-one-half">
+                                    <div class="dropdown is-hoverable">
+                                        <div class="dropdown-trigger">
+                                            <a href="#" class="manageMembersLink">
+                                                <div class="box has-text-centered">
+                                                    <i class="fa fa-5x fa-users"></i>
+                                                    <div class="content" style="margin-top: 20px">
+                                                        <h3>Access</h3>
+                                                        <p>
+                                                        Manage the members of the team and your personal API token.
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                            </a>
+                                        </div>
+                                        <div class="dropdown-menu" id="dropdown-menu3" role="menu">
+                                            <div class="dropdown-content">
+                                                <a href="#" class="dropdown-item manageMembersLink">
+                                                    <span class="icon">
+                                                        <i class="fa fa-edit"></i>
+                                                    </span>
+                                                    <span>Manage Members</span>
+                                                </a>
+                                                <a href="#" class="dropdown-item apiTokenLink">
+                                                    <span class="icon">
+                                                        <i class="fa fa-cogs"></i>
+                                                    </span>
+                                                    <span>API Token</span>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="column is-one-half">
+                                    <div class="dropdown is-hoverable">
+                                        <div class="dropdown-trigger">
+                                            <a href="#" class="editAssetsLink">
+                                                <div class="box has-text-centered">
+                                                    <i class="fa fa-5x fa-server"></i>
+                                                    <div class="content" style="margin-top: 20px">
+                                                        <h3>Assets</h3>
+                                                        <p>
+                                                        Manage the assets that will be scanned as part of the team.
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                            </a>
+                                        </div>
+                                        <div class="dropdown-menu" id="dropdown-menu3" role="menu">
+                                            <div class="dropdown-content">
+                                                <a href="#" class="dropdown-item editAssetsLink">
+                                                    <span class="icon">
+                                                        <i class="fa fa-edit"></i>
+                                                    </span>
+                                                    <span>Manage Assets</span>
+                                                </a>
+                                                <a href="#" class="dropdown-item rolfpLink">
+                                                    <span class="icon">
+                                                        <i class="fa fa-edit"></i>
+                                                    </span>
+                                                    <span>AWS Accounts Security Classification</span>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="column is-one-half">
+                            <div class="columns is-variable is-8 is-one-half">
+                                <div class="column is-one-half">
+                                    <div class="dropdown is-hoverable">
+                                        <div class="dropdown-trigger">
+                                            <a href="#" class="dashboardLink">
+                                                <div class="box has-text-centered">
+                                                    <i class="fa fa-5x fa-crosshairs"></i>
+                                                    <div class="content" style="margin-top: 20px">
+                                                        <h3>Security</h3>
+                                                        <p>
+                                                        Access dashboard and list scans to view past reports.
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                            </a>
+                                        </div>
+                                        <div class="dropdown-menu" id="dropdown-menu3" role="menu">
+                                            <div class="dropdown-content">
+                                                <a href="#" class="dropdown-item liveReportLink">
+                                                    <span class="icon">
+                                                        <i class="fa fa-bug"></i>
+                                                    </span>
+                                                    <span>Live Report</span>
+                                                </a>
+                                                <a href="#" class="dropdown-item dashboardLink">
+                                                    <span class="icon">
+                                                        <i class="fa fa-bug"></i>
+                                                    </span>
+                                                    <span>Dashboard</span>
+                                                </a>
+                                                <a href="#" class="dropdown-item reportsLink">
+                                                    <span class="icon">
+                                                        <i class="fa fa-list"></i>
+                                                    </span>
+                                                    <span>List Scans</span>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="column is-one-half">
+                                    <div class="dropdown is-hoverable">
+                                        <div class="dropdown-trigger">
+                                            <a href="${UI_DOCS_API_LINK}">
+                                                <div class="box has-text-centered">
+                                                    <i class="fa fa-5x fa-question-circle"></i>
+                                                    <div class="content" style="margin-top: 20px">
+                                                        <h3>Help</h3>
+                                                        <p>
+                                                        Find relevant documentation and contact the team.
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                            </a>
+                                        </div>
+                                        <div class="dropdown-menu" id="dropdown-menu3" role="menu">
+                                            <div class="dropdown-content">
+                                                <a href="${UI_DOCS_API_LINK}" class="dropdown-item">
+                                                    <span class="icon">
+                                                        <i class="fa fa-book"></i>
+                                                    </span>
+                                                    <span>Vulcan API</span>
+                                                </a>
+                                                <a href="assets/index.html" class="dropdown-item">
+                                                    <span class="icon">
+                                                        <i class="fa fa-book"></i>
+                                                    </span>
+                                                    <span>Scanning Details</span>
+                                                </a>
+                                                <a href="${UI_DOCS_WHITELISTING_LINK}" class="dropdown-item">
+                                                    <span class="icon">
+                                                        <i class="fa fa-book"></i>
+                                                    </span>
+                                                    <span>Scanner Whitelisting</span>
+                                                </a>
+                                                <a href="${UI_DOCS_DISCOVERY_LINK}" class="dropdown-item">
+                                                    <span class="icon">
+                                                        <i class="fa fa-book"></i>
+                                                    </span>
+                                                    <span>Asset Auto-Discovery</span>
+                                                </a>
+                                                <hr class="dropdown-divider">
+                                                <a href="mailto:${UI_CONTACT_EMAIL}" class="dropdown-item">
+                                                    <span class="icon">
+                                                        <i class="fa fa-envelope"></i>
+                                                    </span>
+                                                    <span>Email</span>
+                                                </a>
+                                                <a href="${UI_CONTACT_SLACK}" class="dropdown-item">
+                                                    <span class="icon">
+                                                        <i class="fa fa-slack"></i>
+                                                    </span>
+                                                    <span>Slack</span>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

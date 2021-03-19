@@ -1,0 +1,30 @@
+{
+    "compilerOptions": {
+        // this aligns with Vue's browser support
+        "target": "es5",
+        // this enables stricter inference for data properties on `this`
+        "strict": true,
+        "experimentalDecorators": true,
+        "moduleResolution": "node",
+        "types": ["buefy/types"],
+        "lib": [
+            "dom",
+            "es6",
+        ],
+        "baseUrl": ".",
+        "paths": {
+            "@/*": [
+                "src/*"
+            ]
+        },
+    },
+
+    "include": [
+        "src/**/*.ts",
+        "src/**/*.vue",
+        "tests/**/*.ts"
+    ],
+    "exclude": [
+        "node_modules"
+    ]
+}

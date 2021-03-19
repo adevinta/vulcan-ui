@@ -1,0 +1,69 @@
+/*
+Copyright 2021 Adevinta
+*/
+
+.content table tr:hover {
+    background-color: #ffffff !important;
+}
+
+.reference {
+    margin-bottom: 5px;
+}
+
+.is-critical-severity {
+    background-color: #9239ff !important;
+    color: #fff !important;
+}
+
+.has-text-critical-severity {
+    color: #9239ff !important;
+}
+
+.is-high-severity {
+    background-color: #ff3860 !important;
+    color: #fff !important;
+}
+
+.has-text-high-severity {
+    color: #ff3860 !important;
+}
+
+.is-medium-severity {
+    background-color: #ff943e !important;
+    color: #fff !important;
+}
+
+.has-text-medium-severity {
+    color: #ff943e !important;
+}
+
+.is-low-severity {
+    background-color: #ffdd57 !important;
+    color: #fff !important;
+}
+
+.has-text-low-severity {
+    color: #ffdd57 !important;
+}
+
+.is-info-severity {
+    background-color: #3273dc !important;
+    color: #fff !important;
+}
+
+.has-text-info-severity {
+    color: #3273dc !important;
+}
+
+.disabled {
+    cursor: default !important;
+}
+
+.pagination-link.is-current {
+    background-color: #00d1b2;
+    border-color: #b5b5b5;
+}
+
+.pagination-link:focus {
+    border-color: #b5b5b5;
+}

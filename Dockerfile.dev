@@ -1,0 +1,12 @@
+# Copyright 2021 Adevinta
+
+FROM node:9
+EXPOSE 1234
+
+ADD . /app
+WORKDIR /app
+
+RUN npm install
+RUN npm run-script build
+
+CMD ["npm", "run-script", "serve"]
