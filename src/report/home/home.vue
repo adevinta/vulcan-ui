@@ -518,7 +518,6 @@ import {
    TeamsApi, 
    TeamsShowRequest,
    UserApi, 
-   UserListTeamsRequest,
    StatsApi, 
    StatsOpenRequest, 
    StatsFixedRequest,
@@ -641,24 +640,11 @@ export default class Home extends Vue {
       this.userApi = new UserApi(apiConfg);
       this.statsApi = new StatsApi(apiConfg);
 
-      // Load team.
-      this.teamId = teamID();
-      await this.loadTeam(
-        this.teamId,
-        this.teamsApi
-      );
-
-      await this.getUserProfile(
-        this.userApi
-      );
-
-      await this.userListTeams(
-        this.userApi,
-        this.teamsApi
-      );
-
       // TODO: Load tables data
       // concurrently.
+
+      // Load team.
+      this.teamId = teamID();
 
       var qparams = new URL(document.location.toString()).searchParams;
       if (qparams.get('minDate') || qparams.get('maxDate')) {
@@ -673,40 +659,9 @@ export default class Home extends Vue {
 
       this.onSelectInput(this.modeSelect);
     } catch (err) {
-      this.handleError(err);
+      this.$emit('handleerror', err);
     } finally {
       this.loading = false;
-    }
-  }
-
-  private async loadTeam(teamId: string, api: TeamsApi) {
-    const req: TeamsShowRequest = {
-      teamId: teamId
-    };
-
-    const teamInfo = await api.teamsShow(req);
-    
-    this.team = teamInfo.name || ""
-  }
-
-  private async getUserProfile(api: UserApi) {
-    this.userProfile = await api.userProfile();
-  }
-
-  private async userListTeams(userApi: UserApi, teamsApi: TeamsApi) {
-    if (this.userProfile.admin || this.userProfile.observer) {
-      const req: TeamsListRequest = {
-        tag: undefined // get all teams
-      };
-      this.userTeamsList = await teamsApi.teamsList(req);
-    } else {
-      const req: UserListTeamsRequest = {
-        userId: this.userProfile.id
-      };
-      this.userTeamsList = await userApi.userListTeams(req);
-    }
-    if (this.userTeamsList.length > 1) {
-      this.userTeamsList = this.userTeamsList.sort((t1, t2) => t1.name.localeCompare(t2.name));
     }
   }
 
@@ -840,33 +795,6 @@ export default class Home extends Vue {
     this.totalAssets = assetsList.pagination!.total || 0;
   }
 
-  private handleError(err: any) {
-    if (err instanceof Response) {
-      switch (err.status) {
-        case 403:
-        case 401:
-          this.showSession = true;
-          break;
-        default:
-          console.log(`${err.status} ": " ${err.statusText}`);
-          this.errorMessage = `unexpected error calling vulcan api, status code: ${
-            err.status
-          }`;
-          this.showError = true;
-          break;
-      }
-      return;
-    }
-    if (err instanceof Error) {
-      console.log(`error: " ${err.message}`);
-      this.errorMessage = `unexpected error: ${err.message}`;
-      this.showError = true;
-      return;
-    }
-    console.log(`unexpected error: " ${JSON.stringify(err)}`);
-    this.showError = true;
-  }
-
   async onIssuesPageChange(page: number) {
     try {
       if (!this.findingsApi) {
@@ -881,7 +809,7 @@ export default class Home extends Vue {
         this.findingsApi
       );
     } catch (err) {
-      this.handleError(err);
+      this.$emit('handleerror', err);
     } finally {
       this.loadingIssues = false;
     }
@@ -901,7 +829,7 @@ export default class Home extends Vue {
         this.findingsApi
       );
     } catch (err) {
-      this.handleError(err);
+      this.$emit('handleerror', err);
     } finally {
       this.loadingAssets = false;
     }
@@ -1045,14 +973,13 @@ export default class Home extends Vue {
         row.issueId, 
         this.mapFindingsByIssues, 
         this.loadFindings,
-        this.handleError, 
         this.$refs)); 
     }
 
     this.$refs["tableIssues"].$forceUpdate();
   }
 
-  makeOnPageChange(teamId: string, api: FindingsApi, tableName, parentName, id, map, loadFunc, errorFunc, refs) {
+  makeOnPageChange(teamId: string, api: FindingsApi, tableName, parentName, id, map, loadFunc, refs) {
     return async function(page: number) {
       try {
         if (!api) {
@@ -1079,7 +1006,7 @@ export default class Home extends Vue {
         refs[tableName].$emit('data:update', id, map.get(id).data)
         await refs[tableName]
       } catch (err) {
-        errorFunc(err);
+        refs[tableName].$emit('handleerror', err);
       } finally {
         refs[parentName].$forceUpdate(); 
       }
@@ -1114,7 +1041,6 @@ export default class Home extends Vue {
         row.targetId, 
         this.mapFindingsByAssets, 
         this.loadFindings,
-        this.handleError, 
         this.$refs)); 
 
       this.$refs["tableAssets"].$forceUpdate();
@@ -1162,7 +1088,7 @@ export default class Home extends Vue {
         this.findingsApi
       );
     } catch (err) {
-      this.handleError(err);
+      this.$emit('handleerror', err);
     } finally {
       this.loadingIssues = false;
       this.loadingAssets = false;
@@ -1215,7 +1141,7 @@ export default class Home extends Vue {
         this.findingsApi
       );
     } catch (err) {
-      this.handleError(err);
+      this.$emit('handleerror', err);
     } finally {
       this.loadingIssues = false;
       this.loadingAssets = false;
@@ -1326,12 +1252,6 @@ export default class Home extends Vue {
         this.atDate.setFullYear(this.atDate.getFullYear() - 2);
       }
     }
-  }
-
-  onSelectTeam(){
-    var qparams = new URL(document.location.toString()).searchParams;
-	  qparams.set('team_id',this.teamId);
-    window.location.search = qparams.toString();
   }
 
   rowclass(){
