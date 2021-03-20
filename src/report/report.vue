@@ -30,7 +30,7 @@ Copyright 2021 Adevinta
           </div>
         </div>
         <hr/>
-        <Home></Home>
+        <router-view></router-view>
       </Loading>
     </Session>
   </div>
@@ -56,6 +56,7 @@ import {
   TeamsListRequest,
   UserListTeamsRequest,
 } from "../services/vulcan-api/apis";
+import VueRouter, { RouteConfig } from "vue-router";
 
 @Component({
   name: "LiveReport",
