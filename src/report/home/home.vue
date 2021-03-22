@@ -301,6 +301,15 @@ Copyright 2021 Adevinta
                                         </a>
                                         </b-table-column>
 
+                                        <b-table-column width="100" field="link" label="Direct Link">
+                                        <router-link :to="{ name: 'finding', params: { id: propsFinding.row.id }}">
+                                            <b-button size="is-small" type="is-info is-light" rounded outlined>
+                                                <i class="fa fa-link"></i>
+                                                Link
+                                            </b-button>
+                                        </router-link>
+                                        </b-table-column>
+
                                         <b-table-column width="100" field="status" label="Status">
                                         <span v-bind:class="statusClass(propsFinding.row.status)">
                                             {{ propsFinding.row.status.charAt(0).toUpperCase() + propsFinding.row.status.toLowerCase().slice(1) }} 
@@ -445,6 +454,16 @@ Copyright 2021 Adevinta
                                             {{ propsFinding.row.issue.summary }} 
                                         </a>
                                         </b-table-column>
+
+                                        <b-table-column width="100" field="link" label="Direct Link">
+                                        <router-link :to="{ name: 'finding', params: { id: propsFinding.row.id }}">
+                                            <b-button size="is-small" type="is-info is-light" rounded outlined>
+                                                <i class="fa fa-link"></i>
+                                                Link
+                                            </b-button>
+                                        </router-link>
+                                        </b-table-column>
+
                                         <b-table-column width="100" field="status" label="Status">
                                         <span v-bind:class="statusClass(propsFinding.row.status)">
                                             {{ propsFinding.row.status.charAt(0).toUpperCase() + propsFinding.row.status.toLowerCase().slice(1) }} 
