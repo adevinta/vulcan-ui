@@ -2,6 +2,12 @@
     <div>
         <div class="container">
             <div class="card">
+                <router-link :to="{ name: 'home'}">
+                    <b-button size="is-small" type="is-info is-light" rounded outlined>
+                        <i class="fa fa-arrow-left"></i>
+                        Back to Report
+                    </b-button>
+                </router-link>
                 <div class="card-content">
                     <FindingDetails :propsFindingDetail="propsFindingDetail"></FindingDetails>    
                 </div>
