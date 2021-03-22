@@ -30,7 +30,11 @@ Copyright 2021 Adevinta
           </div>
         </div>
         <hr/>
-        <router-view v-on:handleerror="handleError"></router-view>
+        <transition>
+            <keep-alive>
+                <router-view v-on:handleerror="handleError"></router-view>
+            </keep-alive>
+        </transition>
       </Loading>
     </Session>
   </div>
