@@ -9,6 +9,11 @@ const routes: Array<RouteConfig> = [
         name: "home",
         component: () => import("../home/home.vue")
     },
+    {
+        path: "/findings/:id",
+        name: "finding",
+        component: () => import("../findingview/findingview.vue")
+    },
 ];
 
 const router = new VueRouter({

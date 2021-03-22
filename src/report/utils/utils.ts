@@ -1,3 +1,5 @@
+import { Finding } from "@/services/vulcan-api";
+
 /*
 Copyright 2021 Adevinta
 */
@@ -56,4 +58,7 @@ export function severityStyle(score: number) {
     const url = new URL(url);
     return url.hostname;
   }
-  
+
+  export class propsFindingDetailTemplate {
+      row: Finding = {}
+  }
