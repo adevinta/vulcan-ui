@@ -21,7 +21,7 @@ Copyright 2021 Adevinta
               </h1>
             </div>
             <div class="column is-4">
-              <b-field label="Select a team" label-position="on-border" >
+              <b-field label="Select a team" label-position="on-border" v-if="enableUserListTeams">
                 <b-select v-model="teamId" @input="onSelectTeam" placeholder="Select a subject">
                   <option v-for="userTeam in userTeamsList" :value="userTeam.id" v-bind:key="userTeam.id">{{ userTeam.name }}</option>
                 </b-select>
@@ -32,7 +32,7 @@ Copyright 2021 Adevinta
         <hr/>
         <transition>
             <keep-alive>
-                <router-view v-on:handleerror="handleError"></router-view>
+                <router-view v-on:handleerror="handleError" v-on:toggleUserListTeams="toggleUserListTeams"></router-view>
             </keep-alive>
         </transition>
       </Loading>
@@ -87,6 +87,8 @@ export default class LiveReport extends Vue {
    private teamsApi?: TeamsApi;
    private userProfile?: User;
    private userTeamsList: Team[] = [];
+
+   private enableUserListTeams: boolean = false;
 
    async mounted() {
      try {
@@ -188,6 +190,10 @@ export default class LiveReport extends Vue {
     var qparams = new URL(document.location.toString()).searchParams;
 	  qparams.set('team_id',this.teamId);
     window.location.search = qparams.toString();
+  }
+
+  toggleUserListTeams(enable: boolean){
+      this.enableUserListTeams = enable;
   }
 }
 </script>

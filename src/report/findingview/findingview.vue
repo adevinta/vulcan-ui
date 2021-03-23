@@ -72,6 +72,10 @@ export default class FindingView extends Vue {
       },
   }
 
+  async activated() {
+    this.$emit('toggleUserListTeams', false);
+  }
+
   async mounted() {
     try {
       // Load the config.
