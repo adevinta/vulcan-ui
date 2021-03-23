@@ -1,4 +1,4 @@
 {
-  "api_url": "http://localhost:8081/api/v1/",
+  "api_url": "https://vulcan.example.com/api/v1/",
   "ask_credentials": true
 }
