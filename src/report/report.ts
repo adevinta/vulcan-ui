@@ -16,6 +16,7 @@ import '../../node_modules/bulma/css/bulma.css';
 import '../../node_modules/font-awesome/css/font-awesome.css';
 import '../styles/style.scss';
 import '../style.css';
+import router from "./router"
 const cfg = {
 	defaultIconPack: 'fa'
 };
@@ -41,6 +42,7 @@ Vue.use(VueShowdown, {
 
 Vue.config.productionTip = false;
 const app = new Vue({
+    router,
 	el: '#main',
 	render: (h: CreateElement) => h(report)
 });

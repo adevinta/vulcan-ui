@@ -109,7 +109,7 @@ Copyright 2021 Adevinta
 
 <script lang="ts">
 import { Component, Prop, Vue } from "vue-property-decorator";
-import { severityStyle, severityText, statusClass, urlDomain } from "./utils";
+import { severityStyle, severityText, statusClass, urlDomain } from "../utils/utils";
 
 @Component({
   name: "FindingDetails"
