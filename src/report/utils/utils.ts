@@ -47,6 +47,8 @@ export function severityStyle(score: number) {
       statusClass = "is-danger";
     } else if (status == "FIXED") {
       statusClass = "is-success";
+    } else if (status == "FALSE_POSITIVE") {
+        statusClass = "is-info";
     } else {
       statusClass = "is-light";
     }
