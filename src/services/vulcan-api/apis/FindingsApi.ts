@@ -18,6 +18,9 @@ import {
     Finding,
     FindingFromJSON,
     FindingToJSON,
+    FindingOverridePayload,
+    FindingOverridePayloadFromJSON,
+    FindingOverridePayloadToJSON,
     FindingsIssuesList,
     FindingsIssuesListFromJSON,
     FindingsIssuesListToJSON,
@@ -60,6 +63,12 @@ export interface FindingsFindFindingsFromATargetRequest {
     size?: number;
     sortBy?: string;
     status?: string;
+}
+
+export interface FindingsFindingOverrideRequest {
+    findingId: string;
+    teamId: string;
+    payload: FindingOverridePayload;
 }
 
 export interface FindingsListFindingsRequest {
@@ -292,6 +301,53 @@ export class FindingsApi extends runtime.BaseAPI {
      */
     async findingsFindFindingsFromATarget(requestParameters: FindingsFindFindingsFromATargetRequest): Promise<FindingsList> {
         const response = await this.findingsFindFindingsFromATargetRaw(requestParameters);
+        return await response.value();
+    }
+
+    /**
+     * Override data for a specific finding.
+     * Finding Override findings
+     */
+    async findingsFindingOverrideRaw(requestParameters: FindingsFindingOverrideRequest): Promise<runtime.ApiResponse<FindingsList>> {
+        if (requestParameters.findingId === null || requestParameters.findingId === undefined) {
+            throw new runtime.RequiredError('findingId','Required parameter requestParameters.findingId was null or undefined when calling findingsFindingOverride.');
+        }
+
+        if (requestParameters.teamId === null || requestParameters.teamId === undefined) {
+            throw new runtime.RequiredError('teamId','Required parameter requestParameters.teamId was null or undefined when calling findingsFindingOverride.');
+        }
+
+        if (requestParameters.payload === null || requestParameters.payload === undefined) {
+            throw new runtime.RequiredError('payload','Required parameter requestParameters.payload was null or undefined when calling findingsFindingOverride.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["authorization"] = this.configuration.apiKey("authorization"); // Bearer authentication
+        }
+
+        const response = await this.request({
+            path: `/teams/{team_id}/findings/{finding_id}/override`.replace(`{${"finding_id"}}`, encodeURIComponent(String(requestParameters.findingId))).replace(`{${"team_id"}}`, encodeURIComponent(String(requestParameters.teamId))),
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+            body: FindingOverridePayloadToJSON(requestParameters.payload),
+        });
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => FindingsListFromJSON(jsonValue));
+    }
+
+    /**
+     * Override data for a specific finding.
+     * Finding Override findings
+     */
+    async findingsFindingOverride(requestParameters: FindingsFindingOverrideRequest): Promise<FindingsList> {
+        const response = await this.findingsFindingOverrideRaw(requestParameters);
         return await response.value();
     }
 

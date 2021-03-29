@@ -8,6 +8,7 @@ export * from './Attachment';
 export * from './CreateAssetPayload';
 export * from './DigestPayload';
 export * from './Finding';
+export * from './FindingOverridePayload';
 export * from './FindingsIssue';
 export * from './FindingsIssuesList';
 export * from './FindingsList';
