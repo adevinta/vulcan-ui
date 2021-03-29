@@ -5,7 +5,8 @@ Copyright 2021 Adevinta
 import Vue from 'vue';
 import report from './report.vue';
 import { CreateElement } from 'vue';
-import { ConfigProgrammatic, Table, Input, Switch, Button, Icon, Field, Datepicker, Tabs, Select, Collapse, Message, Tag } from 'buefy';
+
+import { ConfigProgrammatic, Table, Input, Switch, Button, Icon, Field, Datepicker, Tabs, Select, Collapse, Message, Tag, Modal } from 'buefy';
 import VueShowdown from 'vue-showdown';
 import { VueShowdownPlugin, showdown } from 'vue-showdown';
 import DOMPurify from 'dompurify';
@@ -34,6 +35,7 @@ Vue.use(Select);
 Vue.use(Collapse);
 Vue.use(Message);
 Vue.use(Tag);
+Vue.use(Modal);
 Vue.use(VueShowdown, {
 	options: {
 	  simpleLineBreaks: false,
