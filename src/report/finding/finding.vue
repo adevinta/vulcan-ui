@@ -35,7 +35,11 @@ Copyright 2021 Adevinta
               <td style="width:100%">
                 <span
                   v-bind:class="statusClass(propsFindingDetail.row.status)"
-                >{{ propsFindingDetail.row.status.charAt(0).toUpperCase() + propsFindingDetail.row.status.toLowerCase().slice(1) }}</span>
+                >{{ (propsFindingDetail.row.status.charAt(0).toUpperCase() + propsFindingDetail.row.status.toLowerCase().slice(1)).replace("False_positive", "False Positive") }}</span>
+                <b-button type="is-info is-text is-small"  inverted
+                    @click="updateStatus()">
+                    <span>Update Status</span>
+                </b-button>
               </td>
             </tr>
             <tr v-if="propsFindingDetail.row.details">
@@ -94,10 +98,10 @@ Copyright 2021 Adevinta
               <td style="width:100%">
                 <table class="table is-striped">
                   <thead>
-                    <th v-for="header in resource.attributes">{{ header }}</th>
+                    <th v-for="header in resource.attributes" v-bind:key="header">{{ header }}</th>
                   </thead>
-                  <tr v-for="(row) in resource.resources">
-                    <td v-for="header in resource.attributes">
+                  <tr v-for="(j, row) in resource.resources" v-bind:key="j">
+                    <td v-for="header in resource.attributes" v-bind:key="header">
                       <VueShowdown :markdown="row[header]" :extensions="['htmlSanitize','noBlockquote']" />
                     </td>
                   </tr>
@@ -113,18 +117,59 @@ Copyright 2021 Adevinta
 
 <script lang="ts">
 import { Component, Prop, Vue } from "vue-property-decorator";
+import FindingOverrideForm from "../findingOverrideForm/findingOverrideForm.vue";
 import { severityStyle, severityText, statusClass, urlDomain } from "../utils/utils";
+import { ModalProgrammatic as Modal } from 'buefy';
+import { BModalComponent } from "buefy/types/components";
 
 @Component({
-  name: "FindingDetails"
+  name: "FindingDetails",
+  components: {
+      FindingOverrideForm,
+  }
 })
 export default class FindingDetails extends Vue {
   @Prop({ required: true, default: "" })
   propsFindingDetail!: string;
 
+  @Prop({ required: true, default: "" })
+  private findingId?: string;
+ 
+  @Prop({ required: true, default: "" })
+  private teamId?: string;
+
+  private isComponentModalActive: boolean = true;
   private severityStyle = severityStyle
   private severityText = severityText
   private statusClass = statusClass
   private urlDomain = urlDomain
+
+  private statusModal!: BModalComponent
+
+  private updateStatus() {
+    this.statusModal = this.$buefy.modal.open({
+            parent: this,
+            component: FindingOverrideForm,
+            hasModalCard: true,
+            fullScreen: false,
+            trapFocus: true,
+            props: {
+                findingId: this.findingId,
+                teamId: this.teamId,
+            },
+            events: {
+                'handleerror': (err: Error) =>{
+                    this.$emit('handleerror', err);
+                },
+                'update': () => {
+                    this.$emit('update', this.propsFindingDetail);
+                },
+                'close': () => {
+                    this.statusModal.close();
+                }
+            },
+        });
+  }
+
 }
 </script>
