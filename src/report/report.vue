@@ -30,11 +30,7 @@ Copyright 2021 Adevinta
           </div>
         </div>
         <hr/>
-        <transition>
-            <keep-alive>
-                <router-view v-on:handleerror="handleError" v-on:toggleUserListTeams="toggleUserListTeams" :key="$route.fullPath"></router-view>
-            </keep-alive>
-        </transition>
+        <router-view v-on:handleerror="handleError" v-on:toggleUserListTeams="toggleUserListTeams" :key="$route.fullPath"></router-view>
       </Loading>
     </Session>
   </div>
