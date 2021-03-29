@@ -9,7 +9,13 @@
                     </b-button>
                 </router-link>
                 <div class="card-content">
-                    <FindingDetails :propsFindingDetail="propsFindingDetail"></FindingDetails>    
+                    <FindingDetails
+                        v-on:handleerror="handleError"
+                        v-on:update="update"
+                        :teamId="teamId"
+                        :findingId="propsFindingDetail.row.id"
+                        :propsFindingDetail="propsFindingDetail">
+                    </FindingDetails>
                 </div>
             </div>
         </div>
@@ -53,7 +59,7 @@ export default class FindingView extends Vue {
   private apiUrl: string = "";
   private teamId: string = "";
   private findingId: string = "";
-  private findingsApi?: FindingsApi;
+  private findingsApi!: FindingsApi;
 
   private propsFindingDetail: propsFindingDetailTemplate = {
       row: {
@@ -102,8 +108,6 @@ export default class FindingView extends Vue {
       );
     } catch (err) {
       this.$emit('handleerror', err);
-    } finally {
-      this.loading = false;
     }
   }
 
@@ -115,6 +119,18 @@ export default class FindingView extends Vue {
 
     const finding: Finding = await api.findingsFindFinding(req);
     this.propsFindingDetail.row = finding
+  }
+
+  private handleError(err: any) {
+      this.$emit('handleerror', err);
+  }
+
+  private async update() {
+      await this.loadFinding(
+        this.teamId,
+        this.findingId,
+        this.findingsApi
+      );
   }
 }
 
