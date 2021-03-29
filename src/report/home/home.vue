@@ -329,7 +329,13 @@ Copyright 2021 Adevinta
                                         </b-table-column>
                                     </template>
                                     <template slot="detail" slot-scope="propsFindingDetail" >
-                                    <FindingDetails :propsFindingDetail="propsFindingDetail"></FindingDetails>
+                                    <FindingDetails
+                                        v-on:handleerror="handleError"
+                                        v-on:update="updateIssue"
+                                        :teamId="teamId"
+                                        :findingId="propsFindingDetail.row.id"
+                                        :propsFindingDetail="propsFindingDetail">
+                                    </FindingDetails>
                                     </template>
                                 </b-table> 
                             </div>
@@ -481,7 +487,13 @@ Copyright 2021 Adevinta
                                         </b-table-column>
                                     </template>
                                     <template slot="detail" slot-scope="propsFindingDetail">
-                                    <FindingDetails :propsFindingDetail="propsFindingDetail"></FindingDetails>
+                                    <FindingDetails
+                                        v-on:handleerror="handleError"
+                                        v-on:update="updateAsset"
+                                        :teamId="teamId"
+                                        :findingId="propsFindingDetail.row.id"
+                                        :propsFindingDetail="propsFindingDetail">
+                                    </FindingDetails>
                                     </template>
                                 </b-table> 
                             </div>
@@ -1286,6 +1298,37 @@ export default class Home extends Vue {
     d.setHours(d.getHours() - (currentExposure/24)*24);
     let tmp = (d.toISOString().split('T')[0]).split('-')
     return tmp[2]+"/"+tmp[1]+"/"+tmp[0];
+  }
+
+  private handleError(err: any) {
+    this.$emit('handleerror', err);
+  }
+
+  private async updateIssue(prop) {
+      await this.loadFindings(
+        this.teamId,
+        this.findingsApi,
+        prop.row.issue.id,
+      );
+
+      await this.$refs["tableFindingsByIssues-"+prop.row.issue.id]
+      this.$refs["tableIssues"].$forceUpdate();
+      this.getStatsFixed(this.statsApi);
+      this.getStatsOpen(this.statsApi);
+  }
+
+  private async updateAsset(prop) {
+      await this.loadFindings(
+        this.teamId,
+        this.findingsApi,
+        prop.row.issue.id,
+        prop.row.target.id,
+      );
+
+      await this.$refs["tableFindingsByAssets-"+prop.row.target.id]
+      this.$refs["tableAssets"].$forceUpdate();
+      this.getStatsFixed(this.statsApi);
+      this.getStatsOpen(this.statsApi);
   }
 }
 
