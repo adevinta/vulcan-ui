@@ -312,7 +312,7 @@ Copyright 2021 Adevinta
 
                                         <b-table-column width="100" field="status" label="Status">
                                         <span v-bind:class="statusClass(propsFinding.row.status)">
-                                            {{ propsFinding.row.status.charAt(0).toUpperCase() + propsFinding.row.status.toLowerCase().slice(1) }} 
+                                            {{ (propsFinding.row.status.charAt(0).toUpperCase() + propsFinding.row.status.toLowerCase().slice(1)).replace("False_positive", "False Positive") }}
                                         </span>
                                         </b-table-column>
                                         
