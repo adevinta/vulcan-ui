@@ -9,6 +9,8 @@ Copyright 2021 Adevinta
       <button type="button" class="delete" @click="$parent.close()" />
     </header>
     <section class="modal-card-body">
+      <b-tabs :animated=false>
+      <b-tab-item label="Update Status">
       <ErrorDialog :show="showError" :message="errorMessage"></ErrorDialog>
       <form @submit.prevent="updateStatus">
         <b-field label="New status for this finding">
@@ -55,6 +57,40 @@ Copyright 2021 Adevinta
           <b-button icon-left="save" type="is-info" native-type="submit">Update</b-button>
         </div>
       </form>
+      </b-tab-item>
+
+      <b-tab-item label="History">
+      <b-table
+            :data="data"
+            :bordered="false"
+            :striped="true"
+            :narrowed="true"
+            :hoverable="true">
+            <template slot-scope="props">
+                <b-table-column field="created_at" label="Date">
+                    {{ props.row.createdAt.toLocaleDateString() }}
+                </b-table-column>
+
+                <b-table-column field="user" label="User">
+                    {{ props.row.user }}
+                </b-table-column>
+
+                <b-table-column field="status" label="New Status">
+                    {{ props.row.status }}
+                </b-table-column>
+
+                <b-table-column field="notes" label="Notes">
+                    {{ props.row.notes }}
+                </b-table-column>
+            </template>
+
+            <template #empty>
+                <div class="has-text-centered">No records</div>
+            </template>
+
+        </b-table>
+        </b-tab-item>
+      </b-tabs>
     </section>
   </div>
 </template>
@@ -72,10 +108,12 @@ import {
 } from "../../services/vulcan-api";
 import {
   FindingsApi,
-  FindingsFindingOverrideRequest
+  FindingsSubmitAFindingOverrideRequest,
+  FindingsListFindingOverridesRequest
 } from "../../services/vulcan-api/apis";
 import {
   Finding,
+  FindingOverride,
   FindingOverridePayload
 } from "../../services/vulcan-api/models";
 
@@ -91,6 +129,7 @@ export default class FindingOverrideForm extends Vue {
   private findingsApi!: FindingsApi;
   private status: string = "";
   private notes: string = "";
+  private data: FindingOverride[] = [];
 
   @Prop({ required: true, default: "" })
   private findingId!: string;
@@ -102,8 +141,6 @@ export default class FindingOverrideForm extends Vue {
   private errorMessage: string = "";
 
   async mounted() {
-    console.log("xfindingID: " + this.findingId);
-    console.log("xteamID: " + this.teamId);
     try {
       // Load the config.
       const conf = await loadConfig();
@@ -116,6 +153,13 @@ export default class FindingOverrideForm extends Vue {
       // Build the api clients.
       const apiConfg = new ApiConf(c);
       this.findingsApi = new FindingsApi(apiConfg);
+
+      const req: FindingsListFindingOverridesRequest = {
+          findingId: this.findingId,
+          teamId: this.teamId,
+      }
+
+      this.data = await this.findingsApi.findingsListFindingOverrides(req);
     } catch (err) {
       this.handleError(err);
     } 
@@ -123,7 +167,7 @@ export default class FindingOverrideForm extends Vue {
 
   async updateStatus() {
     try {
-      const req: FindingsFindingOverrideRequest = {
+      const req: FindingsSubmitAFindingOverrideRequest = {
         findingId: this.findingId,
         teamId: this.teamId,
         payload: {
@@ -132,7 +176,7 @@ export default class FindingOverrideForm extends Vue {
         }
       };
 
-      await this.findingsApi.findingsFindingOverride(req);
+      await this.findingsApi.findingsSubmitAFindingOverride(req);
       this.$emit('update');
       this.$emit('close');
     } catch (err) {
