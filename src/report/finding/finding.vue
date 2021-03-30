@@ -98,10 +98,10 @@ Copyright 2021 Adevinta
               <td style="width:100%">
                 <table class="table is-striped">
                   <thead>
-                    <th v-for="header in resource.attributes" v-bind:key="header">{{ header }}</th>
+                    <th v-for="header in resource.attributes">{{ header }}</th>
                   </thead>
-                  <tr v-for="(j, row) in resource.resources" v-bind:key="j">
-                    <td v-for="header in resource.attributes" v-bind:key="header">
+                  <tr v-for="(row) in resource.resources">
+                    <td v-for="header in resource.attributes">
                       <VueShowdown :markdown="row[header]" :extensions="['htmlSanitize','noBlockquote']" />
                     </td>
                   </tr>
