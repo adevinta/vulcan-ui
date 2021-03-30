@@ -30,6 +30,7 @@ models/Attachment.ts
 models/CreateAssetPayload.ts
 models/DigestPayload.ts
 models/Finding.ts
+models/FindingOverride.ts
 models/FindingOverridePayload.ts
 models/FindingsIssue.ts
 models/FindingsIssuesList.ts
