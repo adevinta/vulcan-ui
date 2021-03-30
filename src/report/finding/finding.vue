@@ -38,7 +38,7 @@ Copyright 2021 Adevinta
                 >{{ (propsFindingDetail.row.status.charAt(0).toUpperCase() + propsFindingDetail.row.status.toLowerCase().slice(1)).replace("False_positive", "False Positive") }}</span>
                 <b-button type="is-info is-text is-small"  inverted
                     @click="updateStatus()">
-                    <span>Update Status</span>
+                    <span>False Positive</span>
                 </b-button>
               </td>
             </tr>
