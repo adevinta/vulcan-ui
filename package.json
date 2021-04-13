@@ -26,6 +26,7 @@
     "cronstrue": "^1.108.0",
     "datatables-bulma": "^1.0.1",
     "datatables-bulma-jquery": "0.0.1",
+    "dompurify": "^2.2.7",
     "font-awesome": "^4.7.0",
     "jquery": "^3.5.1",
     "jquery-datatables-checkboxes": "^1.2.12",

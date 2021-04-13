@@ -5,10 +5,10 @@ Copyright 2021 Adevinta
 import Vue from 'vue';
 import report from './report.vue';
 import { CreateElement } from 'vue';
-
 import { ConfigProgrammatic, Table, Input, Switch, Button, Icon, Field, Datepicker, Tabs, Select, Collapse, Message, Tag } from 'buefy';
 import VueShowdown from 'vue-showdown';
-
+import { VueShowdownPlugin, showdown } from 'vue-showdown';
+import DOMPurify from 'dompurify';
 
 // import 'buefy/dist/buefy.css';
 // Import styles
@@ -36,9 +36,28 @@ Vue.use(Message);
 Vue.use(Tag);
 Vue.use(VueShowdown, {
 	options: {
-	  emoji: true
-	}
+	  simpleLineBreaks: false,
+	  literalMidWordUnderscores: false,
+	},
   });
+
+VueShowdown.showdown.extension('htmlSanitize', () => [
+  {
+    type: 'output',
+    filter: function (text, converter, options) {
+      return DOMPurify.sanitize(text);
+    }
+  },
+]);
+
+// Prevent strings such as "> 2 years" from being interpreted as a quotation block.
+VueShowdown.showdown.extension('noBlockquote', () => [
+  {
+    type: 'lang',
+    regex: /(?<!<.*)>/g,
+    replace: '&gt;'
+  },
+]);
 
 Vue.config.productionTip = false;
 const app = new Vue({
