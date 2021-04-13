@@ -13,7 +13,7 @@ Copyright 2021 Adevinta
             <hr />
           </div>
           <div>
-            <VueShowdown :markdown="propsFindingDetail.row.issue.description" />
+            <VueShowdown :markdown="propsFindingDetail.row.issue.description" :extensions="['htmlSanitize']" />
           </div>
           <hr />
           <table class="table is-striped is-fullwidth">
@@ -56,7 +56,9 @@ Copyright 2021 Adevinta
                     v-for="recommendation in propsFindingDetail.row.issue.recommendations"
                     :key="recommendation"
                   >
-                    <td>{{ recommendation }}</td>
+                    <td>
+                      <VueShowdown :markdown="recommendation" :extensions="['htmlSanitize']" />
+                    </td>
                   </tr>
                 </table>
               </td>
@@ -95,7 +97,9 @@ Copyright 2021 Adevinta
                     <th v-for="header in resource.attributes">{{ header }}</th>
                   </thead>
                   <tr v-for="(row) in resource.resources">
-                    <td v-for="header in resource.attributes">{{ row[header] }}</td>
+                    <td v-for="header in resource.attributes">
+                      <VueShowdown :markdown="row[header]" :extensions="['htmlSanitize','noBlockquote']" />
+                    </td>
                   </tr>
                 </table>
               </td>
