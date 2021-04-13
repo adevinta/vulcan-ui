@@ -37,7 +37,7 @@ Vue.use(Tag);
 Vue.use(VueShowdown, {
 	options: {
 	  simpleLineBreaks: false,
-	  literalMidWordUnderscores: false,
+	  literalMidWordUnderscores: true,
 	},
   });
 
