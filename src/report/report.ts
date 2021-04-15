@@ -54,7 +54,7 @@ VueShowdown.showdown.extension('htmlSanitize', () => [
 VueShowdown.showdown.extension('noBlockquote', () => [
   {
     type: 'lang',
-    regex: /(?<!<.*)>/g,
+    regex: /^>/mg,
     replace: '&gt;'
   },
 ]);
