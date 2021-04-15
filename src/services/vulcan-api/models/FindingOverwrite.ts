@@ -14,66 +14,66 @@
 
 import { exists, mapValues } from '../runtime';
 /**
- * Finding Override (default view)
+ * Finding Overwrite (default view)
  * @export
- * @interface FindingOverride
+ * @interface FindingOverwrite
  */
-export interface FindingOverride {
+export interface FindingOverwrite {
     /**
      * Creation time
      * @type {Date}
-     * @memberof FindingOverride
+     * @memberof FindingOverwrite
      */
     createdAt?: Date;
     /**
      * Finding ID
      * @type {string}
-     * @memberof FindingOverride
+     * @memberof FindingOverwrite
      */
     findingId?: string;
     /**
-     * Finding Override ID
+     * Finding Overwrite ID
      * @type {string}
-     * @memberof FindingOverride
+     * @memberof FindingOverwrite
      */
     id?: string;
     /**
      * Complementary information
      * @type {string}
-     * @memberof FindingOverride
+     * @memberof FindingOverwrite
      */
     notes?: string;
     /**
      * The status requested for the finding referenced by the finding_id field
      * @type {string}
-     * @memberof FindingOverride
+     * @memberof FindingOverwrite
      */
     status?: string;
     /**
      * The previous status for the finding referenced by the finding_id field
      * @type {string}
-     * @memberof FindingOverride
+     * @memberof FindingOverwrite
      */
     statusPrevious?: string;
     /**
-     * The tag associated to the user/team who requested this override
+     * The tag associated to the user/team who requested this overwrite
      * @type {string}
-     * @memberof FindingOverride
+     * @memberof FindingOverwrite
      */
     tag?: string;
     /**
-     * User who requested the finding override
+     * User who requested the finding overwrite
      * @type {string}
-     * @memberof FindingOverride
+     * @memberof FindingOverwrite
      */
     user?: string;
 }
 
-export function FindingOverrideFromJSON(json: any): FindingOverride {
-    return FindingOverrideFromJSONTyped(json, false);
+export function FindingOverwriteFromJSON(json: any): FindingOverwrite {
+    return FindingOverwriteFromJSONTyped(json, false);
 }
 
-export function FindingOverrideFromJSONTyped(json: any, ignoreDiscriminator: boolean): FindingOverride {
+export function FindingOverwriteFromJSONTyped(json: any, ignoreDiscriminator: boolean): FindingOverwrite {
     if ((json === undefined) || (json === null)) {
         return json;
     }
@@ -90,7 +90,7 @@ export function FindingOverrideFromJSONTyped(json: any, ignoreDiscriminator: boo
     };
 }
 
-export function FindingOverrideToJSON(value?: FindingOverride | null): any {
+export function FindingOverwriteToJSON(value?: FindingOverwrite | null): any {
     if (value === undefined) {
         return undefined;
     }

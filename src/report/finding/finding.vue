@@ -117,7 +117,7 @@ Copyright 2021 Adevinta
 
 <script lang="ts">
 import { Component, Prop, Vue } from "vue-property-decorator";
-import FindingOverrideForm from "../findingOverrideForm/findingOverrideForm.vue";
+import FindingOverwriteForm from "../findingOverwriteForm/findingOverwriteForm.vue";
 import { severityStyle, severityText, statusClass, urlDomain } from "../utils/utils";
 import { ModalProgrammatic as Modal } from 'buefy';
 import { BModalComponent } from "buefy/types/components";
@@ -125,7 +125,7 @@ import { BModalComponent } from "buefy/types/components";
 @Component({
   name: "FindingDetails",
   components: {
-      FindingOverrideForm,
+      FindingOverwriteForm,
   }
 })
 export default class FindingDetails extends Vue {
@@ -149,7 +149,7 @@ export default class FindingDetails extends Vue {
   private updateStatus() {
     this.statusModal = this.$buefy.modal.open({
             parent: this,
-            component: FindingOverrideForm,
+            component: FindingOverwriteForm,
             hasModalCard: true,
             fullScreen: false,
             trapFocus: true,

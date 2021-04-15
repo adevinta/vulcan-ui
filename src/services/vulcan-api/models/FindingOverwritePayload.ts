@@ -16,28 +16,28 @@ import { exists, mapValues } from '../runtime';
 /**
  * 
  * @export
- * @interface FindingOverridePayload
+ * @interface FindingOverwritePayload
  */
-export interface FindingOverridePayload {
+export interface FindingOverwritePayload {
     /**
      * Notes
      * @type {string}
-     * @memberof FindingOverridePayload
+     * @memberof FindingOverwritePayload
      */
     notes: string;
     /**
      * Status
      * @type {string}
-     * @memberof FindingOverridePayload
+     * @memberof FindingOverwritePayload
      */
     status: string;
 }
 
-export function FindingOverridePayloadFromJSON(json: any): FindingOverridePayload {
-    return FindingOverridePayloadFromJSONTyped(json, false);
+export function FindingOverwritePayloadFromJSON(json: any): FindingOverwritePayload {
+    return FindingOverwritePayloadFromJSONTyped(json, false);
 }
 
-export function FindingOverridePayloadFromJSONTyped(json: any, ignoreDiscriminator: boolean): FindingOverridePayload {
+export function FindingOverwritePayloadFromJSONTyped(json: any, ignoreDiscriminator: boolean): FindingOverwritePayload {
     if ((json === undefined) || (json === null)) {
         return json;
     }
@@ -48,7 +48,7 @@ export function FindingOverridePayloadFromJSONTyped(json: any, ignoreDiscriminat
     };
 }
 
-export function FindingOverridePayloadToJSON(value?: FindingOverridePayload | null): any {
+export function FindingOverwritePayloadToJSON(value?: FindingOverwritePayload | null): any {
     if (value === undefined) {
         return undefined;
     }

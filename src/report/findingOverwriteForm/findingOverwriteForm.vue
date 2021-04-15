@@ -108,28 +108,28 @@ import {
 } from "../../services/vulcan-api";
 import {
   FindingsApi,
-  FindingsSubmitAFindingOverrideRequest,
-  FindingsListFindingOverridesRequest
+  FindingsSubmitAFindingOverwriteRequest,
+  FindingsListFindingOverwritesRequest
 } from "../../services/vulcan-api/apis";
 import {
   Finding,
-  FindingOverride,
-  FindingOverridePayload
+  FindingOverwrite,
+  FindingOverwritePayload
 } from "../../services/vulcan-api/models";
 
 @Component({
-  name: "FindingOverrideForm",
+  name: "FindingOverwriteForm",
   components: {
     ErrorDialog
   }
 })
 
-export default class FindingOverrideForm extends Vue {
+export default class FindingOverwriteForm extends Vue {
   private showRiskAcceptanceWarning: boolean = false;
   private findingsApi!: FindingsApi;
   private status: string = "";
   private notes: string = "";
-  private data: FindingOverride[] = [];
+  private data: FindingOverwrite[] = [];
 
   @Prop({ required: true, default: "" })
   private findingId!: string;
@@ -154,12 +154,12 @@ export default class FindingOverrideForm extends Vue {
       const apiConfg = new ApiConf(c);
       this.findingsApi = new FindingsApi(apiConfg);
 
-      const req: FindingsListFindingOverridesRequest = {
+      const req: FindingsListFindingOverwritesRequest = {
           findingId: this.findingId,
           teamId: this.teamId,
       }
 
-      this.data = await this.findingsApi.findingsListFindingOverrides(req);
+      this.data = await this.findingsApi.findingsListFindingOverwrites(req);
     } catch (err) {
       this.handleError(err);
     } 
@@ -167,7 +167,7 @@ export default class FindingOverrideForm extends Vue {
 
   async updateStatus() {
     try {
-      const req: FindingsSubmitAFindingOverrideRequest = {
+      const req: FindingsSubmitAFindingOverwriteRequest = {
         findingId: this.findingId,
         teamId: this.teamId,
         payload: {
@@ -176,7 +176,7 @@ export default class FindingOverrideForm extends Vue {
         }
       };
 
-      await this.findingsApi.findingsSubmitAFindingOverride(req);
+      await this.findingsApi.findingsSubmitAFindingOverwrite(req);
       this.$emit('update');
       this.$emit('close');
     } catch (err) {
