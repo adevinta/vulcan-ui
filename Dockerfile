@@ -21,11 +21,10 @@ ARG COMMIT="local"
 ENV BUILD_RFC3339 "$BUILD_RFC3339"
 ENV COMMIT "$COMMIT"
 
-COPY --from=builder /app/dist /usr/share/nginx/html
+COPY --chown=nginx --from=builder /app/dist /usr/share/nginx/html
 
 WORKDIR /app
-
-COPY run.sh .
-COPY config.json .
+COPY --chown=nginx run.sh .
+COPY --chown=nginx config.json .
 
 CMD ["./run.sh"]
