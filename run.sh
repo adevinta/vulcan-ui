@@ -11,9 +11,9 @@ export UI_CONTACT_EMAIL=${UI_CONTACT_EMAIL:-}
 export UI_CONTACT_SLACK=${UI_CONTACT_SLACK:-/}
 
 # Apply env variables
-cat config.json | envsubst > /usr/share/nginx/html/config.json
-cat /usr/share/nginx/html/index.html | envsubst > tmp && mv tmp /usr/share/nginx/html/index.html
-cat /usr/share/nginx/html/assets/index.html | envsubst > tmp && mv tmp /usr/share/nginx/html/assets/index.html
+envsubst < config.json > /usr/share/nginx/html/config.json
+envsubst < /usr/share/nginx/html/index.html | tee /usr/share/nginx/html/index.html
+envsubst < /usr/share/nginx/html/assets/index.html | tee /usr/share/nginx/html/assets/index.html
 
 if echo "$PORT" | grep -Eq '[0-9]+'; then
   sed -i "s/^[[:space:]]\+listen .*/    listen $PORT;/g" /etc/nginx/conf.d/default.conf
