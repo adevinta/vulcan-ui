@@ -48,8 +48,8 @@ The command supposes the swagger file is in ```../vulcan-api/docs``` and is exec
 
 |Variable|Description|Sample|
 |---|---|---|
-|VULCAN_API||http://localhost:8080/api|
-|PORT|Port to listen|Defaults to 80|
+|VULCAN_API||http://localhost:8081/api|
+|PORT|Port to listen|Defaults to 8080|
 |UI_DOCS_API_LINK|Link to Vulcan API user docs|Defaults to UI root page|
 |UI_DOCS_WHITELISTING_LINK|Link to Vulcan scanner IPs|Defaults to UI root page|
 |UI_DOCS_DISCOVERY_LINK|Link to asset discovery documentation|Defaults to UI root page|
@@ -64,5 +64,5 @@ docker build . -t vui
 docker run --env-file ./local.env vui
 
 # Or set the variable
-docker run --env API_URL="http://localhost:8080/api" -p 8080:80 vui
+docker run --env API_URL="http://localhost:8081/api" -p 8080:8080 vui
 ```
