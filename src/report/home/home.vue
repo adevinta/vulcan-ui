@@ -653,10 +653,6 @@ export default class Home extends Vue {
   private severityText = severityText
   private statusClass = statusClass
 
-  async activated() {
-    this.$emit('toggleUserListTeams', true);
-  }
-
   async mounted() {
     try {
       // Load the config.
@@ -696,6 +692,7 @@ export default class Home extends Vue {
     } catch (err) {
       this.$emit('handleerror', err);
     } finally {
+      this.$emit('toggleUserListTeams', true);
       this.loading = false;
     }
   }
