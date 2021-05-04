@@ -206,154 +206,34 @@ Copyright 2021 Adevinta
             <b-tab-item label="Issues" class="has-text-strong" icon="bug">
             <div class="card">
                 <div class="card-content">
-                <!-- /* ISSUES TABLE */ -->
-                <b-table
-                    ref="tableIssues"
-                    class="live-report"
-                    :data="dataIssues"
-                    :loading="loadingIssues"
-                    :narrowed=true
-                    paginated
-                    hoverable
-                    backend-pagination
-                    :total="totalIssues"
-                    :per-page="perPageIssues"
-                    :row-class="rowclass"
-                    @click="toggleDetailsForIssuesTable"
-                    @page-change="onIssuesPageChange"
+                    <!-- /* ISSUES TABLE */ -->
+                    <ListOfFindings
+                        ref="issuesTable"
+                        :teamId="teamId"
+                        :data="this.dataIssues"
+                        :total="this.totalIssues"
+                        :perPage="this.perPageIssues"
+                        :modeSelect="this.modeSelect"
+                        :minDate="this.minDate"
+                        :maxDate="this.maxDate"
+                        :atDate="this.atDate"
+                        mode="issue"
 
-                    detailed
-                    
-                    detail-key="issueId"
-                    :show-detail-icon=false
+                        mainListDescriptionColumnHeader="Issue"
+                        mainListDescriptionColumnIcon="bug"
 
-                    aria-next-label="Next page"
-                    aria-previous-label="Previous page"
-                    aria-page-label="Page"
-                    aria-current-label="Current page">
+                        mainListCountColumnHeader="Assets"
+                        mainListCountColumnIcon="server"
 
-                    <template slot-scope="propsIssues">
-                        <!-- /* COLUMNS FROM ISSUES TABLE */ -->
-                        <b-table-column field="issue" label="Issue">
-                            <b-icon
-                                icon="bug"
-                                size="is-small"
-                                >
-                            </b-icon>
-                            <a class="has-text-dark">
-                                {{ propsIssues.row.summary }}
-                            </a>
-                        </b-table-column>
+                        mainListScoreColumnHeader="Score"
 
-                        <b-table-column centered width="100" field="assets-count" label="Assets">
-                            <b-icon
-                                icon="server"
-                                size="is-small">
-                            </b-icon>
-                            <span class="tag ">
-                                {{ propsIssues.row.targetsCount }}
-                            </span>
-                        </b-table-column>
+                        findingsListDescriptionColumnHeader="Asset"
 
-                        <b-table-column centered width="100" field="score" label="Score">
-                            <span v-bind:class="severityStyle(propsIssues.row.maxScore)">
-                                {{ propsIssues.row.maxScore }}
-                            </span>
-                        </b-table-column>
-                    </template>
-                    <template slot="detail" slot-scope="propsDetail">
-                        <div>
-                        <div class="card">
-                            <div class="card-content">
-                            <div class="">
-                                <!-- /* FINDINGS BY ISSUE TABLE */ -->
-                                <b-table
-                                    :ref="'tableFindingsByIssues-'+propsDetail.row.issueId"
-                                    class="live-report"
-                                    :data="mapFindingsByIssues.get(propsDetail.row.issueId).data"
-                                    :loading="mapFindingsByIssues.get(propsDetail.row.issueId).loading"
-                                    :narrowed=true
-                                    paginated
-                                    backend-pagination
-                                    :total="mapFindingsByIssues.get(propsDetail.row.issueId).total"
-                                    :per-page="mapFindingsByIssues.get(propsDetail.row.issueId).perPage"
-                                    :row-class="rowclass"
-                                    @click="row => $refs['tableFindingsByIssues-'+propsDetail.row.issueId].toggleDetails(row)" 
-
-                                    detailed
-                                    
-                                    detail-key="id"
-                                    :show-detail-icon=false
-
-                                    aria-next-label="Next page"
-                                    aria-previous-label="Previous page"
-                                    aria-page-label="Page"
-                                    aria-current-label="Current page">
-
-                                    <template slot-scope="propsFinding">
-                                        <!-- /* COLUMNS FROM FINDINGS BY ISSUE TABLE */ -->
-                                        <b-table-column field="asset" label="Asset">
-                                        <span class="icon is-small">
-                                            <i class="fa fa-server"></i>
-                                        </span>
-                                        <a class="has-text-dark">
-                                            {{ propsFinding.row.target.identifier }} 
-                                        </a>
-                                        </b-table-column>
-
-                                        <b-table-column width="100" field="link" label="Direct Link">
-                                        <router-link :to="{ name: 'finding', params: { id: propsFinding.row.id }}">
-                                            <b-button size="is-small" type="is-info is-light" rounded outlined>
-                                                <i class="fa fa-link"></i>
-                                                Link
-                                            </b-button>
-                                        </router-link>
-                                        </b-table-column>
-
-                                        <b-table-column width="100" field="status" label="Status">
-                                        <span v-bind:class="statusClass(propsFinding.row.status)">
-                                            {{ (propsFinding.row.status.charAt(0).toUpperCase() + propsFinding.row.status.toLowerCase().slice(1)).replace("False_positive", "False Positive") }}
-                                        </span>
-                                        </b-table-column>
-                                        
-                                        <b-table-column centered width="100" field="age" label="Age (days)">
-                                        <a class="has-text-dark">
-                                            {{ propsFinding.row.status == "OPEN" ? Math.round(propsFinding.row.currentExposure/24) : "" }} 
-                                        </a>
-                                        </b-table-column>
-
-                                        <b-table-column centered width="100" field="score" label="Score">
-                                        <span v-bind:class="severityStyle(propsFinding.row.score)">
-                                            {{ propsFinding.row.score }}
-                                        </span>
-                                        </b-table-column>
-                                    </template>
-                                    <template slot="detail" slot-scope="propsFindingDetail" >
-                                    <FindingDetails
-                                        v-on:handleerror="handleError"
-                                        v-on:update="updateIssue"
-                                        :teamId="teamId"
-                                        :findingId="propsFindingDetail.row.id"
-                                        :propsFindingDetail="propsFindingDetail">
-                                    </FindingDetails>
-                                    </template>
-                                </b-table> 
-                            </div>
-                            </div>
-                        </div>
-                        </div>
-                    </template>
-                </b-table>
-                <b-field grouped position="is-right">
-                    <b-select v-model="perPageIssues" class="is-right" @input="loadIssues(teamId, findingsApi)">
-                    <option value="5">5 per page</option>
-                    <option value="10">10 per page</option>
-                    <option value="15">15 per page</option>
-                    <option value="20">20 per page</option>
-                    <option value="50">50 per page</option>
-                    <option value="100">100 per page</option>
-                    </b-select>
-                </b-field>
+                        v-on:updatepage="updatePageIssues"
+                        v-on:updateperpage="updatePerPageIssues"
+                        v-on:updatestats="updateStats"
+                    >
+                    </ListOfFindings>
                 </div>
 
                 <footer class="card-footer">
@@ -367,151 +247,33 @@ Copyright 2021 Adevinta
             <div class="card">
                 <div class="card-content">
                 <!-- /* ASSETS TABLE */ -->
-                <b-table
-                    ref="tableAssets"
-                    class="live-report"
-                    :data="dataAssets"
-                    :loading="loadingAssets"
-                    :narrowed=true
-                    paginated
-                    hoverable
-                    backend-pagination
-                    :total="totalAssets"
-                    :per-page="perPageAssets"
-                    @page-change="onAssetsPageChange"
-                    :row-class="rowclass"
-                    @click="toggleDetailsForAssetsTable"
+                    <ListOfFindings
+                        ref="assetsTable"
+                        :teamId="teamId"
+                        :data="this.dataAssets"
+                        :total="this.totalAssets"
+                        :perPage="this.perPageAssets"
+                        :modeSelect="this.modeSelect"
+                        :minDate="this.minDate"
+                        :maxDate="this.maxDate"
+                        :atDate="this.atDate"
+                        mode="target"
 
-                    detailed
-                    
-                    detail-key="targetId"
-                    :show-detail-icon=false
+                        mainListDescriptionColumnHeader="Asset"
+                        mainListDescriptionColumnIcon="server"
 
-                    aria-next-label="Next page"
-                    aria-previous-label="Previous page"
-                    aria-page-label="Page"
-                    aria-current-label="Current page">
+                        mainListCountColumnHeader="Issues"
+                        mainListCountColumnIcon="bug"
 
-                    <template slot-scope="propsAssets">
-                        <!-- /* COLUMNS FROM ASSETS TABLE */ -->
-                        <b-table-column field="asset" label="Asset">
-                            <b-icon
-                                icon="bug"
-                                size="is-small"
-                                >
-                            </b-icon>
-                            <a class="has-text-dark">
-                                {{ propsAssets.row.identifier }}
-                            </a>
-                        </b-table-column>
+                        mainListScoreColumnHeader="Score"
 
-                        <b-table-column centered width="100" field="issues-count" label="Issues">
-                            <b-icon
-                                icon="server"
-                                size="is-small">
-                            </b-icon>
-                            <span class="tag ">
-                                {{ propsAssets.row.findingsCount }}
-                            </span>
-                        </b-table-column>
+                        findingsListDescriptionColumnHeader="Issue"
 
-                        <b-table-column centered width="100" field="score" label="Score">
-                            <span v-bind:class="severityStyle(propsAssets.row.maxScore)">
-                                {{ propsAssets.row.maxScore }}
-                            </span>
-                        </b-table-column>
-                    </template>
-                    <template slot="detail" slot-scope="propsDetail">
-                        <div>
-                        <div class="card">
-                            <div class="card-content">
-                            <div class="">
-                                <!-- /* FINDINGS BY ASSET TABLE */ -->
-                                <b-table
-                                    :ref="'tableFindingsByAssets-'+propsDetail.row.targetId"
-                                    class="live-report"
-                                    :data="mapFindingsByAssets.get(propsDetail.row.targetId).data"
-                                    :loading="mapFindingsByAssets.get(propsDetail.row.targetId).loading"
-                                    :narrowed=true
-                                    paginated
-                                    backend-pagination
-                                    :total="mapFindingsByAssets.get(propsDetail.row.targetId).total"
-                                    :per-page="mapFindingsByAssets.get(propsDetail.row.targetId).perPage"
-                                    :row-class="rowclass"
-                                    @click="row => $refs['tableFindingsByAssets-'+propsDetail.row.targetId].toggleDetails(row)" 
-
-                                    detailed
-                                    
-                                    detail-key="id"
-                                    :show-detail-icon=false
-
-                                    aria-next-label="Next page"
-                                    aria-previous-label="Previous page"
-                                    aria-page-label="Page"
-                                    aria-current-label="Current page">
-
-                                    <template slot-scope="propsFinding">
-                                        <!-- /* COLUMNS FROM FINDINGS BY ASSET TABLE */ -->
-                                        <b-table-column field="issue" label="Issue">
-                                        <span class="icon is-small">
-                                            <i class="fa fa-server"></i>
-                                        </span>
-                                        <a class="has-text-dark">
-                                            {{ propsFinding.row.issue.summary }} 
-                                        </a>
-                                        </b-table-column>
-
-                                        <b-table-column width="100" field="link" label="Direct Link">
-                                        <router-link :to="{ name: 'finding', params: { id: propsFinding.row.id }}">
-                                            <b-button size="is-small" type="is-info is-light" rounded outlined>
-                                                <i class="fa fa-link"></i>
-                                                Link
-                                            </b-button>
-                                        </router-link>
-                                        </b-table-column>
-
-                                        <b-table-column width="100" field="status" label="Status">
-                                        <span v-bind:class="statusClass(propsFinding.row.status)">
-                                            {{ propsFinding.row.status.charAt(0).toUpperCase() + propsFinding.row.status.toLowerCase().slice(1) }} 
-                                        </span>
-                                        </b-table-column>
-                                        <b-table-column centered width="100" field="age" label="Age (days)">
-                                        <a class="has-text-dark">
-                                            {{ propsFinding.row.status == "OPEN" ? Math.round(propsFinding.row.currentExposure/24) : "" }} 
-                                        </a>
-                                        </b-table-column>
-                                        <b-table-column centered width="100" field="score" label="Score">
-                                        <span v-bind:class="severityStyle(propsFinding.row.score)">
-                                            {{ propsFinding.row.score }}
-                                        </span>
-                                        </b-table-column>
-                                    </template>
-                                    <template slot="detail" slot-scope="propsFindingDetail">
-                                    <FindingDetails
-                                        v-on:handleerror="handleError"
-                                        v-on:update="updateAsset"
-                                        :teamId="teamId"
-                                        :findingId="propsFindingDetail.row.id"
-                                        :propsFindingDetail="propsFindingDetail">
-                                    </FindingDetails>
-                                    </template>
-                                </b-table> 
-                            </div>
-                            </div>
-                        </div>
-                        </div>
-                    </template>
-                </b-table>
-                <b-field grouped position="is-right">
-                    <b-select v-model="perPageAssets" class="is-right" @input="loadAssets(teamId, findingsApi)">
-                    <option value="5">5 per page</option>
-                    <option value="10">10 per page</option>
-                    <option value="15">15 per page</option>
-                    <option value="20">20 per page</option>
-                    <option value="50">50 per page</option>
-                    <option value="100">100 per page</option>
-                    </b-select>
-                </b-field>
+                        v-on:updatepage="updatePageTargets"
+                        v-on:updateperpage="updatePerPageTargets"
+                        v-on:updatestats="updateStats"
+                    >
+                    </ListOfFindings>
                 </div>
 
                 <footer class="card-footer">
@@ -532,6 +294,8 @@ import { Component, Prop, Vue, Watch } from "vue-property-decorator";
   import ErrorDialog from "../../components/error.vue";
   import Session from "../../components/session.vue";
   import FindingDetails from "../finding/finding.vue";
+  import ListOfFindings from "../listOfFindings/list.vue";
+  import ListItem from "../listOfFindings/ListItem";
   import loadConfig, { Config } from "../../common/config";
   import tokenProvider from "../../common/token";
   import teamID from "../../common/team";
@@ -564,7 +328,7 @@ import {
   User,
   Statsopen,
   Statsfixed
-} from "../../services/vulcan-api/models"
+} from "../../services/vulcan-api/models";
 
 @Component({
   name: "Home",
@@ -573,6 +337,7 @@ import {
     ErrorDialog,
     Session,
     FindingDetails,
+    ListOfFindings,
   }
 })
 export default class Home extends Vue {
@@ -609,31 +374,18 @@ export default class Home extends Vue {
   private maxDate: Date = null;
   
   // Issues
-  private dataIssues: FindingsIssue[] = [];
+  private dataIssues: ListItem[] = [];
   private totalIssues: number = 0;
   private loadingIssues: boolean = false;
   private pageIssues: number = 1;
   private perPageIssues: number = 20;
 
   // Assets
-  private dataAssets: FindingsTarget[] = [];
+  private dataAssets: ListItem[] = [];
   private totalAssets: number = 0;
   private loadingAssets: boolean = false;
   private pageAssets: number = 1;
   private perPageAssets: number = 20;
-
-  // Findings by Issue
-  private mapFindingsByIssues = new Map();
-
-  // Findings by Assets
-  private mapFindingsByAssets = new Map();
-
-  // Findings
-  private dataFindings: Finding[] = [];
-  private totalFindings: number = 0;
-  private loadingFindings: boolean = false;
-  private pageFindings: number = 1;
-  private perPageFindings: number = 20;
 
   // Top 10 issues
   private dataTop10Issues: FindingsIssue[] = [];
@@ -645,7 +397,6 @@ export default class Home extends Vue {
   private totalTop10Assets: number = 0;
   private loadingTop10Assets: boolean = false;
 
-  private userTeamsList: Team[] = [];
   private statsOpen: Statsopen = {};
   private statsFixed: Statsfixed = {};
 
@@ -798,8 +549,24 @@ export default class Home extends Vue {
 
     const issuesList = await api.findingsListFindingsIssues(issuesReq);
     
-    this.dataIssues = issuesList.issues || [];
+    this.dataIssues = this.convertFindingsIssuesToListItem(issuesList.issues) || [];
     this.totalIssues = issuesList.pagination!.total || 0;
+  }
+
+  private convertFindingsIssuesToListItem(issuesList: FindingsIssue[]) {
+    let result: ListItem[] = [];
+
+    for (var i=0; i < issuesList.length; i++){
+        let item: ListItem = {
+            Id: issuesList[i].issueId,
+            Description: issuesList[i].summary,
+            Count: issuesList[i].targetsCount,
+            Score: issuesList[i].maxScore,
+        };
+        result.push(item);
+    }
+
+    return result;
   }
 
   private async loadAssets(teamId: string, api: FindingsApi) {
@@ -823,48 +590,61 @@ export default class Home extends Vue {
 
     const assetsList = await api.findingsListFindingsTargets(assetsReq);
     
-    this.dataAssets = assetsList.targets || [];
+    this.dataAssets = this.convertFindingsTargetToListItem(assetsList.targets) || [];
     this.totalAssets = assetsList.pagination!.total || 0;
   }
 
-  async onIssuesPageChange(page: number) {
-    try {
-      if (!this.findingsApi) {
-        throw new Error("no client api found");
-      }
-
-      this.pageIssues = page;
-      this.loadingIssues = true;
+  private convertFindingsTargetToListItem(assetsList: FindingsTarget[]) {
+    let result: ListItem[] = [];
       
-      await this.loadIssues(
-        this.teamId,
-        this.findingsApi
-      );
-    } catch (err) {
-      this.$emit('handleerror', err);
-    } finally {
-      this.loadingIssues = false;
+    for (var i=0; i < assetsList.length; i++){
+        let item: ListItem = {
+            Id: assetsList[i].targetId,
+            Description: assetsList[i].identifier,
+            Count: assetsList[i].findingsCount,
+            Score: assetsList[i].maxScore,
+        };
+        result.push(item);
     }
+
+    return result;
   }
 
-  async onAssetsPageChange(page: number) {
-    try {
-      if (!this.findingsApi) {
-        throw new Error("no client api found");
-      }
-
+  private async updatePageTargets(page: number) {
       this.pageAssets = page;
-      this.loadingAssets = true;
-
       await this.loadAssets(
         this.teamId,
         this.findingsApi
       );
-    } catch (err) {
-      this.$emit('handleerror', err);
-    } finally {
-      this.loadingAssets = false;
-    }
+  }
+
+  private async updatePerPageTargets(perPage: number) {
+    this.perPageAssets = perPage;
+    await this.loadAssets(
+        this.teamId,
+        this.findingsApi
+    );
+  }
+
+  private async updatePageIssues(page: number) {
+      this.pageIssues = page;
+      await this.loadIssues(
+        this.teamId,
+        this.findingsApi
+      );
+  }
+
+  private async updatePerPageIssues(perPage: number) {
+    this.perPageIssues = perPage;
+    await this.loadIssues(
+        this.teamId,
+        this.findingsApi
+    );
+  }
+
+  private async updateStats() {
+    this.getStatsFixed(this.statsApi);
+    this.getStatsOpen(this.statsApi);
   }
 
   dateToStr(date: Date): string {
@@ -874,212 +654,6 @@ export default class Home extends Vue {
 
     return year+"-"+month+"-"+day;
   }
-
-  // Beginning of routines related to Findings
-
-  // loadFindings will retrieve from the Vulcan API. 
-  // params:
-  // - teamId:  The ID of the team in the Vulcan API. Required.
-  // - api:     Client for the Vulcan API. Required.
-  // - issueId: The ID of the issue in the Vulnerability DB. The query will only return findings that 
-  //            contains this issue. Optional. 
-  private async loadFindings(teamId: string, api: FindingsApi, issueId: string, targetId: string) {
-    let status = "OPEN"
-    if (this.modeSelect=="fixed") {
-      status="FIXED"
-    }
-
-    let perPage = this.perPageFindings;
-    let page = this.pageFindings;
-
-    if (issueId && issueId != "") {
-      if (!this.mapFindingsByIssues.has(issueId)){
-        this.mapFindingsByIssues.set(issueId, new Object());
-        this.mapFindingsByIssues.get(issueId).perPage = 10;
-      }
-      perPage = this.mapFindingsByIssues.get(issueId).perPage;
-      page = this.mapFindingsByIssues.get(issueId).page;
-      this.mapFindingsByIssues.get(issueId).loading = true;
-    }
-
-    if (targetId && targetId != "") {
-      if (!this.mapFindingsByAssets.has(targetId)){
-        this.mapFindingsByAssets.set(targetId, new Object());
-        this.mapFindingsByAssets.get(targetId).perPage = 10;
-      }
-      perPage = this.mapFindingsByAssets.get(targetId).perPage;
-      page = this.mapFindingsByAssets.get(targetId).page;
-      this.mapFindingsByAssets.get(targetId).loading = true;
-    }
-
-    let findingsList = {};
-    if (!issueId && !targetId) {
-      const findingsReq: FindingsListFindingsRequest = {
-        teamId: teamId,
-        status: status,
-        sortBy: "-score",
-        page: page,
-        size: perPage,
-        minDate: this.minDate ? this.dateToStr(this.minDate): "",
-        maxDate: this.maxDate ? this.dateToStr(this.maxDate): "",
-        atDate: this.atDate ? this.dateToStr(this.atDate): "",
-      };
-      if (this.dateToStr(this.atDate)==this.dateToStr(new Date())){
-        findingsReq.atDate=undefined;
-      }
-    
-      findingsList = await api.findingsListFindings(findingsReq);
-    }
-
-    if (issueId && issueId != "") {
-      const findingsReq: FindingsFindFindingsFromAIssueRequest = {
-        teamId: teamId,
-        issueId: issueId,
-        status: status,
-        sortBy: "-score",
-        page: page,
-        size: perPage,
-        minDate: this.minDate ? this.dateToStr(this.minDate): "",
-        maxDate: this.maxDate ? this.dateToStr(this.maxDate): "",
-        atDate: this.atDate ? this.dateToStr(this.atDate): "",
-      };
-      if (this.dateToStr(this.atDate)==this.dateToStr(new Date())){
-        findingsReq.atDate=undefined;
-      }
-      findingsList = await api.findingsFindFindingsFromAIssue(findingsReq);
-      this.mapFindingsByIssues.get(issueId).data = findingsList.findings || [];
-      this.mapFindingsByIssues.get(issueId).total = findingsList.pagination!.total || 0;
-      this.mapFindingsByIssues.get(issueId).loading = false;
-    }
-
-    if (targetId && targetId != "") {
-      const findingsReq: FindingsFindFindingsFromATargetRequest = {
-        teamId: teamId,
-        targetId: targetId,
-        status: status,
-        sortBy: "-score",
-        page: page,
-        size: perPage,
-        minDate: this.minDate ? this.dateToStr(this.minDate): "",
-        maxDate: this.maxDate ? this.dateToStr(this.maxDate): "",
-        atDate: this.atDate ? this.dateToStr(this.atDate): "",
-      };
-      if (this.dateToStr(this.atDate)==this.dateToStr(new Date())){
-        findingsReq.atDate=undefined;
-      }
-      findingsList = await api.findingsFindFindingsFromATarget(findingsReq);
-      
-      this.mapFindingsByAssets.get(targetId).data = findingsList.findings || [];
-      this.mapFindingsByAssets.get(targetId).total = findingsList.pagination!.total || 0;
-      this.mapFindingsByAssets.get(targetId).loading = false;
-    }
-
-    this.dataFindings = findingsList.findings || [];
-    this.totalFindings = findingsList.pagination!.total || 0;
-  }
-
-  // Beginning of routines related to the Issues Tab
-  
-  // toggleDetailsIssues is invoked when the user expand/collapse the detailed view for a row from the Issues table.
-  async toggleDetailsForIssuesTable(row) {
-    // Check if the current row is already visible. If it's not visible, query the Vulcan API 
-    // for the findings for the select issue. 
-    let visible = this.$refs.tableIssues.isVisibleDetailRow(row)
-
-    this.$refs.tableIssues.toggleDetails(row)
-    if (!visible) {
-      await this.loadFindings(
-        this.teamId,
-        this.findingsApi,
-        row.issueId,
-      );
-
-      await this.$refs["tableFindingsByIssues-"+row.issueId]
-
-      // Add event listeners
-      this.$refs["tableFindingsByIssues-"+row.issueId].$on('page-change', this.makeOnPageChange(
-        this.teamId, 
-        this.findingsApi, 
-        "tableFindingsByIssues-"+row.issueId,
-        "tableIssues",
-        row.issueId, 
-        this.mapFindingsByIssues, 
-        this.loadFindings,
-        this.$refs)); 
-    }
-
-    this.$refs["tableIssues"].$forceUpdate();
-  }
-
-  makeOnPageChange(teamId: string, api: FindingsApi, tableName, parentName, id, map, loadFunc, refs) {
-    return async function(page: number) {
-      try {
-        if (!api) {
-          throw new Error("no client api found");
-        }
-        refs[parentName].$forceUpdate(); 
-        map.get(id).page = page;
-        
-        if (parentName=="tableIssues") {
-          await loadFunc(
-            teamId,
-            api,
-            id,
-            undefined,
-          );
-        } else {
-          await loadFunc(
-            teamId,
-            api,
-            undefined,
-            id,
-          );  
-        }
-        refs[tableName].$emit('data:update', id, map.get(id).data)
-        await refs[tableName]
-      } catch (err) {
-        refs[tableName].$emit('handleerror', err);
-      } finally {
-        refs[parentName].$forceUpdate(); 
-      }
-    };    
-  }  
-  // Beginning of routines related to the Assets Tab
-  
-  // toggleDetailsIssues is invoked when the user expand/collapse the detailed view for a row from the Issues table.
-  async toggleDetailsForAssetsTable(row) {
-    
-    // Check if the current row is already visible. If it's not visible, query the Vulcan API 
-    // for the findings for the select issue. 
-    let visible = this.$refs.tableAssets.isVisibleDetailRow(row)
-    this.$refs.tableAssets.toggleDetails(row)
-
-    if (!visible) {
-      await this.loadFindings(
-        this.teamId,
-        this.findingsApi,
-        row.issueId,
-        row.targetId,
-      );
-
-      await this.$refs["tableFindingsByAssets-"+row.targetId]
-
-      // Add event listeners
-      this.$refs["tableFindingsByAssets-"+row.targetId].$on('page-change', this.makeOnPageChange(
-        this.teamId, 
-        this.findingsApi, 
-        "tableFindingsByAssets-"+row.targetId,
-        "tableAssets",
-        row.targetId, 
-        this.mapFindingsByAssets, 
-        this.loadFindings,
-        this.$refs)); 
-
-      this.$refs["tableAssets"].$forceUpdate();
-    }    
-  }
-
-  // End Assets Tab
 
   @Watch('atDate')
   async onAtDateChanged(value: string, oldValue: string) {
@@ -1178,19 +752,6 @@ export default class Home extends Vue {
       this.loadingIssues = false;
       this.loadingAssets = false;
     }
-  }
-
-  resetDetailsTables() {
-    this.mapFindingsByAssets = new Map();
-    this.mapFindingsByIssues = new Map();
-  
-    for (let i = 0; i < this.dataAssets.length; i++) {
-      this.$refs["tableAssets"].closeDetailRow()
-    }
-  
-    for (let i = 0; i < this.dataIssues.length; i++) {
-      this.$refs["tableIssues"].closeDetailRow()
-    }   
   }
 
   onSelectInput(value) {
@@ -1301,31 +862,9 @@ export default class Home extends Vue {
     this.$emit('handleerror', err);
   }
 
-  private async updateIssue(prop) {
-      await this.loadFindings(
-        this.teamId,
-        this.findingsApi,
-        prop.row.issue.id,
-      );
-
-      await this.$refs["tableFindingsByIssues-"+prop.row.issue.id]
-      this.$refs["tableIssues"].$forceUpdate();
-      this.getStatsFixed(this.statsApi);
-      this.getStatsOpen(this.statsApi);
-  }
-
-  private async updateAsset(prop) {
-      await this.loadFindings(
-        this.teamId,
-        this.findingsApi,
-        prop.row.issue.id,
-        prop.row.target.id,
-      );
-
-      await this.$refs["tableFindingsByAssets-"+prop.row.target.id]
-      this.$refs["tableAssets"].$forceUpdate();
-      this.getStatsFixed(this.statsApi);
-      this.getStatsOpen(this.statsApi);
+  private resetDetailsTables() {
+      this.$refs["issuesTable"].resetDetailsTables();
+      this.$refs["assetsTable"].resetDetailsTables();
   }
 }
 
