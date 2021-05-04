@@ -6,8 +6,11 @@ import Vue from 'vue';
 import report from './report.vue';
 import { CreateElement } from 'vue';
 
+//@ts-ignore
 import { ConfigProgrammatic, Table, Input, Switch, Button, Icon, Field, Datepicker, Tabs, Select, Collapse, Message, Tag, Modal } from 'buefy';
+
 import VueShowdown from 'vue-showdown';
+
 import { VueShowdownPlugin, showdown } from 'vue-showdown';
 import DOMPurify from 'dompurify';
 
