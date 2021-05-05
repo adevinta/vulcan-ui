@@ -232,6 +232,7 @@ Copyright 2021 Adevinta
                         v-on:updatepage="updatePageIssues"
                         v-on:updateperpage="updatePerPageIssues"
                         v-on:updatestats="updateStats"
+                        v-on:handleerror="handleError"
                     >
                     </ListOfFindings>
                 </div>
@@ -272,6 +273,7 @@ Copyright 2021 Adevinta
                         v-on:updatepage="updatePageTargets"
                         v-on:updateperpage="updatePerPageTargets"
                         v-on:updatestats="updateStats"
+                        v-on:handleerror="handleError"
                     >
                     </ListOfFindings>
                 </div>

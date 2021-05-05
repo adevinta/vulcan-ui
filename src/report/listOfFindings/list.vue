@@ -283,7 +283,7 @@ export default class ListOfFindings extends Vue {
 
       this.perPageInternal = this.perPage;
     } catch (err) {
-      // todo
+      this.handleError(err);
     }
   }
 
@@ -337,64 +337,68 @@ export default class ListOfFindings extends Vue {
     Id: string,
     mode: string
   ) {
-    let status = "OPEN";
-    if (this.modeSelect == "fixed") {
-      status = "FIXED";
-    }
-
-    if (!this.mapFindings.has(Id)) {
-      this.mapFindings.set(Id, new Object());
-      this.mapFindings.get(Id).perPage = 10;
-    }
-
-    let perPage = this.mapFindings.get(Id).perPage;
-    let page = this.mapFindings.get(Id).page;
-    this.mapFindings.get(Id).loading = true;
-
-    if (mode == "issue") {
-      const findingsReq: FindingsFindFindingsFromAIssueRequest = {
-        teamId: teamId,
-        issueId: Id,
-        status: status,
-        sortBy: "-score",
-        page: page,
-        size: perPage,
-        minDate: this.minDate ? this.dateToStr(this.minDate) : "",
-        maxDate: this.maxDate ? this.dateToStr(this.maxDate) : "",
-        atDate: this.atDate ? this.dateToStr(this.atDate) : ""
-      };
-      if (this.dateToStr(this.atDate) == this.dateToStr(new Date())) {
-        findingsReq.atDate = undefined;
+    try {
+      let status = "OPEN";
+      if (this.modeSelect == "fixed") {
+        status = "FIXED";
       }
-      let findingsList: FindingsList = await api.findingsFindFindingsFromAIssue(
-        findingsReq
-      );
-      this.mapFindings.get(Id).data = findingsList.findings || [];
-      this.mapFindings.get(Id).total = findingsList.pagination!.total || 0;
-      this.mapFindings.get(Id).loading = false;
-    }
 
-    if (mode == "target") {
-      const findingsReq: FindingsFindFindingsFromATargetRequest = {
-        teamId: teamId,
-        targetId: Id,
-        status: status,
-        sortBy: "-score",
-        page: page,
-        size: perPage,
-        minDate: this.minDate ? this.dateToStr(this.minDate) : "",
-        maxDate: this.maxDate ? this.dateToStr(this.maxDate) : "",
-        atDate: this.atDate ? this.dateToStr(this.atDate) : ""
-      };
-      if (this.dateToStr(this.atDate) == this.dateToStr(new Date())) {
-        findingsReq.atDate = undefined;
+      if (!this.mapFindings.has(Id)) {
+        this.mapFindings.set(Id, new Object());
+        this.mapFindings.get(Id).perPage = 10;
       }
-      let findingsList: FindingsList = await api.findingsFindFindingsFromATarget(
-        findingsReq
-      );
-      this.mapFindings.get(Id).data = findingsList.findings || [];
-      this.mapFindings.get(Id).total = findingsList.pagination!.total || 0;
-      this.mapFindings.get(Id).loading = false;
+
+      let perPage = this.mapFindings.get(Id).perPage;
+      let page = this.mapFindings.get(Id).page;
+      this.mapFindings.get(Id).loading = true;
+
+      if (mode == "issue") {
+        const findingsReq: FindingsFindFindingsFromAIssueRequest = {
+          teamId: teamId,
+          issueId: Id,
+          status: status,
+          sortBy: "-score",
+          page: page,
+          size: perPage,
+          minDate: this.minDate ? this.dateToStr(this.minDate) : "",
+          maxDate: this.maxDate ? this.dateToStr(this.maxDate) : "",
+          atDate: this.atDate ? this.dateToStr(this.atDate) : ""
+        };
+        if (this.dateToStr(this.atDate) == this.dateToStr(new Date())) {
+          findingsReq.atDate = undefined;
+        }
+        let findingsList: FindingsList = await api.findingsFindFindingsFromAIssue(
+          findingsReq
+        );
+        this.mapFindings.get(Id).data = findingsList.findings || [];
+        this.mapFindings.get(Id).total = findingsList.pagination!.total || 0;
+        this.mapFindings.get(Id).loading = false;
+      }
+
+      if (mode == "target") {
+        const findingsReq: FindingsFindFindingsFromATargetRequest = {
+          teamId: teamId,
+          targetId: Id,
+          status: status,
+          sortBy: "-score",
+          page: page,
+          size: perPage,
+          minDate: this.minDate ? this.dateToStr(this.minDate) : "",
+          maxDate: this.maxDate ? this.dateToStr(this.maxDate) : "",
+          atDate: this.atDate ? this.dateToStr(this.atDate) : ""
+        };
+        if (this.dateToStr(this.atDate) == this.dateToStr(new Date())) {
+          findingsReq.atDate = undefined;
+        }
+        let findingsList: FindingsList = await api.findingsFindFindingsFromATarget(
+          findingsReq
+        );
+        this.mapFindings.get(Id).data = findingsList.findings || [];
+        this.mapFindings.get(Id).total = findingsList.pagination!.total || 0;
+        this.mapFindings.get(Id).loading = false;
+      }
+    } catch (err) {
+      this.handleError(err);
     }
   }
 
