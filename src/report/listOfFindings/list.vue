@@ -4,8 +4,18 @@ Copyright 2021 Adevinta
 
 <template>
   <div>
-    <!-- Main list -->
-    <b-table
+    <!-- 
+        Main table
+        ---------
+        This is the "parent" table. It has 2 modes: "issue" and "target".
+            - "Issue": 
+                it will show the issues as the parent rows. When the user clicks 
+                on a row, it will show the targets affected by that issue.
+            - "Target": 
+                it will show the target as the parent rows. When the user clicks 
+                on a row, it will show the issues for that specific target.
+    -->
+    <b-table    
       ref="tableMainList"
       class="live-report"
       :row-class="showcursor"
@@ -48,9 +58,15 @@ Copyright 2021 Adevinta
           <div class="card">
             <div class="card-content">
               <div class>
-                <!-- Findings table -->
+                <!-- 
+                    Details table 
+                    -------------
+                    This table renders details for the main table. Here, the behaviour depends on 
+                    the property "mode" value.
+                    
+                -->
                 <b-table
-                  :ref="'tableFindings-'+propsDetail.row.Id"
+                  :ref="'tableDetails-'+propsDetail.row.Id"
                   class="live-report"
                   :row-class="showcursor"
                   :data="mapFindings.get(propsDetail.row.Id).data"
@@ -61,10 +77,10 @@ Copyright 2021 Adevinta
                   :total="mapFindings.get(propsDetail.row.Id).total"
                   :per-page="mapFindings.get(propsDetail.row.Id).perPage"
                   detailed
-                  detail-key="id"
+                  :detail-key="mode == 'issue' ? 'targetId' : 'issueId'"
                   :show-detail-icon="false"
-                  @click="row => $refs['tableFindings-'+propsDetail.row.Id].toggleDetails(row)"
-                  @page-change="page => onFindingsTablePageChange(propsDetail.row.Id, page)"
+                  @click="row => onDetailsTableToggleDetails(propsDetail.row.Id, row, mode)"
+                  @page-change="page => onDetailsTablePageChange(propsDetail.row.Id, page)"
                 >
                   <template slot-scope="propsFinding">
                     <!-- Description -->
@@ -78,42 +94,55 @@ Copyright 2021 Adevinta
                       <a
                         v-if="mode=='issue'"
                         class="has-text-dark"
-                      >{{ propsFinding.row.target.identifier }}</a>
+                      >{{ propsFinding.row.identifier }}</a>
                       <a
                         v-if="mode=='target'"
                         class="has-text-dark"
-                      >{{ propsFinding.row.issue.summary }}</a>
+                      >{{ propsFinding.row.summary }}</a>
                     </b-table-column>
 
                     <!-- Direct Link -->
                     <b-table-column width="100" field="link" label="Direct Link">
-                      <router-link :to="{ name: 'finding', params: { id: propsFinding.row.id }}">
+                      <router-link v-if="mode=='issue'" :to="{ name: 'finding', query: { issueID: propsDetail.row.Id, targetID: propsFinding.row.targetId }}">
                         <b-button size="is-small" type="is-info is-light" rounded outlined>
                           <i class="fa fa-link"></i>
                           Link
                         </b-button>
                       </router-link>
-                    </b-table-column>
+
+                      <router-link v-if="mode=='target'" :to="{ name: 'finding', query: { issueID: propsFinding.row.issueId, targetID: propsDetail.row.Id }}">
+                        <b-button size="is-small" type="is-info is-light" rounded outlined>
+                          <i class="fa fa-link"></i>
+                          Link
+                        </b-button>
+                      </router-link>                      
+                    </b-table-column> 
 
                     <!-- Age -->
                     <b-table-column width="100" field="status" label="Status">
                       <span
                         v-bind:class="statusClass(propsFinding.row.status)"
-                      >{{ (propsFinding.row.status.charAt(0).toUpperCase() + propsFinding.row.status.toLowerCase().slice(1)).replace("False_positive", "False Positive") }}</span>
+                      >
+                      <!-- {{ (propsFinding.row.status.charAt(0).toUpperCase() + propsFinding.row.status.toLowerCase().slice(1)).replace("False_positive", "False Positive") }} -->
+                      </span>
                     </b-table-column>
 
                     <!-- Age -->
                     <b-table-column centered width="100" field="age" label="Age (days)">
                       <a
                         class="has-text-dark"
-                      >{{ propsFinding.row.status == "OPEN" ? Math.round(propsFinding.row.currentExposure/24) : "" }}</a>
+                      >
+                      <!-- {{ propsFinding.row.status == "OPEN" ? Math.round(propsFinding.row.currentExposure/24) : "" }} -->
+                      </a>
                     </b-table-column>
 
                     <!-- Score -->
                     <b-table-column centered width="100" field="score" label="Score">
                       <span
-                        v-bind:class="severityStyle(propsFinding.row.score)"
-                      >{{ propsFinding.row.score }}</span>
+                        v-bind:class="severityStyle(propsFinding.row.maxScore)"
+                      >
+                      {{ propsFinding.row.maxScore }}
+                      </span>
                     </b-table-column>
                   </template>
 
@@ -121,11 +150,13 @@ Copyright 2021 Adevinta
                   <template slot="detail" slot-scope="propsFindingDetail">
                     <FindingDetails
                       :teamId="teamId"
-                      :findingId="propsFindingDetail.row.id"
-                      :propsFindingDetail="propsFindingDetail"
+                      :targetId="mode=='target' ? propsDetail.row.Id: propsFindingDetail.row.targetId"
+                      :issueId ="mode=='issue'  ? propsDetail.row.Id: propsFindingDetail.row.issueId"
+                      
                       v-on:handleerror="handleError"
                       v-on:update="updateFindingsList"
-                    ></FindingDetails>
+                    ></FindingDetails> 
+                    <!-- :propsFindingDetail="propsFindingDetail" -->
                   </template>
                 </b-table>
               </div>
@@ -163,11 +194,15 @@ import tokenProvider from "../../common/token";
 import {
   FindingsApi,
   FindingsFindFindingsFromATargetRequest,
-  FindingsFindFindingsFromAIssueRequest
+  FindingsFindFindingsFromAIssueRequest,
+  FindingsListFindingsTargetsRequest,
+  FindingsListFindingsIssuesRequest,
 } from "../../services/vulcan-api/apis";
 import {
   Configuration as ApiConf,
   ConfigurationParameters,
+  FindingsTargetsList,
+  FindingsIssuesList,
   FindingsList
 } from "../../services/vulcan-api";
 
@@ -295,7 +330,7 @@ export default class ListOfFindings extends Vue {
 
   async onMainListDetailsOpen(row: Object) {
     let item: ListItem = row as ListItem;
-    await this.loadFindings(this.teamId, this.findingsApi, item.Id, this.mode);
+    await this.loadMainTable(this.teamId, this.findingsApi, item.Id, this.mode);
     this.$refs.tableMainList.$forceUpdate();
   }
 
@@ -314,24 +349,29 @@ export default class ListOfFindings extends Vue {
     }
   }
 
-  async onFindingsTablePageChange(id: string, page: number) {
+  async onDetailsTablePageChange(id: string, page: number) {
     try {
       this.mapFindings.get(id).page = page;
-      await this.loadFindings(this.teamId, this.findingsApi, id, this.mode);
+      await this.loadMainTable(this.teamId, this.findingsApi, id, this.mode);
       this.$refs["tableMainList"].$forceUpdate();
     } catch (err) {
       this.$refs["tableMainList"].$emit("handleerror", err);
     }
   }
 
-  // loadFindings will retrieve from the Vulcan API.
+  async onDetailsTableToggleDetails(id: string, row: Object) {
+    //@ts-ignore
+    this.$refs["tableDetails-"+id].toggleDetails(row)
+  }
+
+  // loadMainTable will retrieve from the Vulcan API.
   // params:
   // - teamId:  The ID of the team in the Vulcan API. Required.
   // - api:     Client for the Vulcan API. Required.
   // - Id: The ID of the issue/target (depending on the mode) in the Vulnerability DB.
   //       The query will only return findings that contains
   //       this issue. Optional.
-  private async loadFindings(
+  private async loadMainTable(
     teamId: string,
     api: FindingsApi,
     Id: string,
@@ -353,49 +393,90 @@ export default class ListOfFindings extends Vue {
       this.mapFindings.get(Id).loading = true;
 
       if (mode == "issue") {
-        const findingsReq: FindingsFindFindingsFromAIssueRequest = {
+        const req: FindingsListFindingsTargetsRequest = {
           teamId: teamId,
-          issueId: Id,
+          issueID: Id,
           status: status,
-          sortBy: "-score",
+          sortBy: "max_score",
           page: page,
           size: perPage,
           minDate: this.minDate ? this.dateToStr(this.minDate) : "",
           maxDate: this.maxDate ? this.dateToStr(this.maxDate) : "",
-          atDate: this.atDate ? this.dateToStr(this.atDate) : ""
-        };
-        if (this.dateToStr(this.atDate) == this.dateToStr(new Date())) {
-          findingsReq.atDate = undefined;
+          atDate: this.atDate ? this.dateToStr(this.atDate) : ""  
         }
-        let findingsList: FindingsList = await api.findingsFindFindingsFromAIssue(
-          findingsReq
-        );
-        this.mapFindings.get(Id).data = findingsList.findings || [];
-        this.mapFindings.get(Id).total = findingsList.pagination!.total || 0;
+        if (this.dateToStr(this.atDate) == this.dateToStr(new Date())) {
+          req.atDate = undefined;
+        }        
+        let pimba: FindingsTargetsList = await api.findingsListFindingsTargets(req)
+        this.mapFindings.get(Id).data = pimba.targets || [];
+        this.mapFindings.get(Id).total = pimba.pagination!.total || 0;
         this.mapFindings.get(Id).loading = false;
+        console.log(pimba)
+
+        // const findingsReq: FindingsFindFindingsFromAIssueRequest = {
+        //   teamId: teamId,
+        //   issueId: Id,
+        //   status: status,
+        //   sortBy: "-score",
+        //   page: page,
+        //   size: perPage,
+        //   minDate: this.minDate ? this.dateToStr(this.minDate) : "",
+        //   maxDate: this.maxDate ? this.dateToStr(this.maxDate) : "",
+        //   atDate: this.atDate ? this.dateToStr(this.atDate) : ""
+        // };
+        // if (this.dateToStr(this.atDate) == this.dateToStr(new Date())) {
+        //   findingsReq.atDate = undefined;
+        // }
+        // let findingsList: FindingsList = await api.findingsFindFindingsFromAIssue(
+        //   findingsReq
+        // );
+        // this.mapFindings.get(Id).data = findingsList.findings || [];
+        // this.mapFindings.get(Id).total = findingsList.pagination!.total || 0;
+        // this.mapFindings.get(Id).loading = false;
       }
 
       if (mode == "target") {
-        const findingsReq: FindingsFindFindingsFromATargetRequest = {
+        console.log("mode: target")
+        const req: FindingsListFindingsIssuesRequest = {
           teamId: teamId,
-          targetId: Id,
+          targetID: Id,
           status: status,
-          sortBy: "-score",
+          //sortBy: "max_score",
           page: page,
           size: perPage,
           minDate: this.minDate ? this.dateToStr(this.minDate) : "",
           maxDate: this.maxDate ? this.dateToStr(this.maxDate) : "",
-          atDate: this.atDate ? this.dateToStr(this.atDate) : ""
-        };
-        if (this.dateToStr(this.atDate) == this.dateToStr(new Date())) {
-          findingsReq.atDate = undefined;
+          atDate: this.atDate ? this.dateToStr(this.atDate) : ""  
         }
-        let findingsList: FindingsList = await api.findingsFindFindingsFromATarget(
-          findingsReq
-        );
-        this.mapFindings.get(Id).data = findingsList.findings || [];
-        this.mapFindings.get(Id).total = findingsList.pagination!.total || 0;
+        if (this.dateToStr(this.atDate) == this.dateToStr(new Date())) {
+          req.atDate = undefined;
+        }        
+        let pimba: FindingsIssuesList = await api.findingsListFindingsIssues(req)
+        this.mapFindings.get(Id).data = pimba.issues || [];
+        this.mapFindings.get(Id).total = pimba.pagination!.total || 0;
         this.mapFindings.get(Id).loading = false;
+        console.log(pimba)
+
+        // const findingsReq: FindingsFindFindingsFromATargetRequest = {
+        //   teamId: teamId,
+        //   targetId: Id,
+        //   status: status,
+        //   sortBy: "-score",
+        //   page: page,
+        //   size: perPage,
+        //   minDate: this.minDate ? this.dateToStr(this.minDate) : "",
+        //   maxDate: this.maxDate ? this.dateToStr(this.maxDate) : "",
+        //   atDate: this.atDate ? this.dateToStr(this.atDate) : ""
+        // };
+        // if (this.dateToStr(this.atDate) == this.dateToStr(new Date())) {
+        //   findingsReq.atDate = undefined;
+        // }
+        // let findingsList: FindingsList = await api.findingsFindFindingsFromATarget(
+        //   findingsReq
+        // );
+        // this.mapFindings.get(Id).data = findingsList.findings || [];
+        // this.mapFindings.get(Id).total = findingsList.pagination!.total || 0;
+        // this.mapFindings.get(Id).loading = false;
       }
     } catch (err) {
       this.handleError(err);
@@ -430,7 +511,7 @@ export default class ListOfFindings extends Vue {
       id = prop.row.issue.id;
     }
 
-    await this.loadFindings(this.teamId, this.findingsApi, id, this.mode);
+    await this.loadMainTable(this.teamId, this.findingsApi, id, this.mode);
 
     this.$refs["tableMainList"].$forceUpdate();
 

@@ -13,7 +13,8 @@
                         v-on:handleerror="handleError"
                         v-on:update="update"
                         :teamId="teamId"
-                        :findingId="propsFindingDetail.row.id"
+                        :issueId="issueId"
+                        :targetId="this.targetId"
                         :propsFindingDetail="propsFindingDetail">
                     </FindingDetails>
                 </div>
@@ -58,7 +59,8 @@ import {
 export default class FindingView extends Vue {
   private apiUrl: string = "";
   private teamId: string = "";
-  private findingId: string = "";
+  private issueId: string = "";
+  private targetId: string = "";
   private findingsApi!: FindingsApi;
 
   private propsFindingDetail: propsFindingDetailTemplate = {
@@ -78,30 +80,15 @@ export default class FindingView extends Vue {
       },
   }
 
+  async beforeMount() {
+      this.teamId = teamID();
+      this.issueId = this.$route.query.issueID.toString();
+      this.targetId = this.$route.query.targetID.toString();
+  }
+
   async mounted() {
     try {
-      // Load the config.
-      const conf = await loadConfig();
-      const tProvider = tokenProvider(conf);
-      const c: ConfigurationParameters = {
-        apiKey: tProvider,
-        basePath: conf.apiUrl
-      };
-      this.apiUrl = conf.apiUrl;
 
-      // Build the api clients.
-      const apiConfg = new ApiConf(c);
-      this.findingsApi = new FindingsApi(apiConfg);
-
-      // Load team.
-      this.teamId = teamID();
-      this.findingId = this.$route.params.id;
-
-      await this.loadFinding(
-        this.teamId,
-        this.findingId,
-        this.findingsApi
-      );
     } catch (err) {
       this.$emit('handleerror', err);
     } finally {
@@ -109,26 +96,12 @@ export default class FindingView extends Vue {
     }
   }
 
-  private async loadFinding(teamId: string, findingId: string, api: FindingsApi){
-    const req: FindingsFindFindingRequest = {
-      teamId: teamId,
-      findingId: findingId
-    };
-
-    const finding: Finding = await api.findingsFindFinding(req);
-    this.propsFindingDetail.row = finding
-  }
-
   private handleError(err: any) {
       this.$emit('handleerror', err);
   }
 
   private async update() {
-      await this.loadFinding(
-        this.teamId,
-        this.findingId,
-        this.findingsApi
-      );
+
   }
 }
 
