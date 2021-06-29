@@ -10,7 +10,7 @@ const routes: Array<RouteConfig> = [
         component: () => import("../home/home.vue")
     },
     {
-        path: "/findings",
+        path: "/findings/:id",
         name: "finding",
         component: () => import("../findingview/findingview.vue")
     },

@@ -207,34 +207,12 @@ Copyright 2021 Adevinta
             <div class="card">
                 <div class="card-content">
                     <!-- /* ISSUES TABLE */ -->
-                    <ListOfFindings
-                        ref="issuesTable"
-                        :teamId="teamId"
-                        :data="this.dataIssues"
-                        :total="this.totalIssues"
-                        :perPage="this.perPageIssues"
-                        :modeSelect="this.modeSelect"
-                        :minDate="this.minDate"
-                        :maxDate="this.maxDate"
-                        :atDate="this.atDate"
-                        mode="issue"
-
-                        mainListDescriptionColumnHeader="Issue"
-                        mainListDescriptionColumnIcon="bug"
-
-                        mainListCountColumnHeader="Assets"
-                        mainListCountColumnIcon="server"
-
-                        mainListScoreColumnHeader="Score"
-
-                        findingsListDescriptionColumnHeader="Asset"
-
-                        v-on:updatepage="updatePageIssues"
-                        v-on:updateperpage="updatePerPageIssues"
-                        v-on:updatestats="updateStats"
-                        v-on:handleerror="handleError"
+                    <TableIssues
+                        :minDate="minDate"
+                        :maxDate="maxDate"
+                        :atDate="atDate"
                     >
-                    </ListOfFindings>
+                    </TableIssues>
                 </div>
 
                 <footer class="card-footer">
@@ -297,6 +275,7 @@ import { Component, Prop, Vue, Watch } from "vue-property-decorator";
   import Session from "../../components/session.vue";
   import FindingDetails from "../finding/finding.vue";
   import ListOfFindings from "../listOfFindings/list.vue";
+  import TableIssues from "../tableIssues/tableIssues.vue";
   import ListItem from "../listOfFindings/ListItem";
   import loadConfig, { Config } from "../../common/config";
   import tokenProvider from "../../common/token";
@@ -340,6 +319,7 @@ import {
     Session,
     FindingDetails,
     ListOfFindings,
+    TableIssues,
   }
 })
 export default class Home extends Vue {
@@ -865,7 +845,7 @@ export default class Home extends Vue {
   }
 
   private resetDetailsTables() {
-      this.$refs["issuesTable"].resetDetailsTables();
+      //this.$refs["issuesTable"].resetDetailsTables();
       this.$refs["assetsTable"].resetDetailsTables();
   }
 }
