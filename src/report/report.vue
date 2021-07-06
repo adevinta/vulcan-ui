@@ -19,6 +19,11 @@ Copyright 2021 Adevinta
                 </span>
                 <span>{{ team }}</span>
               </h1>
+              <h1 id="team" class="subtitle">
+                <span class="icon is-small" style="margin-right:1.0em">
+                </span>
+                <span>{{ application }}</span>
+              </h1>
             </div>
             <div class="column is-4">
               <b-field label="Select a team" label-position="on-border" v-if="enableUserListTeams">
@@ -78,6 +83,7 @@ export default class LiveReport extends Vue {
    private errorMessage: string = "";
 
    private team: string = "";
+   private application: string = "";
    private teamId: string = "";
    private userApi?: UserApi;
    private teamsApi?: TeamsApi;
@@ -117,6 +123,9 @@ export default class LiveReport extends Vue {
          this.userApi,
          this.teamsApi
        );
+
+       var qparams = new URL(document.location.toString()).searchParams;
+       this.application = qparams.get('application') || ""
      } catch (err) {
        this.handleError(err);
      } finally {
