@@ -217,6 +217,7 @@ Copyright 2021 Adevinta
                         :minDate="this.minDate"
                         :maxDate="this.maxDate"
                         :atDate="this.atDate"
+                        :identifiers="this.identifiers"
                         mode="issue"
 
                         mainListDescriptionColumnHeader="Issue"
@@ -258,6 +259,7 @@ Copyright 2021 Adevinta
                         :minDate="this.minDate"
                         :maxDate="this.maxDate"
                         :atDate="this.atDate"
+                        :identifiers="this.identifiers"
                         mode="target"
 
                         mainListDescriptionColumnHeader="Asset"
@@ -375,6 +377,8 @@ export default class Home extends Vue {
   private minDate: Date = null;
   private maxDate: Date = null;
   
+  private identifiers: string = "";
+
   // Issues
   private dataIssues: ListItem[] = [];
   private totalIssues: number = 0;
@@ -436,6 +440,8 @@ export default class Home extends Vue {
       } else {
         this.modeSelect="digest";
       }
+      this.identifiers = qparams.get('identifiers') || ""
+      console.log("qparams.get('identifiers'): "+qparams.get('this.identifiers'))
 
       if (qparams.get('status')=="FIXED") {
         this.modeSelect="FIXED";
@@ -456,6 +462,7 @@ export default class Home extends Vue {
       minDate: this.minDate ? this.dateToStr(this.minDate) : undefined,
       maxDate: this.maxDate ? this.dateToStr(this.maxDate) : undefined,
       atDate: this.atDate ? this.dateToStr(this.atDate) : undefined,
+      identifiers: this.identifiers,
     };
     if (this.dateToStr(this.atDate)==this.dateToStr(new Date())){
       req.atDate=undefined;
@@ -490,6 +497,7 @@ export default class Home extends Vue {
       minDate: this.minDate ? this.dateToStr(this.minDate) : undefined,
       maxDate: this.maxDate ? this.dateToStr(this.maxDate) : undefined,
       atDate: this.atDate ? this.dateToStr(this.atDate) : undefined,
+      identifiers: this.identifiers,
     };
     if (this.dateToStr(this.atDate)==this.dateToStr(new Date())){
       issuesReq.atDate=undefined;
@@ -517,6 +525,7 @@ export default class Home extends Vue {
       minDate: this.minDate ? this.dateToStr(this.minDate) : undefined,
       maxDate: this.maxDate ? this.dateToStr(this.maxDate) : undefined,
       atDate: this.atDate ? this.dateToStr(this.atDate) : undefined,
+      identifiers: this.identifiers,
     };
     if (this.dateToStr(this.atDate)==this.dateToStr(new Date())){
       assetsReq.atDate=undefined;
@@ -544,6 +553,7 @@ export default class Home extends Vue {
       minDate: this.minDate ? this.dateToStr(this.minDate) : undefined,
       maxDate: this.maxDate ? this.dateToStr(this.maxDate) : undefined,
       atDate: this.atDate ? this.dateToStr(this.atDate) : undefined,
+      identifiers: this.identifiers,
     };
     if (this.dateToStr(this.atDate)==this.dateToStr(new Date())){
       issuesReq.atDate=undefined;
@@ -585,6 +595,7 @@ export default class Home extends Vue {
       minDate: this.minDate ? this.dateToStr(this.minDate) : undefined,
       maxDate: this.maxDate ? this.dateToStr(this.maxDate) : undefined,
       atDate: this.atDate ? this.dateToStr(this.atDate) : undefined,
+      identifiers: this.identifiers,
     };
     if (this.dateToStr(this.atDate)==this.dateToStr(new Date())){
       assetsReq.atDate=undefined;

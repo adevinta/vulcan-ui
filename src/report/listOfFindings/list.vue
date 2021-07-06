@@ -221,6 +221,9 @@ export default class ListOfFindings extends Vue {
   @Prop({ required: true })
   private atDate!: Date;
 
+  @Prop({ required: true })
+  private identifiers!: string;
+
   // Main List columns
 
   // Header for the Description column
@@ -362,7 +365,8 @@ export default class ListOfFindings extends Vue {
           size: perPage,
           minDate: this.minDate ? this.dateToStr(this.minDate) : "",
           maxDate: this.maxDate ? this.dateToStr(this.maxDate) : "",
-          atDate: this.atDate ? this.dateToStr(this.atDate) : ""
+          atDate: this.atDate ? this.dateToStr(this.atDate) : "",
+          identifiers: this.identifiers,
         };
         if (this.dateToStr(this.atDate) == this.dateToStr(new Date())) {
           findingsReq.atDate = undefined;
@@ -385,7 +389,8 @@ export default class ListOfFindings extends Vue {
           size: perPage,
           minDate: this.minDate ? this.dateToStr(this.minDate) : "",
           maxDate: this.maxDate ? this.dateToStr(this.maxDate) : "",
-          atDate: this.atDate ? this.dateToStr(this.atDate) : ""
+          atDate: this.atDate ? this.dateToStr(this.atDate) : "",
+          identifiers: this.identifiers,
         };
         if (this.dateToStr(this.atDate) == this.dateToStr(new Date())) {
           findingsReq.atDate = undefined;
