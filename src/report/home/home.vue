@@ -471,7 +471,6 @@ export default class Home extends Vue {
         this.modeSelect="digest";
       }
       this.identifiers = qparams.get('identifiers') || ""
-      console.log("qparams.get('identifiers'): "+qparams.get('this.identifiers'))
 
       if (qparams.get('status')=="FIXED") {
         this.modeSelect="FIXED";
