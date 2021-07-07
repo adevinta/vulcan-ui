@@ -39,7 +39,7 @@ Copyright 2021 Adevinta
 
         <!-- Score -->
         <b-table-column centered width="100" field="Score" :label="mainListScoreColumnHeader">
-          <span v-bind:class="severityStyle(propsMainList.row.Score)">{{ propsMainList.row.Score }}</span>
+          <span v-bind:class="severityStyle(propsMainList.row.Score)" width="100">{{ severityText(propsMainList.row.Score) }}</span>
         </b-table-column>
       </template>
 
@@ -112,8 +112,8 @@ Copyright 2021 Adevinta
                     <!-- Score -->
                     <b-table-column centered width="100" field="score" label="Score">
                       <span
-                        v-bind:class="severityStyle(propsFinding.row.score)"
-                      >{{ propsFinding.row.score }}</span>
+                        v-bind:class="severityStyle(propsFinding.row.score)" width="100"
+                      >{{ severityText(propsFinding.row.score) }}</span>
                     </b-table-column>
                   </template>
 
@@ -156,7 +156,7 @@ Copyright 2021 Adevinta
 <script lang="ts">
 // Imports section
 import { Component, Prop, Vue } from "vue-property-decorator";
-import { severityStyle, statusClass } from "../utils/utils";
+import { severityStyle, severityText, statusClass } from "../utils/utils";
 import FindingDetails from "../finding/finding.vue";
 import loadConfig, { Config } from "../../common/config";
 import tokenProvider from "../../common/token";
@@ -268,6 +268,7 @@ export default class ListOfFindings extends Vue {
 
   // Internal functions
   private severityStyle = severityStyle;
+  private severityText = severityText;
   private statusClass = statusClass;
 
   $refs!: {
