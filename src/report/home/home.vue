@@ -6,45 +6,45 @@ Copyright 2021 Adevinta
     <div>
         <div class="container">
         <div class="columns" v-if="modeSelect == 'fixed'">
-            <div class="column has-text-white" style="background: purple; font-size: 36; text-align: center;" >
+            <div class="column has-text-white is-critical-severity" style="font-size: 36; text-align: center;" >
                 {{ statsFixed && statsFixed.fixedIssues ? statsFixed.fixedIssues.critical : "-" }}
                 <div style="font-size: 14;">Critical</div>
             </div>
-            <div class="column has-text-white" style="background: red; font-size: 36;    text-align: center;">
+            <div class="column has-text-white is-high-severity" style="font-size: 36;    text-align: center;">
                 {{ statsFixed && statsFixed.fixedIssues ? statsFixed.fixedIssues.high : "-" }}
                 <div style="font-size: 14;">High</div>
             </div>
-            <div class="column has-text-white" style="background: orange; font-size: 36; text-align: center;" >
+            <div class="column has-text-white is-medium-severity" style="font-size: 36; text-align: center;" >
                 {{ statsFixed && statsFixed.fixedIssues ? statsFixed.fixedIssues.medium : "-" }}
                 <div style="font-size: 14;">Medium</div>
             </div>
-            <div class="column has-text-dark"  style="background: hsl(48, 100%, 67%); font-size: 36; text-align: center;">
+            <div class="column has-text-dark is-low-severity"  style="font-size: 36; text-align: center;">
                 {{ statsFixed && statsFixed.fixedIssues ? statsFixed.fixedIssues.low : "-" }}
                 <div style="font-size: 14;">Low</div>
             </div>
-            <div class="column has-text-white" style="background: hsl(204, 86%, 53%); font-size: 36; text-align: center;">
+            <div class="column has-text-white is-info-severity" style="font-size: 36; text-align: center;">
                 {{ statsFixed && statsFixed.fixedIssues ? statsFixed.fixedIssues.informational : "-" }}
                 <div style="font-size: 14;">Informational</div>
             </div>
         </div>
         <div class="columns" v-else>
-            <div class="column has-text-white" style="background: purple; font-size: 36; text-align: center;">
+            <div class="column has-text-white is-critical-severity" style="font-size: 36; text-align: center;">
                 {{ statsOpen.openIssues ? statsOpen.openIssues.critical : "-" }}
                 <div style="font-size: 14;">Critical</div>
             </div>
-            <div class="column has-text-white" style="background: red; font-size: 36; text-align: center;">
+            <div class="column has-text-white is-high-severity" style="font-size: 36; text-align: center;">
                 {{ statsOpen.openIssues ? statsOpen.openIssues.high : "-" }}
                 <div style="font-size: 14;">High</div>
             </div>
-            <div class="column has-text-white" style="background: orange; font-size: 36; text-align: center;" >
+            <div class="column has-text-white is-medium-severity" style="font-size: 36; text-align: center;" >
                 {{ statsOpen.openIssues ? statsOpen.openIssues.medium : "-" }}
                 <div style="font-size: 14;">Medium</div>
             </div>
-            <div class="column has-text-dark"  style="background: hsl(48, 100%, 67%); font-size: 36; text-align: center;">
+            <div class="column has-text-dark is-low-severity"  style="font-size: 36; text-align: center;">
                 {{ statsOpen.openIssues ? statsOpen.openIssues.low : "-" }}
                 <div style="font-size: 14;">Low</div>
             </div>
-            <div class="column has-text-white" style="background: hsl(204, 86%, 53%); font-size: 36; text-align: center;">
+            <div class="column has-text-white is-info-severity" style="font-size: 36; text-align: center;">
                 {{ statsOpen.openIssues ? statsOpen.openIssues.informational : "-" }}
                 <div style="font-size: 14;">Informational</div>
             </div>
