@@ -162,73 +162,67 @@ Copyright 2021 Adevinta
             <div class="card">
                 <div class="card-content">
                 <h1 class="title">Top 10 Most Relevant Issues</h1>
-                <b-table
+                <!-- /* TOP 10 ISSUES TABLE */ -->
+                <ListOfFindings
                     ref="top10Issues"
-                    class="live-report"
-                    :data="dataTop10Issues"
-                    :loading="loadingTop10Issues"
+                    :teamId="teamId"
+                    :data="this.dataTop10Issues"
+                    :total="this.totalTop10Issues"
                     :narrowed=true
                     :paginated=false
-                    :total="totalTop10Issues">
+                    :perPage="10"
+                    :modeSelect="this.modeSelect"
+                    :minDate="this.minDate"
+                    :maxDate="this.maxDate"
+                    :atDate="this.atDate"
+                    :identifiers="this.identifiers"
+                    mode="issue"
 
-                    <template slot-scope="propsIssues">
-                    <b-table-column field="issue" label="Issue">
-                        {{ propsIssues.row.summary }}
-                    </b-table-column>
+                    mainListDescriptionColumnHeader="Issue"
+                    mainListDescriptionColumnIcon="bug"
 
-                    <b-table-column centered width="100" field="assets-count" label="Assets">
-                        <b-icon
-                            icon="server"
-                            size="is-small">
-                        </b-icon>
-                        <span class="tag ">
-                            {{ propsIssues.row.targetsCount }}
-                        </span>
-                    </b-table-column>
+                    mainListCountColumnHeader="Assets"
+                    mainListCountColumnIcon="server"
 
-                    <b-table-column centered width="100" field="score" label="Score">
-                        <span v-bind:class="severityStyle(propsIssues.row.maxScore)">
-                            {{ propsIssues.row.maxScore }}
-                        </span>
-                    </b-table-column>
-                    </template>
-                </b-table>
+                    mainListScoreColumnHeader="Score"
+
+                    findingsListDescriptionColumnHeader="Asset"
+
+                >
+                </ListOfFindings>
                 </div>
             </div>
             <hr/>
             <div class="card">
                 <div class="card-content">
                 <h1 class="title">Top 10 Most Vulnerable Assets</h1>
-                <b-table
+                <!-- /* TOP 10 ASSETS TABLE */ -->
+                <ListOfFindings
                     ref="top10Assets"
-                    class="live-report"
-                    :data="dataTop10Assets"
-                    :loading="loadingTop10Assets"
-                    :narrowed=true
-                    :total="totalTop10Assets">
+                    :teamId="teamId"
+                    :data="this.dataTop10Assets"
+                    :total="this.totalTop10Assets"
+                    :perPage="10"
+                    :paginated=false
+                    :modeSelect="this.modeSelect"
+                    :minDate="this.minDate"
+                    :maxDate="this.maxDate"
+                    :atDate="this.atDate"
+                    :identifiers="this.identifiers"
+                    mode="target"
 
-                    <template slot-scope="propsAssets">
-                    <b-table-column field="asset" label="Asset">
-                        {{ propsAssets.row.identifier }}
-                    </b-table-column>
+                    mainListDescriptionColumnHeader="Asset"
+                    mainListDescriptionColumnIcon="server"
 
-                    <b-table-column centered width="100" field="issues-count" label="Issues">
-                        <b-icon
-                            icon="server"
-                            size="is-small">
-                        </b-icon>
-                        <span class="tag ">
-                            {{ propsAssets.row.findingsCount }}
-                        </span>
-                    </b-table-column>
+                    mainListCountColumnHeader="Issues"
+                    mainListCountColumnIcon="bug"
 
-                    <b-table-column centered width="100" field="score" label="Score">
-                        <span v-bind:class="severityStyle(propsAssets.row.maxScore)">
-                            {{ propsAssets.row.maxScore }}
-                        </span>
-                    </b-table-column>
-                    </template>
-                </b-table>
+                    mainListScoreColumnHeader="Score"
+
+                    findingsListDescriptionColumnHeader="Issue"
+
+                >
+                </ListOfFindings>
                 </div>
             </div>
 
@@ -429,7 +423,7 @@ export default class Home extends Vue {
   private loadingTop10Issues: boolean = false;
 
   // Top 10 Assets
-  private dataTop10Assets: FindingsTarget[] = [];
+  private dataTop10Assets: ListItem[] = [];
   private totalTop10Assets: number = 0;
   private loadingTop10Assets: boolean = false;
 
@@ -536,7 +530,7 @@ export default class Home extends Vue {
     const issuesList = await api.findingsListFindingsIssues(issuesReq);
     this.loadingTop10Issues = false;
 
-    this.dataTop10Issues = issuesList.issues || [];
+    this.dataTop10Issues = this.convertFindingsIssuesToListItem(issuesList.issues) || [];
     this.totalTop10Issues = issuesList.pagination!.total || 0;
   }
 
@@ -564,7 +558,7 @@ export default class Home extends Vue {
     const assetsList = await api.findingsListFindingsTargets(assetsReq);
     this.loadingTop10Assets = false;
 
-    this.dataTop10Assets = assetsList.targets || [];
+    this.dataTop10Assets = this.convertFindingsTargetToListItem(assetsList.targets) || [];
     this.totalTop10Assets = assetsList.pagination!.total || 0;
   }
 

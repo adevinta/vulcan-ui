@@ -16,7 +16,7 @@ Copyright 2021 Adevinta
       detailed
       detail-key="Id"
       :show-detail-icon="false"
-      paginated
+      :paginated="paginated"
       backend-pagination
       :total="total"
       :per-page="perPageInternal"
@@ -136,7 +136,7 @@ Copyright 2021 Adevinta
     </b-table>
 
     <!-- Per Page selector -->
-    <b-field grouped position="is-right">
+    <b-field grouped position="is-right" v-if="paginated">
       <b-select
         v-model="perPageInternal"
         class="is-right"
@@ -224,7 +224,10 @@ export default class ListOfFindings extends Vue {
   @Prop({ required: true })
   private identifiers!: string;
 
-  // Main List columns
+  @Prop({ required: false, default: true })
+  private paginated!: boolean;
+
+// Main List columns
 
   // Header for the Description column
   @Prop({ required: true, default: "" })
