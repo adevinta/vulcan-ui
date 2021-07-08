@@ -5,6 +5,7 @@ Copyright 2021 Adevinta
 <template>
     <div>
         <div class="container">
+        <div class="columns"><div class="column">Total Security Issues</div></div>
         <div class="columns" v-if="modeSelect == 'fixed'">
             <div class="column has-text-white is-critical-severity" style="font-size: 36; text-align: center;" >
                 {{ statsFixed && statsFixed.fixedIssues ? statsFixed.fixedIssues.critical : "-" }}
