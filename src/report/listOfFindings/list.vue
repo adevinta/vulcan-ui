@@ -110,7 +110,7 @@ Copyright 2021 Adevinta
                     </b-table-column>
 
                     <!-- Score -->
-                    <b-table-column centered width="100" field="score" label="Score">
+                    <b-table-column centered width="100" field="score" label="Severity">
                       <span
                         v-bind:class="severityStyle(propsFinding.row.score)" style="width: 70"
                       >{{ severityText(propsFinding.row.score) }}</span>
