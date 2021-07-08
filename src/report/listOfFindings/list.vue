@@ -95,7 +95,7 @@ Copyright 2021 Adevinta
                       </router-link>
                     </b-table-column>
 
-                    <!-- Age -->
+                    <!-- Status -->
                     <b-table-column width="100" field="status" label="Status">
                       <span
                         v-bind:class="statusClass(propsFinding.row.status)"

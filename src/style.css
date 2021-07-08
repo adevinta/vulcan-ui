@@ -67,3 +67,19 @@ Copyright 2021 Adevinta
 .pagination-link:focus {
     border-color: #b5b5b5;
 }
+
+.is-live-report-status-open {
+    color: hsl(0, 0%, 29%);
+}
+
+.is-live-report-status-fixed {
+    color: hsl(141, 71%, 48%);
+}
+
+.is-live-report-status-false-positive {
+    color: hsl(204, 86%, 53%);
+}
+
+.is-live-report-status-false-default {
+    color: hsl(0, 0%, 29%);
+}
