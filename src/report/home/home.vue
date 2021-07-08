@@ -5,46 +5,59 @@ Copyright 2021 Adevinta
 <template>
     <div>
         <div class="container">
+        <div class="columns"><div class="column" style="font-weight: bold;">Total Security Issues</div></div>
+        <div class="columns"  style="padding:1">
+            <div class="column has-text-white is-critical-severity" style="font-size: 4; text-align: center;padding:4" >
+            </div>
+            <div class="column has-text-white is-high-severity" style="font-size: 4;    text-align: center;padding:4">
+            </div>
+            <div class="column has-text-white is-medium-severity" style="font-size: 4; text-align: center;padding:4" >
+            </div>
+            <div class="column has-text-dark is-low-severity"  style="font-size: 4; text-align: center;padding:4">
+            </div>
+            <div class="column has-text-white is-info-severity" style="font-size: 4; text-align: center;padding:4">
+            </div>
+        </div>
         <div class="columns" v-if="modeSelect == 'fixed'">
-            <div class="column has-text-white" style="background: purple; font-size: 36; text-align: center;" >
+            <div class="column" style="font-size: 36; text-align: center;" >
                 {{ statsFixed && statsFixed.fixedIssues ? statsFixed.fixedIssues.critical : "-" }}
                 <div style="font-size: 14;">Critical</div>
             </div>
-            <div class="column has-text-white" style="background: red; font-size: 36;    text-align: center;">
+            <div class="column" style="font-size: 36;    text-align: center;">
                 {{ statsFixed && statsFixed.fixedIssues ? statsFixed.fixedIssues.high : "-" }}
                 <div style="font-size: 14;">High</div>
             </div>
-            <div class="column has-text-white" style="background: orange; font-size: 36; text-align: center;" >
+            <div class="column" style="font-size: 36; text-align: center;" >
                 {{ statsFixed && statsFixed.fixedIssues ? statsFixed.fixedIssues.medium : "-" }}
                 <div style="font-size: 14;">Medium</div>
             </div>
-            <div class="column has-text-dark"  style="background: hsl(48, 100%, 67%); font-size: 36; text-align: center;">
+            <div class="column"  style="font-size: 36; text-align: center;">
                 {{ statsFixed && statsFixed.fixedIssues ? statsFixed.fixedIssues.low : "-" }}
                 <div style="font-size: 14;">Low</div>
             </div>
-            <div class="column has-text-white" style="background: hsl(204, 86%, 53%); font-size: 36; text-align: center;">
+            <div class="column" style="font-size: 36; text-align: center;">
                 {{ statsFixed && statsFixed.fixedIssues ? statsFixed.fixedIssues.informational : "-" }}
                 <div style="font-size: 14;">Informational</div>
             </div>
         </div>
         <div class="columns" v-else>
-            <div class="column has-text-white" style="background: purple; font-size: 36; text-align: center;">
+            <div class="column" style="font-size: 36; text-align: center;">
                 {{ statsOpen.openIssues ? statsOpen.openIssues.critical : "-" }}
                 <div style="font-size: 14;">Critical</div>
             </div>
-            <div class="column has-text-white" style="background: red; font-size: 36; text-align: center;">
+            <div class="column" style="font-size: 36; text-align: center;">
                 {{ statsOpen.openIssues ? statsOpen.openIssues.high : "-" }}
                 <div style="font-size: 14;">High</div>
             </div>
-            <div class="column has-text-white" style="background: orange; font-size: 36; text-align: center;" >
+            <div class="column" style="font-size: 36; text-align: center;" >
                 {{ statsOpen.openIssues ? statsOpen.openIssues.medium : "-" }}
                 <div style="font-size: 14;">Medium</div>
             </div>
-            <div class="column has-text-dark"  style="background: hsl(48, 100%, 67%); font-size: 36; text-align: center;">
+            <div class="column"  style="font-size: 36; text-align: center;">
                 {{ statsOpen.openIssues ? statsOpen.openIssues.low : "-" }}
                 <div style="font-size: 14;">Low</div>
             </div>
-            <div class="column has-text-white" style="background: hsl(204, 86%, 53%); font-size: 36; text-align: center;">
+            <div class="column" style="font-size: 36; text-align: center;">
                 {{ statsOpen.openIssues ? statsOpen.openIssues.informational : "-" }}
                 <div style="font-size: 14;">Informational</div>
             </div>
@@ -162,73 +175,67 @@ Copyright 2021 Adevinta
             <div class="card">
                 <div class="card-content">
                 <h1 class="title">Top 10 Most Relevant Issues</h1>
-                <b-table
+                <!-- /* TOP 10 ISSUES TABLE */ -->
+                <ListOfFindings
                     ref="top10Issues"
-                    class="live-report"
-                    :data="dataTop10Issues"
-                    :loading="loadingTop10Issues"
+                    :teamId="teamId"
+                    :data="this.dataTop10Issues"
+                    :total="this.totalTop10Issues"
                     :narrowed=true
                     :paginated=false
-                    :total="totalTop10Issues">
+                    :perPage="10"
+                    :modeSelect="this.modeSelect"
+                    :minDate="this.minDate"
+                    :maxDate="this.maxDate"
+                    :atDate="this.atDate"
+                    :identifiers="this.identifiers"
+                    mode="issue"
 
-                    <template slot-scope="propsIssues">
-                    <b-table-column field="issue" label="Issue">
-                        {{ propsIssues.row.summary }}
-                    </b-table-column>
+                    mainListDescriptionColumnHeader="Issue"
+                    mainListDescriptionColumnIcon="bug"
 
-                    <b-table-column centered width="100" field="assets-count" label="Assets">
-                        <b-icon
-                            icon="server"
-                            size="is-small">
-                        </b-icon>
-                        <span class="tag ">
-                            {{ propsIssues.row.targetsCount }}
-                        </span>
-                    </b-table-column>
+                    mainListCountColumnHeader="Assets"
+                    mainListCountColumnIcon="server"
 
-                    <b-table-column centered width="100" field="score" label="Score">
-                        <span v-bind:class="severityStyle(propsIssues.row.maxScore)">
-                            {{ propsIssues.row.maxScore }}
-                        </span>
-                    </b-table-column>
-                    </template>
-                </b-table>
+                    mainListScoreColumnHeader="Severity"
+
+                    findingsListDescriptionColumnHeader="Asset"
+
+                >
+                </ListOfFindings>
                 </div>
             </div>
             <hr/>
             <div class="card">
                 <div class="card-content">
                 <h1 class="title">Top 10 Most Vulnerable Assets</h1>
-                <b-table
+                <!-- /* TOP 10 ASSETS TABLE */ -->
+                <ListOfFindings
                     ref="top10Assets"
-                    class="live-report"
-                    :data="dataTop10Assets"
-                    :loading="loadingTop10Assets"
-                    :narrowed=true
-                    :total="totalTop10Assets">
+                    :teamId="teamId"
+                    :data="this.dataTop10Assets"
+                    :total="this.totalTop10Assets"
+                    :perPage="10"
+                    :paginated=false
+                    :modeSelect="this.modeSelect"
+                    :minDate="this.minDate"
+                    :maxDate="this.maxDate"
+                    :atDate="this.atDate"
+                    :identifiers="this.identifiers"
+                    mode="target"
 
-                    <template slot-scope="propsAssets">
-                    <b-table-column field="asset" label="Asset">
-                        {{ propsAssets.row.identifier }}
-                    </b-table-column>
+                    mainListDescriptionColumnHeader="Asset"
+                    mainListDescriptionColumnIcon="server"
 
-                    <b-table-column centered width="100" field="issues-count" label="Issues">
-                        <b-icon
-                            icon="server"
-                            size="is-small">
-                        </b-icon>
-                        <span class="tag ">
-                            {{ propsAssets.row.findingsCount }}
-                        </span>
-                    </b-table-column>
+                    mainListCountColumnHeader="Issues"
+                    mainListCountColumnIcon="bug"
 
-                    <b-table-column centered width="100" field="score" label="Score">
-                        <span v-bind:class="severityStyle(propsAssets.row.maxScore)">
-                            {{ propsAssets.row.maxScore }}
-                        </span>
-                    </b-table-column>
-                    </template>
-                </b-table>
+                    mainListScoreColumnHeader="Severity"
+
+                    findingsListDescriptionColumnHeader="Issue"
+
+                >
+                </ListOfFindings>
                 </div>
             </div>
 
@@ -256,7 +263,7 @@ Copyright 2021 Adevinta
                         mainListCountColumnHeader="Assets"
                         mainListCountColumnIcon="server"
 
-                        mainListScoreColumnHeader="Score"
+                        mainListScoreColumnHeader="Severity"
 
                         findingsListDescriptionColumnHeader="Asset"
 
@@ -298,7 +305,7 @@ Copyright 2021 Adevinta
                         mainListCountColumnHeader="Issues"
                         mainListCountColumnIcon="bug"
 
-                        mainListScoreColumnHeader="Score"
+                        mainListScoreColumnHeader="Severity"
 
                         findingsListDescriptionColumnHeader="Issue"
 
@@ -429,7 +436,7 @@ export default class Home extends Vue {
   private loadingTop10Issues: boolean = false;
 
   // Top 10 Assets
-  private dataTop10Assets: FindingsTarget[] = [];
+  private dataTop10Assets: ListItem[] = [];
   private totalTop10Assets: number = 0;
   private loadingTop10Assets: boolean = false;
 
@@ -536,7 +543,7 @@ export default class Home extends Vue {
     const issuesList = await api.findingsListFindingsIssues(issuesReq);
     this.loadingTop10Issues = false;
 
-    this.dataTop10Issues = issuesList.issues || [];
+    this.dataTop10Issues = this.convertFindingsIssuesToListItem(issuesList.issues) || [];
     this.totalTop10Issues = issuesList.pagination!.total || 0;
   }
 
@@ -564,7 +571,7 @@ export default class Home extends Vue {
     const assetsList = await api.findingsListFindingsTargets(assetsReq);
     this.loadingTop10Assets = false;
 
-    this.dataTop10Assets = assetsList.targets || [];
+    this.dataTop10Assets = this.convertFindingsTargetToListItem(assetsList.targets) || [];
     this.totalTop10Assets = assetsList.pagination!.total || 0;
   }
 

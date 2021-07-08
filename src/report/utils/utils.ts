@@ -44,16 +44,16 @@ export function severityStyle(score: number) {
     let statusClass = "";
   
     if (status == "OPEN") {
-      statusClass = "is-danger";
+      statusClass = "is-live-report-status-open";
     } else if (status == "FIXED") {
-      statusClass = "is-success";
+      statusClass = "is-live-report-status-fixed";
     } else if (status == "FALSE_POSITIVE") {
-        statusClass = "is-info";
+        statusClass = "is-live-report-status-false-positive";
     } else {
-      statusClass = "is-light";
+      statusClass = "is-live-report-status-default";
     }
   
-    return "tag " + statusClass;
+    return " " + statusClass;
   }
   
   export function urlDomain(url) {
