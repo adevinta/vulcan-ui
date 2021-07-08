@@ -5,7 +5,7 @@ Copyright 2021 Adevinta
 <template>
     <div>
         <div class="container">
-        <div class="columns"><div class="column">Total Security Issues</div></div>
+        <div class="columns"><div class="column" style="font-weight: bold;">Total Security Issues</div></div>
         <div class="columns"  style="padding:1">
             <div class="column has-text-white is-critical-severity" style="font-size: 4; text-align: center;padding:4" >
             </div>
