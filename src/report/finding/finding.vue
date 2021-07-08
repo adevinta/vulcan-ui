@@ -22,9 +22,9 @@ Copyright 2021 Adevinta
               <td style="width:100%">{{ propsFindingDetail.row.target.identifier }}</td>
             </tr>
             <tr>
-              <td class="has-text-weight-bold">Severity Score</td>
+              <td class="has-text-weight-bold">Score / Severity</td>
               <td style="width:100%">
-                <span class="tag">{{ propsFindingDetail.row.score }}</span>
+                <span class="tag">{{ propsFindingDetail.row.score }}</span> / 
                 <span
                   v-bind:class="severityStyle(propsFindingDetail.row.score)"
                 >{{ severityText(propsFindingDetail.row.score) }}</span>
