@@ -39,7 +39,7 @@ Copyright 2021 Adevinta
 
         <!-- Score -->
         <b-table-column centered width="100" field="Score" :label="mainListScoreColumnHeader">
-          <span v-bind:class="severityStyle(propsMainList.row.Score)" width="100">{{ severityText(propsMainList.row.Score) }}</span>
+          <span v-bind:class="severityStyle(propsMainList.row.Score)" style="width: 70">{{ severityText(propsMainList.row.Score) }}</span>
         </b-table-column>
       </template>
 
@@ -112,7 +112,7 @@ Copyright 2021 Adevinta
                     <!-- Score -->
                     <b-table-column centered width="100" field="score" label="Score">
                       <span
-                        v-bind:class="severityStyle(propsFinding.row.score)" width="100"
+                        v-bind:class="severityStyle(propsFinding.row.score)" style="width: 70"
                       >{{ severityText(propsFinding.row.score) }}</span>
                     </b-table-column>
                   </template>
