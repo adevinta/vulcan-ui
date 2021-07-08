@@ -184,7 +184,7 @@ Copyright 2021 Adevinta
                     mainListCountColumnHeader="Assets"
                     mainListCountColumnIcon="server"
 
-                    mainListScoreColumnHeader="Score"
+                    mainListScoreColumnHeader="Severity"
 
                     findingsListDescriptionColumnHeader="Asset"
 
@@ -217,7 +217,7 @@ Copyright 2021 Adevinta
                     mainListCountColumnHeader="Issues"
                     mainListCountColumnIcon="bug"
 
-                    mainListScoreColumnHeader="Score"
+                    mainListScoreColumnHeader="Severity"
 
                     findingsListDescriptionColumnHeader="Issue"
 
@@ -250,7 +250,7 @@ Copyright 2021 Adevinta
                         mainListCountColumnHeader="Assets"
                         mainListCountColumnIcon="server"
 
-                        mainListScoreColumnHeader="Score"
+                        mainListScoreColumnHeader="Severity"
 
                         findingsListDescriptionColumnHeader="Asset"
 
@@ -292,7 +292,7 @@ Copyright 2021 Adevinta
                         mainListCountColumnHeader="Issues"
                         mainListCountColumnIcon="bug"
 
-                        mainListScoreColumnHeader="Score"
+                        mainListScoreColumnHeader="Severity"
 
                         findingsListDescriptionColumnHeader="Issue"
 
