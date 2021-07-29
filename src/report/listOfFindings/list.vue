@@ -26,7 +26,7 @@ Copyright 2021 Adevinta
       detailed
       detail-key="Id"
       :show-detail-icon="false"
-      paginated
+      :paginated="paginated"
       backend-pagination
       :total="total"
       :per-page="perPageInternal"
@@ -49,7 +49,7 @@ Copyright 2021 Adevinta
 
         <!-- Score -->
         <b-table-column centered width="100" field="Score" :label="mainListScoreColumnHeader">
-          <span v-bind:class="severityStyle(propsMainList.row.Score)">{{ propsMainList.row.Score }}</span>
+          <span v-bind:class="severityStyle(propsMainList.row.Score)" style="width: 70">{{ severityText(propsMainList.row.Score) }}</span>
         </b-table-column>
       </template>
 
@@ -118,7 +118,7 @@ Copyright 2021 Adevinta
                       </router-link>                      
                     </b-table-column> 
 
-                    <!-- Age -->
+                    <!-- Status -->
                     <b-table-column width="100" field="status" label="Status">
                       <span
                         v-bind:class="statusClass(propsFinding.row.status)"
@@ -137,7 +137,7 @@ Copyright 2021 Adevinta
                     </b-table-column>
 
                     <!-- Score -->
-                    <b-table-column centered width="100" field="score" label="Score">
+                    <b-table-column centered width="100" field="score" label="Severity">
                       <span
                         v-bind:class="severityStyle(propsFinding.row.maxScore)"
                       >
@@ -167,7 +167,7 @@ Copyright 2021 Adevinta
     </b-table>
 
     <!-- Per Page selector -->
-    <b-field grouped position="is-right">
+    <b-field grouped position="is-right" v-if="paginated">
       <b-select
         v-model="perPageInternal"
         class="is-right"
@@ -187,7 +187,7 @@ Copyright 2021 Adevinta
 <script lang="ts">
 // Imports section
 import { Component, Prop, Vue } from "vue-property-decorator";
-import { severityStyle, statusClass } from "../utils/utils";
+import { severityStyle, severityText, statusClass } from "../utils/utils";
 import FindingDetails from "../finding/finding.vue";
 import loadConfig, { Config } from "../../common/config";
 import tokenProvider from "../../common/token";
@@ -256,7 +256,13 @@ export default class ListOfFindings extends Vue {
   @Prop({ required: true })
   private atDate!: Date;
 
-  // Main List columns
+  @Prop({ required: true })
+  private identifiers!: string;
+
+  @Prop({ required: false, default: true })
+  private paginated!: boolean;
+
+// Main List columns
 
   // Header for the Description column
   @Prop({ required: true, default: "" })
@@ -297,6 +303,7 @@ export default class ListOfFindings extends Vue {
 
   // Internal functions
   private severityStyle = severityStyle;
+  private severityText = severityText;
   private statusClass = statusClass;
 
   $refs!: {
@@ -402,7 +409,8 @@ export default class ListOfFindings extends Vue {
           size: perPage,
           minDate: this.minDate ? this.dateToStr(this.minDate) : "",
           maxDate: this.maxDate ? this.dateToStr(this.maxDate) : "",
-          atDate: this.atDate ? this.dateToStr(this.atDate) : ""  
+          atDate: this.atDate ? this.dateToStr(this.atDate) : "",
+          identifiers: this.identifiers,
         }
         if (this.dateToStr(this.atDate) == this.dateToStr(new Date())) {
           req.atDate = undefined;
@@ -446,7 +454,8 @@ export default class ListOfFindings extends Vue {
           size: perPage,
           minDate: this.minDate ? this.dateToStr(this.minDate) : "",
           maxDate: this.maxDate ? this.dateToStr(this.maxDate) : "",
-          atDate: this.atDate ? this.dateToStr(this.atDate) : ""  
+          atDate: this.atDate ? this.dateToStr(this.atDate) : "",
+          identifiers: this.identifiers,
         }
         if (this.dateToStr(this.atDate) == this.dateToStr(new Date())) {
           req.atDate = undefined;
