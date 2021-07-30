@@ -1,4 +1,5 @@
 apis/ApiTokenApi.ts
+apis/AssetAnnotationsApi.ts
 apis/AssetGroupApi.ts
 apis/AssetsApi.ts
 apis/FindingsApi.ts
@@ -21,14 +22,18 @@ apis/UserApi.ts
 apis/index.ts
 index.ts
 models/Asset.ts
+models/AssetAnnotationDeleteRequest.ts
+models/AssetAnnotationRequest.ts
 models/AssetGroupPayload.ts
 models/AssetPayload.ts
 models/AssetUpdatePayload.ts
+models/AssetannotationsResponse.ts
 models/Assetresponse.ts
 models/Assettype.ts
 models/Attachment.ts
 models/CreateAssetPayload.ts
 models/DigestPayload.ts
+models/Exposure.ts
 models/Finding.ts
 models/FindingOverwrite.ts
 models/FindingOverwritePayload.ts
@@ -69,6 +74,7 @@ models/SchedulePayload.ts
 models/ScheduleUpdatePayload.ts
 models/Source.ts
 models/Stats.ts
+models/Statsaverages.ts
 models/Statscoverage.ts
 models/Statsfixed.ts
 models/Statsopen.ts

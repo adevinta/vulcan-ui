@@ -22,9 +22,14 @@ Copyright 2021 Adevinta
               <td style="width:100%">{{ propsFindingDetail.row.target.identifier }}</td>
             </tr>
             <tr>
-              <td class="has-text-weight-bold">Severity Score</td>
+              <td class="has-text-weight-bold">Score / Severity</td>
               <td style="width:100%">
-                <span class="tag">{{ propsFindingDetail.row.score }}</span>
+                <b-tooltip
+                    label="Score ranges from 0.0 (no security risks) to 10.0 (maximum security risk)."
+                    position="is-bottom"
+                    type="is-info">
+                    <span class="tag">{{ propsFindingDetail.row.score }}</span> /
+                </b-tooltip>
                 <span
                   v-bind:class="severityStyle(propsFindingDetail.row.score)"
                 >{{ severityText(propsFindingDetail.row.score) }}</span>

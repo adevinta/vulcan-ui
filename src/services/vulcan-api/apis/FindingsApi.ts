@@ -44,6 +44,7 @@ export interface FindingsFindFindingsFromAIssueRequest {
     issueId: string;
     teamId: string;
     atDate?: string;
+    identifiers?: string;
     maxDate?: string;
     maxScore?: number;
     minDate?: string;
@@ -58,6 +59,7 @@ export interface FindingsFindFindingsFromATargetRequest {
     targetId: string;
     teamId: string;
     atDate?: string;
+    identifiers?: string;
     maxDate?: string;
     maxScore?: number;
     minDate?: string;
@@ -77,6 +79,7 @@ export interface FindingsListFindingsRequest {
     teamId: string;
     atDate?: string;
     identifier?: string;
+    identifiers?: string;
     issueID?: string;
     maxDate?: string;
     maxScore?: number;
@@ -92,6 +95,7 @@ export interface FindingsListFindingsRequest {
 export interface FindingsListFindingsIssuesRequest {
     teamId: string;
     atDate?: string;
+    identifiers?: string;
     maxDate?: string;
     minDate?: string;
     page?: number;
@@ -104,6 +108,7 @@ export interface FindingsListFindingsIssuesRequest {
 export interface FindingsListFindingsTargetsRequest {
     teamId: string;
     atDate?: string;
+    identifiers?: string;
     issueID?: string;
     maxDate?: string;
     minDate?: string;
@@ -183,6 +188,10 @@ export class FindingsApi extends runtime.BaseAPI {
             queryParameters['atDate'] = requestParameters.atDate;
         }
 
+        if (requestParameters.identifiers !== undefined) {
+            queryParameters['identifiers'] = requestParameters.identifiers;
+        }
+
         if (requestParameters.maxDate !== undefined) {
             queryParameters['maxDate'] = requestParameters.maxDate;
         }
@@ -257,6 +266,10 @@ export class FindingsApi extends runtime.BaseAPI {
 
         if (requestParameters.atDate !== undefined) {
             queryParameters['atDate'] = requestParameters.atDate;
+        }
+
+        if (requestParameters.identifiers !== undefined) {
+            queryParameters['identifiers'] = requestParameters.identifiers;
         }
 
         if (requestParameters.maxDate !== undefined) {
@@ -375,6 +388,10 @@ export class FindingsApi extends runtime.BaseAPI {
             queryParameters['identifier'] = requestParameters.identifier;
         }
 
+        if (requestParameters.identifiers !== undefined) {
+            queryParameters['identifiers'] = requestParameters.identifiers;
+        }
+
         if (requestParameters.issueID !== undefined) {
             queryParameters['issueID'] = requestParameters.issueID;
         }
@@ -455,6 +472,10 @@ export class FindingsApi extends runtime.BaseAPI {
             queryParameters['atDate'] = requestParameters.atDate;
         }
 
+        if (requestParameters.identifiers !== undefined) {
+            queryParameters['identifiers'] = requestParameters.identifiers;
+        }
+
         if (requestParameters.maxDate !== undefined) {
             queryParameters['maxDate'] = requestParameters.maxDate;
         }
@@ -521,6 +542,10 @@ export class FindingsApi extends runtime.BaseAPI {
 
         if (requestParameters.atDate !== undefined) {
             queryParameters['atDate'] = requestParameters.atDate;
+        }
+
+        if (requestParameters.identifiers !== undefined) {
+            queryParameters['identifiers'] = requestParameters.identifiers;
         }
 
         if (requestParameters.issueID !== undefined) {

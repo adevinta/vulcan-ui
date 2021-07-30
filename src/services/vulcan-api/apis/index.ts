@@ -1,4 +1,5 @@
 export * from './ApiTokenApi';
+export * from './AssetAnnotationsApi';
 export * from './AssetGroupApi';
 export * from './AssetsApi';
 export * from './FindingsApi';
