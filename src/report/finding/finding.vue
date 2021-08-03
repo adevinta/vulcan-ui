@@ -54,6 +54,10 @@ Copyright 2021 Adevinta
               </td>
             </tr>
             <tr>
+              <td class="has-text-weight-bold">Affected Resource</td>
+              <td style="width:100%">{{ propsFindingDetail.row.affectedResource }}</td>
+            </tr>
+            <tr>
               <td class="has-text-weight-bold">Impact</td>
               <td style="width:100%">{{ propsFindingDetail.row.impactDetails }}</td>
             </tr>
