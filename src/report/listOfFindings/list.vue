@@ -141,7 +141,7 @@ Copyright 2021 Adevinta
                       <span
                         v-bind:class="severityStyle(propsFinding.row.maxScore)"
                       >
-                      {{ propsFinding.row.maxScore }}
+                      {{ severityText(propsFinding.row.maxScore) }}
                       </span>
                       <!-- <span v-bind:class="severityStyle(propsFinding.row.score)" style="width: 70"
                       >{{ severityText(propsFinding.row.score) }}</span> CONFLICT-->

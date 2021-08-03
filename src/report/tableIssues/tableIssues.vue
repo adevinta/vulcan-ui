@@ -36,7 +36,7 @@ Copyright 2021 Adevinta
         <b-table-column centered width="100" field="Score" label="Score">
           <span
             v-bind:class="severityStyle(propsMainList.row.maxScore)"
-          >{{ propsMainList.row.maxScore }}</span>
+          > {{ severityText(propsMainList.row.maxScore) }}</span>
         </b-table-column>
       </template>
 
@@ -56,6 +56,7 @@ Copyright 2021 Adevinta
                   />
                 </div>
                 <table class="table is-striped is-fullwidth">
+                  <!-- Recommendations -->
                   <tr>
                     <td class="has-text-weight-bold">Recommendations</td>
                     <td style="width:100%">
@@ -71,6 +72,7 @@ Copyright 2021 Adevinta
                       </table>
                     </td>
                   </tr>
+                  <!-- References -->
                   <tr v-if="mapIssues.get(propsDetail.row.issueId).referenceLinks">
                     <td class="has-text-weight-bold">References</td>
                     <td style="width:100%">
@@ -90,6 +92,8 @@ Copyright 2021 Adevinta
                     </td>
                   </tr>
                 </table>
+                
+                <!-- Targets table -->
                 <b-table
                   :ref="'tableIssuesDetails-'+propsDetail.row.issueId"
                   :row-class="showcursor"
@@ -125,13 +129,14 @@ Copyright 2021 Adevinta
                     </b-table-column>
 
                     <!-- Score -->
-                    <b-table-column centered width="100" field="maxScore" label="Score">
+                    <b-table-column centered width="100" field="maxScore" label="Severity">
                       <span
                         v-bind:class="severityStyle(propsTargets.row.maxScore)"
-                      >{{ propsTargets.row.maxScore }}</span>
+                      >{{ severityText(propsTargets.row.maxScore) }}</span>
                     </b-table-column>
                   </template>
 
+                  <!-- Resources table -->
                   <template slot="detail" slot-scope="propsDetailAffectedResources">
                     <b-table
                       :ref="'tableDetailAffectedResources-'+propsDetail.row.issueId+'-'+propsDetailAffectedResources.row.targetId"
@@ -160,17 +165,18 @@ Copyright 2021 Adevinta
                           </router-link>
                         </b-table-column>
 
+                        <!-- Status -->
                         <b-table-column width="100" field="status" label="Status">
                           <span
                             v-bind:class="statusClass(propsX.row.status)"
                           >{{ (propsX.row.status.charAt(0).toUpperCase() + propsX.row.status.toLowerCase().slice(1)).replace("False_positive", "False Positive") }}</span>
                         </b-table-column>
 
-                        <!-- Score -->
-                        <b-table-column width="100" field="score" label="Score">
+                        <!-- Severity -->
+                        <b-table-column width="100" field="score" label="Severity">
                           <span
                             v-bind:class="severityStyle(propsX.row.score)"
-                          >{{ propsX.row.score }}</span>
+                          >{{ severityText(propsX.row.score) }}</span>
                         </b-table-column>
                       </template>
                     </b-table>
@@ -199,7 +205,6 @@ import tokenProvider from "../../common/token";
 import {
   Configuration as ApiConf,
   ConfigurationParameters,
-  Configuration,
   FindingsIssue
 } from "../../services/vulcan-api";
 import {

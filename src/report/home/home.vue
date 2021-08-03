@@ -277,8 +277,8 @@ Copyright 2021 Adevinta
                         v-on:updateperpage="updatePerPageIssues"
                         v-on:updatestats="updateStats"
                         v-on:handleerror="handleError"
-                    > -->
-                    <!-- </ListOfFindings>  CONFLICT-->
+                    >
+                    </ListOfFindings>  CONFLICT -->
                 </div>
 
                 <footer class="card-footer">
