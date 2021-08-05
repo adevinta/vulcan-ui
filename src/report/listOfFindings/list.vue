@@ -139,7 +139,7 @@ Copyright 2021 Adevinta
                     <!-- Score -->
                     <b-table-column centered width="100" field="score" label="Severity">
                       <span
-                        v-bind:class="severityStyle(propsFinding.row.maxScore)"
+                        v-bind:class="severityStyle(propsFinding.row.maxScore)" style="width: 70"
                       >
                       {{ severityText(propsFinding.row.maxScore) }}
                       </span>

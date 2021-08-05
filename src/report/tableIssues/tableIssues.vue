@@ -35,7 +35,7 @@ Copyright 2021 Adevinta
 
         <b-table-column centered width="100" field="Score" label="Score">
           <span
-            v-bind:class="severityStyle(propsMainList.row.maxScore)"
+            v-bind:class="severityStyle(propsMainList.row.maxScore)" style="width: 70"
           > {{ severityText(propsMainList.row.maxScore) }}</span>
         </b-table-column>
       </template>
@@ -131,7 +131,7 @@ Copyright 2021 Adevinta
                     <!-- Score -->
                     <b-table-column centered width="100" field="maxScore" label="Severity">
                       <span
-                        v-bind:class="severityStyle(propsTargets.row.maxScore)"
+                        v-bind:class="severityStyle(propsTargets.row.maxScore)" style="width: 70"
                       >{{ severityText(propsTargets.row.maxScore) }}</span>
                     </b-table-column>
                   </template>
@@ -175,7 +175,7 @@ Copyright 2021 Adevinta
                         <!-- Severity -->
                         <b-table-column width="100" field="score" label="Severity">
                           <span
-                            v-bind:class="severityStyle(propsX.row.score)"
+                            v-bind:class="severityStyle(propsX.row.score)" style="width: 70"
                           >{{ severityText(propsX.row.score) }}</span>
                         </b-table-column>
                       </template>
