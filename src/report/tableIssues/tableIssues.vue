@@ -373,33 +373,40 @@ export default class TableIssues extends Vue {
     this.$refs.tableMainList.toggleDetails(row);
   }
 
-  async toggleTargetDetails(id: string, row: Object) {
-    // api call here?
-    const findFindingReq: FindingsListFindingsRequest = {
-      teamId: this.teamId,
-      issueID: id,
-      targetID: row.targetId,
-      status: status,
-      page: 1,
-      size: 1,
-      minDate: this.minDate ? this.dateToStr(this.minDate) : "",
-      maxDate: this.maxDate ? this.dateToStr(this.maxDate) : "",
-      atDate: this.atDate ? this.dateToStr(this.atDate) : ""
-    };
-    if (this.dateToStr(this.atDate) == this.dateToStr(new Date())) {
-      findFindingReq.atDate = undefined;
-    }
+  async toggleTargetDetails(issueId: string, row: Object) {
+    let page:number = 1;
+    let more:boolean = true;
+    
+    while (more) {
+      const findingsReq: FindingsListFindingsRequest = {
+        teamId: this.teamId,
+        issueID: issueId,
+        targetID: row.targetId,
+        status: status,
+        page: page,
+        size: 100,
+        minDate: this.minDate ? this.dateToStr(this.minDate) : "",
+        maxDate: this.maxDate ? this.dateToStr(this.maxDate) : "",
+        atDate: this.atDate ? this.dateToStr(this.atDate) : ""
+      };
+      if (this.dateToStr(this.atDate) == this.dateToStr(new Date())) {
+        findingsReq.atDate = undefined;
+      }
+  
+      const findingsList = await this.findingsApi.findingsListFindings(
+        findingsReq
+      );
+      if (this.mapIssues.get(issueId).findings == null) {
+        this.mapIssues.get(issueId).findings = new Map();
+      }
+      this.mapIssues.get(issueId).findings.set(row.targetId, findingsList.findings);
 
-    const findingsList = await this.findingsApi.findingsListFindings(
-      findFindingReq
-    );
-    if (this.mapIssues.get(id).findings == null) {
-      this.mapIssues.get(id).findings = new Map();
+      page++;
+      more = findingsList.pagination?.more || false;
     }
-    this.mapIssues.get(id).findings.set(row.targetId, findingsList.findings);
 
     //@ts-ignore
-    this.$refs["tableIssuesDetails-" + id].toggleDetails(row);
+    this.$refs["tableIssuesDetails-" + issueId].toggleDetails(row);
   }
 
   private showcursor() {
