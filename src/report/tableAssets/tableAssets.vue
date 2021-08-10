@@ -8,32 +8,32 @@ Copyright 2021 Adevinta
       ref="tableMainList"
       class="live-report"
       :row-class="showcursor"
-      :data="this.issuesList"
+      :data="this.assetsList"
       :loading="loading"
       :narrowed="true"
       hoverable
       detailed
-      detail-key="issueId"
+      detail-key="targetId"
       :show-detail-icon="false"
       paginated
       backend-pagination
-      :total="issuesListTotal"
-      :per-page="perPageIssues"
+      :total="assetsListTotal"
+      :per-page="perPageAssets"
       @click="toggleDetails"
       @page-change="onMainListPageChange"
     >
       <template slot-scope="propsMainList">
-        <b-table-column field="summary" label="Issues">
+        <b-table-column field="summary" label="Assets">
           <b-icon icon="server" size="is-small"></b-icon>
-          <a class="has-text-dark">{{ propsMainList.row.summary }}</a>
+          <a class="has-text-dark">{{ propsMainList.row.identifier }}</a>
         </b-table-column>
 
-        <b-table-column centered width="100" field="targetsCount" label="Assets">
+        <b-table-column centered width="100" field="targetsCount" label="Issues">
           <b-icon icon="bug" size="is-small"></b-icon>
-          <span class="tag">{{ propsMainList.row.targetsCount }}</span>
+          <span class="tag">{{ propsMainList.row.findingsCount }}</span>
         </b-table-column>
 
-        <b-table-column centered width="100" field="Severity" label="Severity">
+        <b-table-column centered width="100" field="Score" label="Score">
           <span
             v-bind:class="severityStyle(propsMainList.row.maxScore)" style="width: 70"
           > {{ severityText(propsMainList.row.maxScore) }}</span>
@@ -44,105 +44,95 @@ Copyright 2021 Adevinta
         <div>
           <div class="card">
             <div class="card-content">
-              <div class="content">
-                <div>
-                  <h4 class="title is-4">{{ mapIssues.get(propsDetail.row.issueId).summary }}</h4>
-                  <hr />
-                </div>
-                <div>
-                  <VueShowdown
-                    :markdown="mapIssues.get(propsDetail.row.issueId).description"
-                    :extensions="['htmlSanitize']"
-                  />
-                </div>
-                <table class="table is-striped is-fullwidth">
-                  <!-- Recommendations -->
-                  <tr>
-                    <td class="has-text-weight-bold">Recommendations</td>
-                    <td style="width:100%">
-                      <table>
-                        <tr
-                          v-for="recommendation in mapIssues.get(propsDetail.row.issueId).recommendations"
-                          :key="recommendation"
-                        >
-                          <td>
-                            <VueShowdown :markdown="recommendation" :extensions="['htmlSanitize']" />
-                          </td>
-                        </tr>
-                      </table>
-                    </td>
-                  </tr>
-                  <!-- References -->
-                  <tr v-if="mapIssues.get(propsDetail.row.issueId).referenceLinks">
-                    <td class="has-text-weight-bold">References</td>
-                    <td style="width:100%">
-                      <a
-                        v-for="reference in mapIssues.get(propsDetail.row.issueId).referenceLinks"
-                        :key="reference"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        :href="reference"
-                        class="button reference"
-                      >
-                        <span>{{ urlDomain(reference) }}</span>
-                        <span class="icon is-small">
-                          <i class="fa fa-external-link"></i>
-                        </span>
-                      </a>
-                    </td>
-                  </tr>
-                </table>
-                
-                <!-- Targets table -->
-                <b-table
-                  :ref="'tableIssuesDetails-'+propsDetail.row.issueId"
+              <div class>
+                  <!-- Issues Table -->
+                  <b-table
+                  :ref="'tableTargetsDetails-'+propsDetail.row.targetId"
                   :row-class="showcursor"
-                  :data="mapIssues.get(propsDetail.row.issueId).targetsList.targets"
+                  :data="mapAssets.get(propsDetail.row.targetId).issues"
                   :loading="loading"
                   :narrowed="true"
                   hoverable
                   detailed
-                  detail-key="targetId"
+                  detail-key="issueId"
                   :show-detail-icon="false"
                   paginated
                   backend-pagination
-                  :total="mapIssues.get(propsDetail.row.issueId).targetsList.pagination.total"
+                  :total="mapAssets.get(propsDetail.row.targetId).pagination.total"
                   :per-page="10"
-                  @click="row => toggleTargetDetails(propsDetail.row.issueId, row)"
-                  @page-change="page => onTargetDetailsPageChange(propsDetail.row.issueId, page)"
+                  @click="row => toggleIssueDetails(propsDetail.row.targetId, row)"
+                  @page-change="page => onIssueDetailsPageChange(propsDetail.row.targetId, page)"
                 >
-                  <template slot-scope="propsTargets">
-                    <b-table-column field="identifier" label="Asset">
-                      <b-icon icon="server" size="is-small"></b-icon>
-                      <a class="has-text-dark">{{ propsTargets.row.identifier }}</a>
-                    </b-table-column>
 
-                    <!-- Count -->
-                    <b-table-column
-                      centered
-                      width="100"
-                      field="findingsCount"
-                      label="Affected Resources"
-                    >
-                      <b-icon icon="bug" size="is-small"></b-icon>
-                      <span class="tag">{{ propsTargets.row.findingsCount }}</span>
-                    </b-table-column>
+                <template slot-scope="propsIssues">
+                  <b-table-column field="summary" label="Issues">
+                    <b-icon icon="server" size="is-small"></b-icon>
+                    <a class="has-text-dark">{{ propsIssues.row.summary }}</a>
+                  </b-table-column>
 
-                    <!-- Severity -->
-                    <b-table-column centered width="100" field="maxScore" label="Severity">
-                      <span
-                        v-bind:class="severityStyle(propsTargets.row.maxScore)" style="width: 70"
-                      >{{ severityText(propsTargets.row.maxScore) }}</span>
-                    </b-table-column>
-                  </template>
+                  <b-table-column centered width="100" field="targetsCount" label="Affected Resources">
+                    <b-icon icon="bug" size="is-small"></b-icon>
+                    <span class="tag">{{ propsIssues.row.targetsCount }}</span>
+                  </b-table-column>
 
-                  <!-- Resources table -->
-                  <template slot="detail" slot-scope="propsDetailAffectedResources">
-                    <b-table
-                      :ref="'tableDetailAffectedResources-'+propsDetail.row.issueId+'-'+propsDetailAffectedResources.row.targetId"
+                  <b-table-column centered width="100" field="severity" label="Severity">
+                    <span
+                        v-bind:class="severityStyle(propsIssues.row.maxScore)" style="width: 70"
+                    > {{ severityText(propsIssues.row.maxScore) }}</span>
+                  </b-table-column>
+                </template>
+
+                <!-- Resources table -->
+                <template slot="detail" slot-scope="propsDetailAffectedResources">
+                  <div>
+                    <VueShowdown
+                      :markdown="mapAssets.get(propsDetail.row.targetId).findings.get(propsDetailAffectedResources.row.issueId)[0].issue.description"
+                      :extensions="['htmlSanitize']"
+                    />
+                  </div>
+                  <table class="table is-striped is-fullwidth">
+                    <!-- Recommendations -->
+                    <tr>
+                      <td class="has-text-weight-bold">Recommendations</td>
+                      <td style="width:100%">
+                        <table>
+                          <tr
+                          v-for="recommendation in mapAssets.get(propsDetail.row.targetId).findings.get(propsDetailAffectedResources.row.issueId)[0].issue.recommendations"
+                          :key="recommendation"
+                          >
+                            <td>
+                              <VueShowdown :markdown="recommendation" :extensions="['htmlSanitize']" />
+                            </td>
+                          </tr>
+                        </table>
+                      </td>
+                    </tr>
+                    <!-- References -->
+                    <tr v-if="mapAssets.get(propsDetail.row.targetId).findings.get(propsDetailAffectedResources.row.issueId)[0].issue.referenceLinks">
+                      <td class="has-text-weight-bold">References</td>
+                      <td style="width:100%">
+                        <a
+                          v-for="reference in mapAssets.get(propsDetail.row.targetId).findings.get(propsDetailAffectedResources.row.issueId)[0].issue.referenceLinks"
+                          :key="reference"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          :href="reference"
+                          class="button reference"
+                        >
+                          <span>{{ urlDomain(reference) }}</span>
+                          <span class="icon is-small">
+                          <i class="fa fa-external-link"></i>
+                          </span>
+                        </a>
+                      </td>
+                    </tr>
+                  </table>
+
+                  <b-table
+                      :ref="'tableDetailAffectedResources-'+propsDetail.row.targetId+'-'+propsDetailAffectedResources.row.issueId"
                       class="live-report"
                       :row-class="showcursor"
-                      :data="mapIssues.get(propsDetail.row.issueId).findings.get(propsDetailAffectedResources.row.targetId)"
+                      :data="mapAssets.get(propsDetail.row.targetId).findings.get(propsDetailAffectedResources.row.issueId)"
                       :loading="loading"
                       :narrowed="true"
                       hoverable
@@ -153,7 +143,8 @@ Copyright 2021 Adevinta
                         <b-table-column
                           field="affectedResource"
                           label="Resource"
-                        >{{ propsX.row.affectedResource }}</b-table-column>
+                        >{{ propsX.row.affectedResource }}
+                        </b-table-column>
 
                         <!-- Direct Link -->
                         <b-table-column width="100" field="link" label="Direct Link">
@@ -205,7 +196,8 @@ import tokenProvider from "../../common/token";
 import {
   Configuration as ApiConf,
   ConfigurationParameters,
-  FindingsIssue
+  FindingsIssue,
+  FindingsTarget
 } from "../../services/vulcan-api";
 import {
   FindingsApi,
@@ -221,18 +213,17 @@ import { Table } from "buefy";
 
 // Component declaration
 @Component({
-  name: "TableIssues",
+  name: "TableAssets",
   components: {}
 })
 
-// TableIssues is ...
-export default class TableIssues extends Vue {
+export default class TableAssets extends Vue {
   private apiUrl: string = "";
   private teamId: string = "";
   private findingsApi?: FindingsApi;
   private teamsApi?: TeamsApi;
-  private pageIssues: number = 1;
-  private perPageIssues: number = 20;
+  private pageAssets: number = 1;
+  private perPageAssets: number = 20;
 
   // Datepicker
   @Prop({ required: true })
@@ -244,8 +235,8 @@ export default class TableIssues extends Vue {
   @Prop({ required: true })
   private maxDate!: Date;
 
-  private issuesList: Array<FindingsIssue> = [];
-  private issuesListTotal: number = 0;
+  private assetsList: Array<FindingsTarget> = [];
+  private assetsListTotal: number = 0;
 
   private loading: boolean = false;
 
@@ -255,7 +246,7 @@ export default class TableIssues extends Vue {
   private statusClass = statusClass;
   private urlDomain = urlDomain;
 
-  private mapIssues = new Map();
+  private mapAssets = new Map();
 
   async mounted() {
     // this.atDate = new Date();
@@ -278,7 +269,7 @@ export default class TableIssues extends Vue {
 
       // Load team.
       this.teamId = teamID();
-      await this.loadIssues();
+      await this.loadAssets();
     } catch (err) {
       // TODO
     } finally {
@@ -289,27 +280,27 @@ export default class TableIssues extends Vue {
   @Watch('atDate')
   @Watch('minDate')
   @Watch('maxDate')
-  async loadIssues() {
+  async loadAssets() {
     const status = "OPEN";
-    const issuesReq: FindingsListFindingsIssuesRequest = {
+    const assetsReq: FindingsListFindingsTargetsRequest = {
       teamId: this.teamId,
       status: status,
-      page: this.pageIssues,
-      size: this.perPageIssues,
+      page: this.pageAssets,
+      size: this.perPageAssets,
       minDate: this.minDate ? this.dateToStr(this.minDate) : undefined,
       maxDate: this.maxDate ? this.dateToStr(this.maxDate) : undefined,
       atDate: this.atDate ? this.dateToStr(this.atDate) : undefined
     };
     if (this.dateToStr(this.atDate) == this.dateToStr(new Date())) {
-      issuesReq.atDate = undefined;
+      assetsReq.atDate = undefined;
     }
 
-    const issuesList = await this.findingsApi.findingsListFindingsIssues(
-      issuesReq
+    const assetsList = await this.findingsApi.findingsListFindingsTargets(
+      assetsReq
     );
 
-    this.issuesList = issuesList.issues!;
-    this.issuesListTotal = issuesList.pagination!.total!;
+    this.assetsList = assetsList.targets!;
+    this.assetsListTotal = assetsList.pagination!.total!;
   }
 
   dateToStr(date: Date): string {
@@ -327,10 +318,9 @@ export default class TableIssues extends Vue {
   async toggleDetails(row: Object) {
     const status = "OPEN";
 
-    // api call here?
-    const targetsReq: FindingsListFindingsTargetsRequest = {
+    const issuesReq: FindingsListFindingsIssuesRequest = {
       teamId: this.teamId,
-      issueID: row.issueId,
+      targetID: row.targetId,
       status: status,
       sortBy: "max_score",
       page: 1,
@@ -340,49 +330,30 @@ export default class TableIssues extends Vue {
       atDate: this.atDate ? this.dateToStr(this.atDate) : ""
     };
     if (this.dateToStr(this.atDate) == this.dateToStr(new Date())) {
-      targetsReq.atDate = undefined;
+      issuesReq.atDate = undefined;
     }
 
-    const targetsList = await this.findingsApi.findingsListFindingsTargets(
-      targetsReq
+    const issuesList = await this.findingsApi?.findingsListFindingsIssues(
+      issuesReq
     );
 
-    // get finding by issue and target
-    const findFindingReq: FindingsListFindingsRequest = {
-      teamId: this.teamId,
-      issueID: row.issueId,
-      targetID: targetsList.targets[0].targetId,
-      status: status,
-      page: 1,
-      size: 1,
-      minDate: this.minDate ? this.dateToStr(this.minDate) : "",
-      maxDate: this.maxDate ? this.dateToStr(this.maxDate) : "",
-      atDate: this.atDate ? this.dateToStr(this.atDate) : ""
-    };
-    if (this.dateToStr(this.atDate) == this.dateToStr(new Date())) {
-      findFindingReq.atDate = undefined;
-    }
-
-    const findingsList = await this.findingsApi.findingsListFindings(
-      findFindingReq
-    );
-
-    this.mapIssues.set(row.issueId, findingsList.findings[0].issue);
-    this.mapIssues.get(row.issueId).targetsList = targetsList;
+    this.mapAssets.set(row.targetId, issuesList);
 
     this.$refs.tableMainList.toggleDetails(row);
   }
 
-  async toggleTargetDetails(issueId: string, row: Object) {
+  async toggleIssueDetails(targetId: string, row: Object) {
     let page:number = 1;
     let more:boolean = true;
     
-    // TODO: Use pagination through a "See more" button on table?
+    // TODO: Req all findings for issue - target
+    // display generic issue data and resources list
+    
     while (more) {
       const findingsReq: FindingsListFindingsRequest = {
         teamId: this.teamId,
-        issueID: issueId,
-        targetID: row.targetId,
+        issueID: row.issueId,
+        targetID: targetId,
         status: status,
         page: page,
         size: 100,
@@ -397,14 +368,14 @@ export default class TableIssues extends Vue {
       const findingsList = await this.findingsApi.findingsListFindings(
         findingsReq
       );
-      if (this.mapIssues.get(issueId).findings == null) {
-        this.mapIssues.get(issueId).findings = new Map();
+      if (this.mapAssets.get(targetId).findings == null) {
+        this.mapAssets.get(targetId).findings = new Map();
       }
-
+      
       if (page == 1) {
-        this.mapIssues.get(issueId).findings.set(row.targetId, findingsList.findings);
+        this.mapAssets.get(targetId).findings.set(row.issueId, findingsList.findings);
       } else {
-        this.mapIssues.get(issueId).findings.get(row.targetId).concat(findingsList.findings);
+        this.mapAssets.get(targetId).findings.get(row.issueId).concat(findingsList.findings);
       }
 
       page++;
@@ -412,7 +383,7 @@ export default class TableIssues extends Vue {
     }
 
     //@ts-ignore
-    this.$refs["tableIssuesDetails-" + issueId].toggleDetails(row);
+    this.$refs["tableTargetsDetails-" + targetId].toggleDetails(row);
   }
 
   private showcursor() {
@@ -420,34 +391,34 @@ export default class TableIssues extends Vue {
   }
 
   async onMainListPageChange(page: number) {
-    this.pageIssues = page;
+    this.pageAssets = page;
 
     const status = "OPEN";
-    const issuesReq: FindingsListFindingsIssuesRequest = {
+    const targetsReq: FindingsListFindingsTargetsRequest = {
       teamId: this.teamId,
       status: status,
-      page: this.pageIssues,
-      size: this.perPageIssues,
+      page: this.pageAssets,
+      size: this.perPageAssets,
       minDate: this.minDate ? this.dateToStr(this.minDate) : undefined,
       maxDate: this.maxDate ? this.dateToStr(this.maxDate) : undefined,
       atDate: this.atDate ? this.dateToStr(this.atDate) : undefined
     };
     if (this.dateToStr(this.atDate) == this.dateToStr(new Date())) {
-      issuesReq.atDate = undefined;
+      targetsReq.atDate = undefined;
     }
 
-    const issuesList = await this.findingsApi.findingsListFindingsIssues(
-      issuesReq
+    const assetsList = await this.findingsApi.findingsListFindingsTargets(
+      targetsReq
     );
 
-    this.issuesList = issuesList.issues!;
-    this.issuesListTotal = issuesList.pagination!.total!;
+    this.assetsList = assetsList.targets!;
+    this.assetsListTotal = assetsList.pagination!.total!;
   }
 
-  async onTargetDetailsPageChange(issueId: string, page: number) {
-    const targetsReq: FindingsListFindingsTargetsRequest = {
+  async onIssueDetailsPageChange(targetId: string, page: number) {
+    const issuesReq: FindingsListFindingsIssuesRequest = {
       teamId: this.teamId,
-      issueID: issueId,
+      targetID: targetId,
       status: status,
       sortBy: "max_score",
       page: page,
@@ -457,14 +428,15 @@ export default class TableIssues extends Vue {
       atDate: this.atDate ? this.dateToStr(this.atDate) : ""
     };
     if (this.dateToStr(this.atDate) == this.dateToStr(new Date())) {
-      targetsReq.atDate = undefined;
+      issuesReq.atDate = undefined;
     }
 
-    const targetsList = await this.findingsApi.findingsListFindingsTargets(
-      targetsReq
+    const issuesList = await this.findingsApi.findingsListFindingsIssues(
+      issuesReq
     );
-    this.mapIssues.get(issueId).targetsList = targetsList;
-    this.$refs["tableIssuesDetails-" + issueId].$forceUpdate();
+    this.mapAssets.set(targetId, issuesList);
+    // this.mapAssets.get(targetId).issuesList = issuesList;
+    this.$refs["tableTargetsDetails-" + targetId].$forceUpdate();
     this.$refs["tableMainList"].$forceUpdate();
   }
 }

@@ -292,7 +292,13 @@ Copyright 2021 Adevinta
             <div class="card">
                 <div class="card-content">
                 <!-- /* ASSETS TABLE */ -->
-                    <ListOfFindings
+                    <TableAssets
+                        :minDate="minDate"
+                        :maxDate="maxDate"
+                        :atDate="atDate"
+                    >
+                    </TableAssets>
+                    <!-- <ListOfFindings
                         ref="assetsTable"
                         :teamId="teamId"
                         :data="this.dataAssets"
@@ -320,7 +326,7 @@ Copyright 2021 Adevinta
                         v-on:updatestats="updateStats"
                         v-on:handleerror="handleError"
                     >
-                    </ListOfFindings>
+                    </ListOfFindings> -->
                 </div>
 
                 <footer class="card-footer">
@@ -343,6 +349,7 @@ import { Component, Prop, Vue, Watch } from "vue-property-decorator";
   import FindingDetails from "../finding/finding.vue";
   import ListOfFindings from "../listOfFindings/list.vue";
   import TableIssues from "../tableIssues/tableIssues.vue";
+  import TableAssets from "../tableAssets/tableAssets.vue";
   import ListItem from "../listOfFindings/ListItem";
   import loadConfig, { Config } from "../../common/config";
   import tokenProvider from "../../common/token";
@@ -387,6 +394,7 @@ import {
     FindingDetails,
     ListOfFindings,
     TableIssues,
+    TableAssets,
   }
 })
 export default class Home extends Vue {
@@ -920,8 +928,8 @@ export default class Home extends Vue {
   }
 
   private resetDetailsTables() {
-      //this.$refs["issuesTable"].resetDetailsTables();
-      this.$refs["assetsTable"].resetDetailsTables();
+      // this.$refs["issuesTable"].resetDetailsTables(); // TODO
+      // this.$refs["assetsTable"].resetDetailsTables(); // TODO
   }
 }
 
