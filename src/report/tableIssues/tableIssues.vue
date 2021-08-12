@@ -15,7 +15,7 @@ Copyright 2021 Adevinta
       detailed
       detail-key="issueId"
       :show-detail-icon="false"
-      paginated
+      :paginated="paginated"
       backend-pagination
       :total="issuesListTotal"
       :per-page="perPageIssues"
@@ -192,7 +192,7 @@ Copyright 2021 Adevinta
 </template>
 
 <script lang="ts">
-// Imports section
+
 import { Component, Prop, Vue, Watch } from "vue-property-decorator";
 import loadConfig, { Config } from "../../common/config";
 import {
@@ -209,7 +209,6 @@ import {
 } from "../../services/vulcan-api";
 import {
   FindingsApi,
-  TeamsApi,
   FindingsListFindingsIssuesRequest,
   FindingsListFindingsTargetsRequest,
   FindingsListFindingsRequest
@@ -219,22 +218,17 @@ import teamID from "../../common/team";
 //@ts-ignore
 import { Table } from "buefy";
 
-// Component declaration
 @Component({
   name: "TableIssues",
   components: {}
 })
 
-// TableIssues is ...
 export default class TableIssues extends Vue {
   private apiUrl: string = "";
   private teamId: string = "";
   private findingsApi?: FindingsApi;
-  private teamsApi?: TeamsApi;
   private pageIssues: number = 1;
-  private perPageIssues: number = 20;
 
-  // Datepicker
   @Prop({ required: true })
   private atDate!: Date;
 
@@ -243,6 +237,15 @@ export default class TableIssues extends Vue {
 
   @Prop({ required: true })
   private maxDate!: Date;
+
+  @Prop({ required: false, default: "OPEN" })
+  private status!: string;
+
+  @Prop({ required: false, default: true })
+  private paginated!: boolean;
+
+  @Prop({ required: false, default: 20 })
+  private perPageIssues!: number;
 
   private issuesList: Array<FindingsIssue> = [];
   private issuesListTotal: number = 0;
@@ -258,11 +261,8 @@ export default class TableIssues extends Vue {
   private mapIssues = new Map();
 
   async mounted() {
-    // this.atDate = new Date();
-    // this.atDate.setMonth(this.atDate.getMonth() - 3);
-
     try {
-      // Load the config.
+      // Load config
       const conf = await loadConfig();
       const tProvider = tokenProvider(conf);
       const c: ConfigurationParameters = {
@@ -271,12 +271,11 @@ export default class TableIssues extends Vue {
       };
       this.apiUrl = conf.apiUrl;
 
-      // Build the api clients.
+      // Build the api clients
       const apiConfg = new ApiConf(c);
       this.findingsApi = new FindingsApi(apiConfg);
-      this.teamsApi = new TeamsApi(apiConfg);
 
-      // Load team.
+      // Load team
       this.teamId = teamID();
       await this.loadIssues();
     } catch (err) {
@@ -289,11 +288,11 @@ export default class TableIssues extends Vue {
   @Watch('atDate')
   @Watch('minDate')
   @Watch('maxDate')
+  @Watch('status')
   async loadIssues() {
-    const status = "OPEN";
     const issuesReq: FindingsListFindingsIssuesRequest = {
       teamId: this.teamId,
-      status: status,
+      status: this.status,
       page: this.pageIssues,
       size: this.perPageIssues,
       minDate: this.minDate ? this.dateToStr(this.minDate) : undefined,
@@ -325,14 +324,11 @@ export default class TableIssues extends Vue {
   }
 
   async toggleDetails(row: Object) {
-    const status = "OPEN";
-
-    // api call here?
     const targetsReq: FindingsListFindingsTargetsRequest = {
       teamId: this.teamId,
       issueID: row.issueId,
-      status: status,
-      sortBy: "max_score",
+      status: this.status,
+      sortBy: "-max_score",
       page: 1,
       size: 10,
       minDate: this.minDate ? this.dateToStr(this.minDate) : "",
@@ -352,7 +348,7 @@ export default class TableIssues extends Vue {
       teamId: this.teamId,
       issueID: row.issueId,
       targetID: targetsList.targets[0].targetId,
-      status: status,
+      status: this.status,
       page: 1,
       size: 1,
       minDate: this.minDate ? this.dateToStr(this.minDate) : "",
@@ -383,7 +379,8 @@ export default class TableIssues extends Vue {
         teamId: this.teamId,
         issueID: issueId,
         targetID: row.targetId,
-        status: status,
+        status: this.status,
+        sortBy: "-score",
         page: page,
         size: 100,
         minDate: this.minDate ? this.dateToStr(this.minDate) : "",
@@ -404,7 +401,8 @@ export default class TableIssues extends Vue {
       if (page == 1) {
         this.mapIssues.get(issueId).findings.set(row.targetId, findingsList.findings);
       } else {
-        this.mapIssues.get(issueId).findings.get(row.targetId).concat(findingsList.findings);
+        let findings = this.mapIssues.get(issueId).findings.get(row.targetId);
+        this.mapIssues.get(issueId).findings.set(row.targetId, findings.concat(findingsList.findings));
       }
 
       page++;
@@ -421,11 +419,9 @@ export default class TableIssues extends Vue {
 
   async onMainListPageChange(page: number) {
     this.pageIssues = page;
-
-    const status = "OPEN";
     const issuesReq: FindingsListFindingsIssuesRequest = {
       teamId: this.teamId,
-      status: status,
+      status: this.status,
       page: this.pageIssues,
       size: this.perPageIssues,
       minDate: this.minDate ? this.dateToStr(this.minDate) : undefined,
@@ -448,8 +444,8 @@ export default class TableIssues extends Vue {
     const targetsReq: FindingsListFindingsTargetsRequest = {
       teamId: this.teamId,
       issueID: issueId,
-      status: status,
-      sortBy: "max_score",
+      status: this.status,
+      sortBy: "-max_score",
       page: page,
       size: 10,
       minDate: this.minDate ? this.dateToStr(this.minDate) : "",

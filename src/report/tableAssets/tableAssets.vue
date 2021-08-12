@@ -15,7 +15,7 @@ Copyright 2021 Adevinta
       detailed
       detail-key="targetId"
       :show-detail-icon="false"
-      paginated
+      :paginated="paginated"
       backend-pagination
       :total="assetsListTotal"
       :per-page="perPageAssets"
@@ -183,7 +183,7 @@ Copyright 2021 Adevinta
 </template>
 
 <script lang="ts">
-// Imports section
+
 import { Component, Prop, Vue, Watch } from "vue-property-decorator";
 import loadConfig, { Config } from "../../common/config";
 import {
@@ -201,7 +201,6 @@ import {
 } from "../../services/vulcan-api";
 import {
   FindingsApi,
-  TeamsApi,
   FindingsListFindingsIssuesRequest,
   FindingsListFindingsTargetsRequest,
   FindingsListFindingsRequest
@@ -211,7 +210,6 @@ import teamID from "../../common/team";
 //@ts-ignore
 import { Table } from "buefy";
 
-// Component declaration
 @Component({
   name: "TableAssets",
   components: {}
@@ -221,11 +219,8 @@ export default class TableAssets extends Vue {
   private apiUrl: string = "";
   private teamId: string = "";
   private findingsApi?: FindingsApi;
-  private teamsApi?: TeamsApi;
   private pageAssets: number = 1;
-  private perPageAssets: number = 20;
 
-  // Datepicker
   @Prop({ required: true })
   private atDate!: Date;
 
@@ -234,6 +229,15 @@ export default class TableAssets extends Vue {
 
   @Prop({ required: true })
   private maxDate!: Date;
+
+  @Prop({ required: false, default: "OPEN" })
+  private status!: string;
+
+  @Prop({ required: false, default: true })
+  private paginated!: boolean;
+
+  @Prop({ required: false, default: 20 })
+  private perPageAssets!: number;
 
   private assetsList: Array<FindingsTarget> = [];
   private assetsListTotal: number = 0;
@@ -249,11 +253,8 @@ export default class TableAssets extends Vue {
   private mapAssets = new Map();
 
   async mounted() {
-    // this.atDate = new Date();
-    // this.atDate.setMonth(this.atDate.getMonth() - 3);
-
     try {
-      // Load the config.
+      // Load config
       const conf = await loadConfig();
       const tProvider = tokenProvider(conf);
       const c: ConfigurationParameters = {
@@ -262,12 +263,11 @@ export default class TableAssets extends Vue {
       };
       this.apiUrl = conf.apiUrl;
 
-      // Build the api clients.
+      // Build the api clients
       const apiConfg = new ApiConf(c);
       this.findingsApi = new FindingsApi(apiConfg);
-      this.teamsApi = new TeamsApi(apiConfg);
 
-      // Load team.
+      // Load team
       this.teamId = teamID();
       await this.loadAssets();
     } catch (err) {
@@ -280,11 +280,11 @@ export default class TableAssets extends Vue {
   @Watch('atDate')
   @Watch('minDate')
   @Watch('maxDate')
+  @Watch('status')
   async loadAssets() {
-    const status = "OPEN";
     const assetsReq: FindingsListFindingsTargetsRequest = {
       teamId: this.teamId,
-      status: status,
+      status: this.status,
       page: this.pageAssets,
       size: this.perPageAssets,
       minDate: this.minDate ? this.dateToStr(this.minDate) : undefined,
@@ -316,13 +316,11 @@ export default class TableAssets extends Vue {
   }
 
   async toggleDetails(row: Object) {
-    const status = "OPEN";
-
     const issuesReq: FindingsListFindingsIssuesRequest = {
       teamId: this.teamId,
       targetID: row.targetId,
-      status: status,
-      sortBy: "max_score",
+      status: this.status,
+      sortBy: "-max_score",
       page: 1,
       size: 10,
       minDate: this.minDate ? this.dateToStr(this.minDate) : "",
@@ -346,15 +344,14 @@ export default class TableAssets extends Vue {
     let page:number = 1;
     let more:boolean = true;
     
-    // TODO: Req all findings for issue - target
-    // display generic issue data and resources list
-    
+    // TODO: Use pagination through a "See more" button on table?
     while (more) {
       const findingsReq: FindingsListFindingsRequest = {
         teamId: this.teamId,
         issueID: row.issueId,
         targetID: targetId,
-        status: status,
+        status: this.status,
+        sortBy: "-score",
         page: page,
         size: 100,
         minDate: this.minDate ? this.dateToStr(this.minDate) : "",
@@ -375,7 +372,8 @@ export default class TableAssets extends Vue {
       if (page == 1) {
         this.mapAssets.get(targetId).findings.set(row.issueId, findingsList.findings);
       } else {
-        this.mapAssets.get(targetId).findings.get(row.issueId).concat(findingsList.findings);
+        let findings = this.mapAssets.get(targetId).findings.get(row.issueId);
+        this.mapAssets.get(targetId).findings.set(row.issueId, findings.concat(findingsList.findings));
       }
 
       page++;
@@ -393,10 +391,9 @@ export default class TableAssets extends Vue {
   async onMainListPageChange(page: number) {
     this.pageAssets = page;
 
-    const status = "OPEN";
     const targetsReq: FindingsListFindingsTargetsRequest = {
       teamId: this.teamId,
-      status: status,
+      status: this.status,
       page: this.pageAssets,
       size: this.perPageAssets,
       minDate: this.minDate ? this.dateToStr(this.minDate) : undefined,
@@ -419,8 +416,8 @@ export default class TableAssets extends Vue {
     const issuesReq: FindingsListFindingsIssuesRequest = {
       teamId: this.teamId,
       targetID: targetId,
-      status: status,
-      sortBy: "max_score",
+      status: this.status,
+      sortBy: "-max_score",
       page: page,
       size: 10,
       minDate: this.minDate ? this.dateToStr(this.minDate) : "",
@@ -435,7 +432,6 @@ export default class TableAssets extends Vue {
       issuesReq
     );
     this.mapAssets.set(targetId, issuesList);
-    // this.mapAssets.get(targetId).issuesList = issuesList;
     this.$refs["tableTargetsDetails-" + targetId].$forceUpdate();
     this.$refs["tableMainList"].$forceUpdate();
   }

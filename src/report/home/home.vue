@@ -176,33 +176,15 @@ Copyright 2021 Adevinta
                 <div class="card-content">
                 <h1 class="title">Top 10 Most Relevant Issues</h1>
                 <!-- /* TOP 10 ISSUES TABLE */ -->
-                <ListOfFindings
-                    ref="top10Issues"
-                    :teamId="teamId"
-                    :data="this.dataTop10Issues"
-                    :total="this.totalTop10Issues"
-                    :narrowed=true
-                    :paginated=false
-                    :perPage="10"
-                    :modeSelect="this.modeSelect"
-                    :minDate="this.minDate"
-                    :maxDate="this.maxDate"
-                    :atDate="this.atDate"
-                    :identifiers="this.identifiers"
-                    mode="issue"
-
-                    mainListDescriptionColumnHeader="Issue"
-                    mainListDescriptionColumnIcon="bug"
-
-                    mainListCountColumnHeader="Assets"
-                    mainListCountColumnIcon="server"
-
-                    mainListScoreColumnHeader="Severity"
-
-                    findingsListDescriptionColumnHeader="Asset"
-
+                <TableIssues
+                  :minDate="minDate"
+                  :maxDate="maxDate"
+                  :atDate="atDate"
+                  :paginated="false"
+                  :status="status"
+                  :perPageIssues="10"
                 >
-                </ListOfFindings>
+                </TableIssues>
                 </div>
             </div>
             <hr/>
@@ -210,32 +192,15 @@ Copyright 2021 Adevinta
                 <div class="card-content">
                 <h1 class="title">Top 10 Most Vulnerable Assets</h1>
                 <!-- /* TOP 10 ASSETS TABLE */ -->
-                <ListOfFindings
-                    ref="top10Assets"
-                    :teamId="teamId"
-                    :data="this.dataTop10Assets"
-                    :total="this.totalTop10Assets"
-                    :perPage="10"
-                    :paginated=false
-                    :modeSelect="this.modeSelect"
-                    :minDate="this.minDate"
-                    :maxDate="this.maxDate"
-                    :atDate="this.atDate"
-                    :identifiers="this.identifiers"
-                    mode="target"
-
-                    mainListDescriptionColumnHeader="Asset"
-                    mainListDescriptionColumnIcon="server"
-
-                    mainListCountColumnHeader="Issues"
-                    mainListCountColumnIcon="bug"
-
-                    mainListScoreColumnHeader="Severity"
-
-                    findingsListDescriptionColumnHeader="Issue"
-
+                <TableAssets
+                  :minDate="minDate"
+                  :maxDate="maxDate"
+                  :atDate="atDate"
+                  :status="status"
+                  :paginated="false"
+                  :perPageAssets="10"
                 >
-                </ListOfFindings>
+                </TableAssets>
                 </div>
             </div>
 
@@ -245,40 +210,12 @@ Copyright 2021 Adevinta
                 <div class="card-content">
                     <!-- /* ISSUES TABLE */ -->
                     <TableIssues
-                        :minDate="minDate"
-                        :maxDate="maxDate"
-                        :atDate="atDate"
+                      :minDate="minDate"
+                      :maxDate="maxDate"
+                      :atDate="atDate"
+                      :status="status"
                     >
                     </TableIssues>
-                    <!-- <ListOfFindings
-                        ref="issuesTable"
-                        :teamId="teamId"
-                        :data="this.dataIssues"
-                        :total="this.totalIssues"
-                        :perPage="this.perPageIssues"
-                        :modeSelect="this.modeSelect"
-                        :minDate="this.minDate"
-                        :maxDate="this.maxDate"
-                        :atDate="this.atDate"
-                        :identifiers="this.identifiers"
-                        mode="issue"
-
-                        mainListDescriptionColumnHeader="Issue"
-                        mainListDescriptionColumnIcon="bug"
-
-                        mainListCountColumnHeader="Assets"
-                        mainListCountColumnIcon="server"
-
-                        mainListScoreColumnHeader="Severity"
-
-                        findingsListDescriptionColumnHeader="Asset"
-
-                        v-on:updatepage="updatePageIssues"
-                        v-on:updateperpage="updatePerPageIssues"
-                        v-on:updatestats="updateStats"
-                        v-on:handleerror="handleError"
-                    >
-                    </ListOfFindings>  CONFLICT -->
                 </div>
 
                 <footer class="card-footer">
@@ -291,42 +228,14 @@ Copyright 2021 Adevinta
             <b-tab-item label="Assets" class="has-text-strong" icon="server">
             <div class="card">
                 <div class="card-content">
-                <!-- /* ASSETS TABLE */ -->
-                    <TableAssets
-                        :minDate="minDate"
-                        :maxDate="maxDate"
-                        :atDate="atDate"
-                    >
-                    </TableAssets>
-                    <!-- <ListOfFindings
-                        ref="assetsTable"
-                        :teamId="teamId"
-                        :data="this.dataAssets"
-                        :total="this.totalAssets"
-                        :perPage="this.perPageAssets"
-                        :modeSelect="this.modeSelect"
-                        :minDate="this.minDate"
-                        :maxDate="this.maxDate"
-                        :atDate="this.atDate"
-                        :identifiers="this.identifiers"
-                        mode="target"
-
-                        mainListDescriptionColumnHeader="Asset"
-                        mainListDescriptionColumnIcon="server"
-
-                        mainListCountColumnHeader="Issues"
-                        mainListCountColumnIcon="bug"
-
-                        mainListScoreColumnHeader="Severity"
-
-                        findingsListDescriptionColumnHeader="Issue"
-
-                        v-on:updatepage="updatePageTargets"
-                        v-on:updateperpage="updatePerPageTargets"
-                        v-on:updatestats="updateStats"
-                        v-on:handleerror="handleError"
-                    >
-                    </ListOfFindings> -->
+                  <!-- /* ASSETS TABLE */ -->
+                  <TableAssets
+                    :minDate="minDate"
+                    :maxDate="maxDate"
+                    :atDate="atDate"
+                    :status="status"
+                  >
+                  </TableAssets>
                 </div>
 
                 <footer class="card-footer">
@@ -350,37 +259,20 @@ import { Component, Prop, Vue, Watch } from "vue-property-decorator";
   import ListOfFindings from "../listOfFindings/list.vue";
   import TableIssues from "../tableIssues/tableIssues.vue";
   import TableAssets from "../tableAssets/tableAssets.vue";
-  import ListItem from "../listOfFindings/ListItem";
   import loadConfig, { Config } from "../../common/config";
   import tokenProvider from "../../common/token";
   import teamID from "../../common/team";
 import { severityStyle, severityText, statusClass } from "../utils/utils";
 import {
    Configuration as ApiConf,
-    ConfigurationParameters,
-    Configuration
+   ConfigurationParameters,
 } from "../../services/vulcan-api";
 import {
-   FindingsApi,
-   FindingsListFindingsRequest,
-   FindingsListFindingsIssuesRequest,
-   FindingsListFindingsTargetsRequest,
-   TeamsApi, 
-   TeamsShowRequest,
-   UserApi, 
    StatsApi, 
    StatsOpenRequest, 
    StatsFixedRequest,
-   FindingsFindFindingsFromAIssueRequest,
-   FindingsFindFindingsFromATargetRequest
 } from "../../services/vulcan-api/apis";
 import {
-  Finding,
-  FindingsList,
-  Team,
-  FindingsTarget,
-  FindingsIssue,
-  User,
   Statsopen,
   Statsfixed
 } from "../../services/vulcan-api/models";
@@ -417,44 +309,16 @@ export default class Home extends Vue {
   private showError: boolean = false;
   private errorMessage: string = "";
 
-  private team: string = "";
   private teamId: string = "";
-  private findingsApi?: FindingsApi;
-  private teamsApi?: TeamsApi;
-  private userApi?: UserApi;
   private statsApi?: StatsApi;
-  private userProfile?: User;
 
   // Datepicker
   private atDate: Date = new Date();
   private minDate: Date = null;
   private maxDate: Date = null;
   
+  private status: string = "";
   private identifiers: string = "";
-
-  // Issues
-  private dataIssues: ListItem[] = [];
-  private totalIssues: number = 0;
-  private loadingIssues: boolean = false;
-  private pageIssues: number = 1;
-  private perPageIssues: number = 20;
-
-  // Assets
-  private dataAssets: ListItem[] = [];
-  private totalAssets: number = 0;
-  private loadingAssets: boolean = false;
-  private pageAssets: number = 1;
-  private perPageAssets: number = 20;
-
-  // Top 10 issues
-  private dataTop10Issues: FindingsIssue[] = [];
-  private totalTop10Issues: number = 0;
-  private loadingTop10Issues: boolean = false;
-
-  // Top 10 Assets
-  private dataTop10Assets: ListItem[] = [];
-  private totalTop10Assets: number = 0;
-  private loadingTop10Assets: boolean = false;
 
   private statsOpen: Statsopen = {};
   private statsFixed: Statsfixed = {};
@@ -476,13 +340,7 @@ export default class Home extends Vue {
 
       // Build the api clients.
       const apiConfg = new ApiConf(c);
-      this.findingsApi = new FindingsApi(apiConfg);
-      this.teamsApi = new TeamsApi(apiConfg);
-      this.userApi = new UserApi(apiConfg);
       this.statsApi = new StatsApi(apiConfg);
-
-      // TODO: Load tables data
-      // concurrently.
 
       // Load team.
       this.teamId = teamID();
@@ -493,11 +351,11 @@ export default class Home extends Vue {
       } else {
         this.modeSelect="digest";
       }
-      this.identifiers = qparams.get('identifiers') || ""
-
       if (qparams.get('status')=="FIXED") {
         this.modeSelect="FIXED";
       }
+
+      this.identifiers = qparams.get('identifiers') || ""
 
       this.onSelectInput(this.modeSelect);
     } catch (err) {
@@ -535,183 +393,6 @@ export default class Home extends Vue {
     this.statsFixed = await this.statsApi.statsFixed(req)
   }
 
-  private async loadTop10Issues(teamId: string, api: FindingsApi) {
-    let status = "OPEN"
-    if (this.modeSelect=="fixed") {
-      status="FIXED"
-    }
-
-    const issuesReq: FindingsListFindingsIssuesRequest = {
-      teamId: teamId,
-      status: status,
-      page: 0,
-      size: 10,
-      minDate: this.minDate ? this.dateToStr(this.minDate) : undefined,
-      maxDate: this.maxDate ? this.dateToStr(this.maxDate) : undefined,
-      atDate: this.atDate ? this.dateToStr(this.atDate) : undefined,
-      identifiers: this.identifiers,
-    };
-    if (this.dateToStr(this.atDate)==this.dateToStr(new Date())){
-      issuesReq.atDate=undefined;
-    }
-
-    this.loadingTop10Issues = true;
-    const issuesList = await api.findingsListFindingsIssues(issuesReq);
-    this.loadingTop10Issues = false;
-
-    this.dataTop10Issues = this.convertFindingsIssuesToListItem(issuesList.issues) || [];
-    this.totalTop10Issues = issuesList.pagination!.total || 0;
-  }
-
-  private async loadTop10Assets(teamId: string, api: FindingsApi) {
-    let status = "OPEN"
-    if (this.modeSelect=="fixed") {
-      status="FIXED"
-    }
-
-    const assetsReq: FindingsListFindingsTargetsRequest = {
-      teamId: teamId,
-      status: status,
-      page: 0,
-      size: 10,
-      minDate: this.minDate ? this.dateToStr(this.minDate) : undefined,
-      maxDate: this.maxDate ? this.dateToStr(this.maxDate) : undefined,
-      atDate: this.atDate ? this.dateToStr(this.atDate) : undefined,
-      identifiers: this.identifiers,
-    };
-    if (this.dateToStr(this.atDate)==this.dateToStr(new Date())){
-      assetsReq.atDate=undefined;
-    }
-
-    this.loadingTop10Assets = true;
-    const assetsList = await api.findingsListFindingsTargets(assetsReq);
-    this.loadingTop10Assets = false;
-
-    this.dataTop10Assets = this.convertFindingsTargetToListItem(assetsList.targets) || [];
-    this.totalTop10Assets = assetsList.pagination!.total || 0;
-  }
-
-  private async loadIssues(teamId: string, api: FindingsApi) {
-    let status = "OPEN"
-    if (this.modeSelect=="fixed") {
-      status="FIXED"
-    }
-
-    const issuesReq: FindingsListFindingsIssuesRequest = {
-      teamId: teamId,
-      status: status,
-      page: this.pageIssues,
-      size: this.perPageIssues,
-      minDate: this.minDate ? this.dateToStr(this.minDate) : undefined,
-      maxDate: this.maxDate ? this.dateToStr(this.maxDate) : undefined,
-      atDate: this.atDate ? this.dateToStr(this.atDate) : undefined,
-      identifiers: this.identifiers,
-    };
-    if (this.dateToStr(this.atDate)==this.dateToStr(new Date())){
-      issuesReq.atDate=undefined;
-    }
-
-    const issuesList = await api.findingsListFindingsIssues(issuesReq);
-    
-    this.dataIssues = this.convertFindingsIssuesToListItem(issuesList.issues) || [];
-    this.totalIssues = issuesList.pagination!.total || 0;
-  }
-
-  private convertFindingsIssuesToListItem(issuesList: FindingsIssue[]) {
-    let result: ListItem[] = [];
-
-    for (var i=0; i < issuesList.length; i++){
-        let item: ListItem = {
-            Id: issuesList[i].issueId,
-            Description: issuesList[i].summary,
-            Count: issuesList[i].targetsCount,
-            Score: issuesList[i].maxScore,
-        };
-        result.push(item);
-    }
-
-    return result;
-  }
-
-  private async loadAssets(teamId: string, api: FindingsApi) {
-    let status = "OPEN"
-    if (this.modeSelect=="fixed") {
-      status="FIXED"
-    }
-
-    const assetsReq: FindingsListFindingsTargetsRequest = {
-      teamId: teamId,
-      status: status,
-      page: this.pageAssets,
-      size: this.perPageAssets,
-      minDate: this.minDate ? this.dateToStr(this.minDate) : undefined,
-      maxDate: this.maxDate ? this.dateToStr(this.maxDate) : undefined,
-      atDate: this.atDate ? this.dateToStr(this.atDate) : undefined,
-      identifiers: this.identifiers,
-    };
-    if (this.dateToStr(this.atDate)==this.dateToStr(new Date())){
-      assetsReq.atDate=undefined;
-    }
-
-    const assetsList = await api.findingsListFindingsTargets(assetsReq);
-    
-    this.dataAssets = this.convertFindingsTargetToListItem(assetsList.targets) || [];
-    this.totalAssets = assetsList.pagination!.total || 0;
-  }
-
-  private convertFindingsTargetToListItem(assetsList: FindingsTarget[]) {
-    let result: ListItem[] = [];
-      
-    for (var i=0; i < assetsList.length; i++){
-        let item: ListItem = {
-            Id: assetsList[i].targetId,
-            Description: assetsList[i].identifier,
-            Count: assetsList[i].findingsCount,
-            Score: assetsList[i].maxScore,
-        };
-        result.push(item);
-    }
-
-    return result;
-  }
-
-  private async updatePageTargets(page: number) {
-      this.pageAssets = page;
-      await this.loadAssets(
-        this.teamId,
-        this.findingsApi
-      );
-  }
-
-  private async updatePerPageTargets(perPage: number) {
-    this.perPageAssets = perPage;
-    await this.loadAssets(
-        this.teamId,
-        this.findingsApi
-    );
-  }
-
-  private async updatePageIssues(page: number) {
-      this.pageIssues = page;
-      await this.loadIssues(
-        this.teamId,
-        this.findingsApi
-      );
-  }
-
-  private async updatePerPageIssues(perPage: number) {
-    this.perPageIssues = perPage;
-    await this.loadIssues(
-        this.teamId,
-        this.findingsApi
-    );
-  }
-
-  private async updateStats() {
-    this.getStatsFixed(this.statsApi);
-    this.getStatsOpen(this.statsApi);
-  }
-
   dateToStr(date: Date): string {
     const year  = new Intl.DateTimeFormat('en', { year:  'numeric' }).format(date);
     const month = new Intl.DateTimeFormat('en', { month: '2-digit' }).format(date);
@@ -723,46 +404,17 @@ export default class Home extends Vue {
   @Watch('atDate')
   async onAtDateChanged(value: string, oldValue: string) {
     try {
-      this.resetDetailsTables();
 
-      if (!this.findingsApi) {
+      if (!this.statsApi) {
         throw new Error("no client api found");
       }
-
-      this.pageIssues = null;
-      this.loadingIssues = true;
-
-      this.pageAssets = null;
-      this.loadingAssets = true;
       
       this.getStatsOpen(
         this.statsApi,
       );
 
-      this.loadTop10Issues(
-        this.teamId,
-        this.findingsApi
-      );
-
-      this.loadTop10Assets(
-        this.teamId,
-        this.findingsApi
-      );
-
-      await this.loadIssues(
-        this.teamId,
-        this.findingsApi
-      );
-
-      await this.loadAssets(
-        this.teamId,
-        this.findingsApi
-      );
     } catch (err) {
       this.$emit('handleerror', err);
-    } finally {
-      this.loadingIssues = false;
-      this.loadingAssets = false;
     }
   }
 
@@ -770,17 +422,10 @@ export default class Home extends Vue {
   @Watch('maxDate')
   async onMinMaxDateChange(value: string, oldValue: string) {
     try {
-      this.resetDetailsTables();
 
-      if (!this.findingsApi) {
+      if (!this.statsApi) {
         throw new Error("no client api found");
       }
-
-      this.pageIssues = null;
-      this.loadingIssues = true;
-
-      this.pageAssets = null;
-      this.loadingAssets = true;
       
       if (this.modeSelect=="open") {
         await this.getStatsOpen(
@@ -791,36 +436,15 @@ export default class Home extends Vue {
           this.statsApi,
         );
       }
+      // TODO: Are we missing digest option here?
       
-      await this.loadTop10Issues(
-        this.teamId,
-        this.findingsApi
-      );
-
-      await this.loadTop10Assets(
-        this.teamId,
-        this.findingsApi
-      );
-
-      await this.loadIssues(
-        this.teamId,
-        this.findingsApi
-      );
-
-      await this.loadAssets(
-        this.teamId,
-        this.findingsApi
-      );
     } catch (err) {
       this.$emit('handleerror', err);
-    } finally {
-      this.loadingIssues = false;
-      this.loadingAssets = false;
     }
   }
 
   onSelectInput(value) {
-    this.resetDetailsTables(); 
+    this.status = "OPEN";
 
     if (value=="digest") {
       this.modeDescription = "Showing all findings that are still OPEN until the selected date.";
@@ -834,6 +458,7 @@ export default class Home extends Vue {
     } else if (value=="open" || value=="fixed"){
       this.modeDescription = "Showing all findings that were DETECTED during a time range.";
       if (value=="fixed") {
+        this.status = "FIXED";
         this.modeDescription = "Showing all findings that were FIXED during a time range.";
       }
       this.atDate = null;
@@ -860,7 +485,7 @@ export default class Home extends Vue {
   }
 
   onClickDateShortcut(range) {
-    if (this.modeSelect=='diff' || this.modeSelect=='fixed') {
+    if (this.modeSelect=='open' || this.modeSelect=='fixed') {
       this.maxDate=new Date();
       this.minDate=new Date(this.maxDate);
       if (range=='7days') {
@@ -925,11 +550,6 @@ export default class Home extends Vue {
 
   private handleError(err: any) {
     this.$emit('handleerror', err);
-  }
-
-  private resetDetailsTables() {
-      // this.$refs["issuesTable"].resetDetailsTables(); // TODO
-      // this.$refs["assetsTable"].resetDetailsTables(); // TODO
   }
 }
 
