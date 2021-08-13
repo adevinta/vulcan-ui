@@ -46,6 +46,7 @@ export interface StatsExposureRequest {
 export interface StatsFixedRequest {
     teamId: string;
     atDate?: string;
+    identifiers?: string;
     maxDate?: string;
     minDate?: string;
 }
@@ -166,6 +167,10 @@ export class StatsApi extends runtime.BaseAPI {
 
         if (requestParameters.atDate !== undefined) {
             queryParameters['atDate'] = requestParameters.atDate;
+        }
+
+        if (requestParameters.identifiers !== undefined) {
+            queryParameters['identifiers'] = requestParameters.identifiers;
         }
 
         if (requestParameters.maxDate !== undefined) {

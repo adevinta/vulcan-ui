@@ -385,7 +385,7 @@ export default class Home extends Vue {
       minDate: this.minDate ? this.dateToStr(this.minDate) : undefined,
       maxDate: this.maxDate ? this.dateToStr(this.maxDate) : undefined,
       atDate: this.atDate ? this.dateToStr(this.atDate) : undefined,
-      // TODO: support identifiers
+      identifiers: this.identifiers,
     };
     if (this.dateToStr(this.atDate)==this.dateToStr(new Date())){
       req.atDate=undefined;
