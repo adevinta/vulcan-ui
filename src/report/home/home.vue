@@ -284,6 +284,10 @@ import {
   Statsfixed
 } from "../../services/vulcan-api/models";
 
+const digestModeDesc = "Showing all findings that are still OPEN until the selected date.";
+const openModeDesc = "Showing all findings that were DETECTED during a time range.";
+const fixedModeDesc = "Showing all findings that were FIXED during a time range.";
+
 @Component({
   name: "Home",
   components: {
@@ -445,39 +449,43 @@ export default class Home extends Vue {
   onSelectInput(value) {
     this.status = "OPEN";
 
-    if (value=="digest") {
-      this.modeDescription = "Showing all findings that are still OPEN until the selected date.";
+    if (value == "digest") {
+      
+      this.modeDescription = digestModeDesc;
+      
       this.atDate = new Date();
-      this.digestDateClass = "";
-
       this.minDate = null;
       this.maxDate = null;
+
+      this.digestDateClass = "";
       this.diffMinDateClass = "is-hidden";
       this.diffMaxDateClass = "is-hidden";
-    } else if (value=="open" || value=="fixed"){
-      this.modeDescription = "Showing all findings that were DETECTED during a time range.";
-      if (value=="fixed") {
-        this.status = "FIXED";
-        this.modeDescription = "Showing all findings that were FIXED during a time range.";
-      }
-      this.atDate = null;
-      this.digestDateClass = "is-hidden";
 
+    } else if (value == "open" || value == "fixed"){
+      
+      this.modeDescription = openModeDesc;
+      if (value == "fixed") {
+        this.status = "FIXED";
+        this.modeDescription = fixedModeDesc;
+      }
+
+      this.atDate = null;
       this.maxDate = new Date();
       this.minDate = new Date(this.maxDate);
       this.minDate.setMonth(this.minDate.getMonth() - 3);
 
       var qparams = new URL(document.location.toString()).searchParams;
+      
       let minDate = qparams.get('minDate');
       if (minDate && minDate.length > 0){
         this.minDate = new Date(minDate.substr(0,4), minDate.substr(5,2)-1, minDate.substr(8, 2))
       }
-
       let maxDate = qparams.get('maxDate');
       if (maxDate && maxDate.length > 0){
         this.maxDate = new Date(maxDate.substr(0,4), maxDate.substr(5,2)-1, maxDate.substr(8, 2))
       }
 
+      this.digestDateClass = "is-hidden";
       this.diffMinDateClass = "";
       this.diffMaxDateClass = "";
     }
