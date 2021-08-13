@@ -172,6 +172,13 @@ Copyright 2021 Adevinta
                           >{{ (propsX.row.status.charAt(0).toUpperCase() + propsX.row.status.toLowerCase().slice(1)).replace("False_positive", "False Positive") }}</span>
                         </b-table-column>
 
+                        <!-- Age -->
+                        <b-table-column centered width="100" field="age" label="Age (days)">
+                          <a class="has-text-dark">
+                            {{ propsX.row.status == "OPEN" ? Math.round(propsX.row.currentExposure/24) : "" }}
+                          </a>
+                        </b-table-column>
+
                         <!-- Severity -->
                         <b-table-column width="100" field="severity" label="Severity">
                           <span
