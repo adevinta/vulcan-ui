@@ -241,6 +241,9 @@ export default class TableIssues extends Vue {
   @Prop({ required: false, default: "OPEN" })
   private status!: string;
 
+  @Prop({ required: true })
+  private identifiers!: string;
+
   @Prop({ required: false, default: true })
   private paginated!: boolean;
 
@@ -282,7 +285,13 @@ export default class TableIssues extends Vue {
       // Set up watchers
       this.$watch(
         function() {
-          return [this.atDate, this.minDate, this.maxDate, this.status]},
+          return [
+            this.atDate,
+            this.minDate,
+            this.maxDate,
+            this.status,
+            this.identifiers
+          ]},
         function() {
           this.loadIssues();
       });
@@ -303,7 +312,8 @@ export default class TableIssues extends Vue {
         size: this.perPageIssues,
         minDate: this.minDate ? this.dateToStr(this.minDate) : undefined,
         maxDate: this.maxDate ? this.dateToStr(this.maxDate) : undefined,
-        atDate: this.atDate ? this.dateToStr(this.atDate) : undefined
+        atDate: this.atDate ? this.dateToStr(this.atDate) : undefined,
+        identifiers: this.identifiers
       };
       if (this.dateToStr(this.atDate) == this.dateToStr(new Date())) {
         issuesReq.atDate = undefined;
@@ -343,7 +353,8 @@ export default class TableIssues extends Vue {
         size: 10,
         minDate: this.minDate ? this.dateToStr(this.minDate) : "",
         maxDate: this.maxDate ? this.dateToStr(this.maxDate) : "",
-        atDate: this.atDate ? this.dateToStr(this.atDate) : ""
+        atDate: this.atDate ? this.dateToStr(this.atDate) : "",
+        identifiers: this.identifiers
       };
       if (this.dateToStr(this.atDate) == this.dateToStr(new Date())) {
         targetsReq.atDate = undefined;
@@ -418,7 +429,7 @@ export default class TableIssues extends Vue {
           let findings = this.mapIssues.get(issueId).findings.get(row.targetId);
           this.mapIssues.get(issueId).findings.set(row.targetId, findings.concat(findingsList.findings));
         }
-        
+
         page++;
         more = findingsList.pagination?.more || false;
       }
@@ -444,7 +455,8 @@ export default class TableIssues extends Vue {
         size: this.perPageIssues,
         minDate: this.minDate ? this.dateToStr(this.minDate) : undefined,
         maxDate: this.maxDate ? this.dateToStr(this.maxDate) : undefined,
-        atDate: this.atDate ? this.dateToStr(this.atDate) : undefined
+        atDate: this.atDate ? this.dateToStr(this.atDate) : undefined,
+        identifiers: this.identifiers
       };
       if (this.dateToStr(this.atDate) == this.dateToStr(new Date())) {
         issuesReq.atDate = undefined;
@@ -472,7 +484,8 @@ export default class TableIssues extends Vue {
         size: 10,
         minDate: this.minDate ? this.dateToStr(this.minDate) : "",
         maxDate: this.maxDate ? this.dateToStr(this.maxDate) : "",
-        atDate: this.atDate ? this.dateToStr(this.atDate) : ""
+        atDate: this.atDate ? this.dateToStr(this.atDate) : "",
+        identifiers: this.identifiers
       };
       if (this.dateToStr(this.atDate) == this.dateToStr(new Date())) {
         targetsReq.atDate = undefined;

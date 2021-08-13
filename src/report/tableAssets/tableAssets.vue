@@ -232,6 +232,9 @@ export default class TableAssets extends Vue {
   @Prop({ required: false, default: "OPEN" })
   private status!: string;
 
+  @Prop({ required: true })
+  private identifiers!: string;
+
   @Prop({ required: false, default: true })
   private paginated!: boolean;
 
@@ -273,7 +276,13 @@ export default class TableAssets extends Vue {
       // Set up watchers
       this.$watch(
         function() {
-          return [this.atDate, this.minDate, this.maxDate, this.status]},
+          return [
+            this.atDate,
+            this.minDate,
+            this.maxDate,
+            this.status,
+            this.identifiers
+          ]},
         function() {
           this.loadAssets();
       });
@@ -294,7 +303,8 @@ export default class TableAssets extends Vue {
         size: this.perPageAssets,
         minDate: this.minDate ? this.dateToStr(this.minDate) : undefined,
         maxDate: this.maxDate ? this.dateToStr(this.maxDate) : undefined,
-        atDate: this.atDate ? this.dateToStr(this.atDate) : undefined
+        atDate: this.atDate ? this.dateToStr(this.atDate) : undefined,
+        identifiers: this.identifiers
       };
       if (this.dateToStr(this.atDate) == this.dateToStr(new Date())) {
         assetsReq.atDate = undefined;
@@ -334,7 +344,8 @@ export default class TableAssets extends Vue {
         size: 10,
         minDate: this.minDate ? this.dateToStr(this.minDate) : "",
         maxDate: this.maxDate ? this.dateToStr(this.maxDate) : "",
-        atDate: this.atDate ? this.dateToStr(this.atDate) : ""
+        atDate: this.atDate ? this.dateToStr(this.atDate) : "",
+        identifiers: this.identifiers
       };
       if (this.dateToStr(this.atDate) == this.dateToStr(new Date())) {
         issuesReq.atDate = undefined;
@@ -413,7 +424,8 @@ export default class TableAssets extends Vue {
         size: this.perPageAssets,
         minDate: this.minDate ? this.dateToStr(this.minDate) : undefined,
         maxDate: this.maxDate ? this.dateToStr(this.maxDate) : undefined,
-        atDate: this.atDate ? this.dateToStr(this.atDate) : undefined
+        atDate: this.atDate ? this.dateToStr(this.atDate) : undefined,
+        identifiers: this.identifiers
       };
       if (this.dateToStr(this.atDate) == this.dateToStr(new Date())) {
         targetsReq.atDate = undefined;
@@ -441,7 +453,8 @@ export default class TableAssets extends Vue {
         size: 10,
         minDate: this.minDate ? this.dateToStr(this.minDate) : "",
         maxDate: this.maxDate ? this.dateToStr(this.maxDate) : "",
-        atDate: this.atDate ? this.dateToStr(this.atDate) : ""
+        atDate: this.atDate ? this.dateToStr(this.atDate) : "",
+        identifiers: this.identifiers
       };
       if (this.dateToStr(this.atDate) == this.dateToStr(new Date())) {
         issuesReq.atDate = undefined;

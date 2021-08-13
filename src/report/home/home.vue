@@ -172,7 +172,7 @@ Copyright 2021 Adevinta
             type="is-boxed"
             :animated=false>
             <b-tab-item label="Overview" class="has-text-strong" icon="eye">
-            <div class="card">
+            <div v-if='homeMounted' class="card">
                 <div class="card-content">
                 <h1 class="title">Top 10 Most Relevant Issues</h1>
                 <!-- /* TOP 10 ISSUES TABLE */ -->
@@ -180,8 +180,9 @@ Copyright 2021 Adevinta
                   :minDate="minDate"
                   :maxDate="maxDate"
                   :atDate="atDate"
-                  :paginated="false"
                   :status="status"
+                  :identifiers="identifiers"
+                  :paginated="false"
                   :perPageIssues="10"
                   v-on:handleerror="handleError"
                 >
@@ -189,7 +190,7 @@ Copyright 2021 Adevinta
                 </div>
             </div>
             <hr/>
-            <div class="card">
+            <div v-if='homeMounted' class="card">
                 <div class="card-content">
                 <h1 class="title">Top 10 Most Vulnerable Assets</h1>
                 <!-- /* TOP 10 ASSETS TABLE */ -->
@@ -198,6 +199,7 @@ Copyright 2021 Adevinta
                   :maxDate="maxDate"
                   :atDate="atDate"
                   :status="status"
+                  :identifiers="identifiers"
                   :paginated="false"
                   :perPageAssets="10"
                   v-on:handleerror="handleError"
@@ -208,7 +210,7 @@ Copyright 2021 Adevinta
 
             </b-tab-item>
             <b-tab-item label="Issues" class="has-text-strong" icon="bug">
-            <div class="card">
+            <div v-if='homeMounted' class="card">
                 <div class="card-content">
                     <!-- /* ISSUES TABLE */ -->
                     <TableIssues
@@ -216,6 +218,7 @@ Copyright 2021 Adevinta
                       :maxDate="maxDate"
                       :atDate="atDate"
                       :status="status"
+                      :identifiers="identifiers"
                       v-on:handleerror="handleError"
                     >
                     </TableIssues>
@@ -229,7 +232,7 @@ Copyright 2021 Adevinta
             </b-tab-item>
 
             <b-tab-item label="Assets" class="has-text-strong" icon="server">
-            <div class="card">
+            <div v-if='homeMounted' class="card">
                 <div class="card-content">
                   <!-- /* ASSETS TABLE */ -->
                   <TableAssets
@@ -237,6 +240,7 @@ Copyright 2021 Adevinta
                     :maxDate="maxDate"
                     :atDate="atDate"
                     :status="status"
+                    :identifiers="identifiers"
                     v-on:handleerror="handleError"
                   >
                   </TableAssets>
@@ -304,6 +308,7 @@ export default class Home extends Vue {
   private diffMaxDateClass: string = "is-hidden";
 
   private loading: boolean = true;
+  private homeMounted: boolean = false;
 
   private showSession: boolean = false;
   private apiUrl: string = "";
@@ -331,7 +336,7 @@ export default class Home extends Vue {
 
   async mounted() {
     try {
-      // Load the config.
+      // Load the config
       const conf = await loadConfig();
       const tProvider = tokenProvider(conf);
       const c: ConfigurationParameters = {
@@ -340,26 +345,18 @@ export default class Home extends Vue {
       };
       this.apiUrl = conf.apiUrl;
 
-      // Build the api clients.
+      // Build the api clients
       const apiConfg = new ApiConf(c);
       this.statsApi = new StatsApi(apiConfg);
 
-      // Load team.
+      // Load params
       this.teamId = teamID();
-
-      var qparams = new URL(document.location.toString()).searchParams;
-      if (qparams.get('minDate') || qparams.get('maxDate')) {
-        this.modeSelect="open";
-      } else {
-        this.modeSelect="digest";
-      }
-      if (qparams.get('status')=="FIXED") {
-        this.modeSelect="FIXED";
-      }
-
-      this.identifiers = qparams.get('identifiers') || ""
-
+      this.parseQueryString();
       this.onSelectInput(this.modeSelect);
+      
+      // Set mounted flag to true so childs can init
+      // with parsed data for query string parameters
+      this.homeMounted = true;
     } catch (err) {
       this.$emit('handleerror', err);
     } finally {
@@ -388,6 +385,7 @@ export default class Home extends Vue {
       minDate: this.minDate ? this.dateToStr(this.minDate) : undefined,
       maxDate: this.maxDate ? this.dateToStr(this.maxDate) : undefined,
       atDate: this.atDate ? this.dateToStr(this.atDate) : undefined,
+      // TODO: support identifiers
     };
     if (this.dateToStr(this.atDate)==this.dateToStr(new Date())){
       req.atDate=undefined;
@@ -547,6 +545,19 @@ export default class Home extends Vue {
     d.setHours(d.getHours() - (currentExposure/24)*24);
     let tmp = (d.toISOString().split('T')[0]).split('-')
     return tmp[2]+"/"+tmp[1]+"/"+tmp[0];
+  }
+
+  private parseQueryString() {
+    var qparams = new URL(document.location.toString()).searchParams;
+      if (qparams.get('minDate') || qparams.get('maxDate')) {
+        this.modeSelect="open";
+      } else {
+        this.modeSelect="digest";
+      }
+      if (qparams.get('status')=="FIXED") {
+        this.modeSelect="FIXED";
+      }
+      this.identifiers = qparams.get('identifiers') || ""
   }
 
   private handleError(err: any) {
