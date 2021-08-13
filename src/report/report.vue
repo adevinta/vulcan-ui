@@ -189,10 +189,11 @@ export default class LiveReport extends Vue {
       console.log(`error: " ${err.message}`);
       this.errorMessage = `unexpected error: ${err.message}`;
       this.showError = true;
-      return;
+    } else {
+      console.log(`unexpected error: " ${JSON.stringify(err)}`);
+      this.showError = true;
     }
-    console.log(`unexpected error: " ${JSON.stringify(err)}`);
-    this.showError = true;
+    window.scrollTo(0,0);
   }
 
   onSelectTeam(){

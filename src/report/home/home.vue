@@ -183,6 +183,7 @@ Copyright 2021 Adevinta
                   :paginated="false"
                   :status="status"
                   :perPageIssues="10"
+                  v-on:handleerror="handleError"
                 >
                 </TableIssues>
                 </div>
@@ -199,6 +200,7 @@ Copyright 2021 Adevinta
                   :status="status"
                   :paginated="false"
                   :perPageAssets="10"
+                  v-on:handleerror="handleError"
                 >
                 </TableAssets>
                 </div>
@@ -214,6 +216,7 @@ Copyright 2021 Adevinta
                       :maxDate="maxDate"
                       :atDate="atDate"
                       :status="status"
+                      v-on:handleerror="handleError"
                     >
                     </TableIssues>
                 </div>
@@ -234,6 +237,7 @@ Copyright 2021 Adevinta
                     :maxDate="maxDate"
                     :atDate="atDate"
                     :status="status"
+                    v-on:handleerror="handleError"
                   >
                   </TableAssets>
                 </div>
@@ -256,7 +260,6 @@ import { Component, Prop, Vue, Watch } from "vue-property-decorator";
   import ErrorDialog from "../../components/error.vue";
   import Session from "../../components/session.vue";
   import FindingDetails from "../finding/finding.vue";
-  import ListOfFindings from "../listOfFindings/list.vue";
   import TableIssues from "../tableIssues/tableIssues.vue";
   import TableAssets from "../tableAssets/tableAssets.vue";
   import loadConfig, { Config } from "../../common/config";
@@ -284,7 +287,6 @@ import {
     ErrorDialog,
     Session,
     FindingDetails,
-    ListOfFindings,
     TableIssues,
     TableAssets,
   }
@@ -317,7 +319,7 @@ export default class Home extends Vue {
   private minDate: Date = null;
   private maxDate: Date = null;
   
-  private status: string = "";
+  private status: string = "OPEN";
   private identifiers: string = "";
 
   private statsOpen: Statsopen = {};
@@ -436,7 +438,6 @@ export default class Home extends Vue {
           this.statsApi,
         );
       }
-      // TODO: Are we missing digest option here?
       
     } catch (err) {
       this.$emit('handleerror', err);
