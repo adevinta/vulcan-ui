@@ -24,12 +24,12 @@ Copyright 2021 Adevinta
     >
       <template slot-scope="propsMainList">
         <b-table-column field="summary" label="Issues">
-          <b-icon icon="server" size="is-small"></b-icon>
+          <b-icon icon="bug" size="is-small"></b-icon>
           <a class="has-text-dark">{{ propsMainList.row.summary }}</a>
         </b-table-column>
 
         <b-table-column centered width="100" field="targetsCount" label="Assets">
-          <b-icon icon="bug" size="is-small"></b-icon>
+          <b-icon icon="server" size="is-small"></b-icon>
           <span class="tag">{{ propsMainList.row.targetsCount }}</span>
         </b-table-column>
 
@@ -311,6 +311,8 @@ export default class TableIssues extends Vue {
   }
 
   async loadIssues() {
+    // this.loading = true;
+
     try {
       const issuesReq: FindingsListFindingsIssuesRequest = {
         teamId: this.teamId,
@@ -334,6 +336,8 @@ export default class TableIssues extends Vue {
       this.issuesListTotal = issuesList.pagination!.total!;
     } catch (err) {
       this.$emit('handleerror', err);
+    } finally {
+      // this.loading = false;
     }
   }
 
