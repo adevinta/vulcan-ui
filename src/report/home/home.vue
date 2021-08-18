@@ -160,7 +160,18 @@ Copyright 2021 Adevinta
                 <b-message type="is-info">
                     {{ modeDescription }}
                 </b-message>
-                
+                <!-- Labels Picker -->
+                <div>
+                  <section>
+                    <b-field>
+                      <b-checkbox-button type="is-info" v-model="selLabels" v-for="label in allLabels" :key="label"
+                          :native-value="label"
+                      >
+                        <span>{{ label }}</span>
+                      </b-checkbox-button>
+                    </b-field>
+                  </section>
+                </div>
             </div>
         </b-collapse>
         </div>
@@ -175,13 +186,14 @@ Copyright 2021 Adevinta
             <div v-if='homeMounted' class="card">
                 <div class="card-content">
                 <h1 class="title">Top 10 Most Relevant Issues</h1>
-                <!-- /* TOP 10 ISSUES TABLE */ -->
+                <!-- TOP 10 ISSUES TABLE -->
                 <TableIssues
                   :minDate="minDate"
                   :maxDate="maxDate"
                   :atDate="atDate"
                   :status="status"
                   :identifiers="identifiers"
+                  :labels="selLabels"
                   :paginated="false"
                   :perPageIssues="10"
                   v-on:handleerror="handleError"
@@ -193,13 +205,14 @@ Copyright 2021 Adevinta
             <div v-if='homeMounted' class="card">
                 <div class="card-content">
                 <h1 class="title">Top 10 Most Vulnerable Assets</h1>
-                <!-- /* TOP 10 ASSETS TABLE */ -->
+                <!-- TOP 10 ASSETS TABLE -->
                 <TableAssets
                   :minDate="minDate"
                   :maxDate="maxDate"
                   :atDate="atDate"
                   :status="status"
                   :identifiers="identifiers"
+                  :labels="selLabels"
                   :paginated="false"
                   :perPageAssets="10"
                   v-on:handleerror="handleError"
@@ -212,13 +225,14 @@ Copyright 2021 Adevinta
             <b-tab-item label="Issues" class="has-text-strong" icon="bug">
             <div v-if='homeMounted' class="card">
                 <div class="card-content">
-                    <!-- /* ISSUES TABLE */ -->
+                    <!-- ISSUES TABLE -->
                     <TableIssues
                       :minDate="minDate"
                       :maxDate="maxDate"
                       :atDate="atDate"
                       :status="status"
                       :identifiers="identifiers"
+                      :labels="selLabels"
                       v-on:handleerror="handleError"
                     >
                     </TableIssues>
@@ -234,13 +248,14 @@ Copyright 2021 Adevinta
             <b-tab-item label="Assets" class="has-text-strong" icon="server">
             <div v-if='homeMounted' class="card">
                 <div class="card-content">
-                  <!-- /* ASSETS TABLE */ -->
+                  <!-- ASSETS TABLE -->
                   <TableAssets
                     :minDate="minDate"
                     :maxDate="maxDate"
                     :atDate="atDate"
                     :status="status"
                     :identifiers="identifiers"
+                    :labels="selLabels"
                     v-on:handleerror="handleError"
                   >
                   </TableAssets>
@@ -278,6 +293,8 @@ import {
    StatsApi, 
    StatsOpenRequest, 
    StatsFixedRequest,
+   FindingsApi,
+   FindingsListFindingsLabelsRequest
 } from "../../services/vulcan-api/apis";
 import {
   Statsopen,
@@ -322,6 +339,7 @@ export default class Home extends Vue {
 
   private teamId: string = "";
   private statsApi?: StatsApi;
+  private findingsApi?: FindingsApi;
 
   // Datepicker
   private atDate: Date = new Date();
@@ -330,6 +348,8 @@ export default class Home extends Vue {
   
   private status: string = "OPEN";
   private identifiers: string = "";
+  private allLabels: string[] = [];
+  private selLabels: string[] = [];
 
   private statsOpen: Statsopen = {};
   private statsFixed: Statsfixed = {};
@@ -352,12 +372,13 @@ export default class Home extends Vue {
       // Build the api clients
       const apiConfg = new ApiConf(c);
       this.statsApi = new StatsApi(apiConfg);
+      this.findingsApi = new FindingsApi(apiConfg);
 
       // Load params
       this.teamId = teamID();
       this.parseQueryString();
       this.onSelectInput(this.modeSelect);
-      
+
       // Set mounted flag to true so childs can init
       // with parsed data for query string parameters
       this.homeMounted = true;
@@ -369,6 +390,31 @@ export default class Home extends Vue {
     }
   }
 
+  private async loadLabels(findingsApi: FindingsApi) {
+    try {
+      const labelsReq: FindingsListFindingsLabelsRequest = {
+        teamId: this.teamId,
+        status: this.status,
+        minDate: this.minDate ? this.dateToStr(this.minDate) : undefined,
+        maxDate: this.maxDate ? this.dateToStr(this.maxDate) : undefined,
+        atDate: this.atDate ? this.dateToStr(this.atDate) : undefined,
+        identifiers: this.identifiers,
+      };
+      if (this.dateToStr(this.atDate) == this.dateToStr(new Date())) {
+        labelsReq.atDate = undefined;
+      }
+  
+      const labelsList = await findingsApi?.findingsListFindingsLabels(
+        labelsReq
+      );
+  
+      this.allLabels = labelsList.labels!;
+    } catch (err) {
+      this.$emit('handleerror', err);
+    }
+  }
+
+
   private async getStatsOpen(statsApi: StatsApi) {
     const req: StatsOpenRequest = {
       teamId: this.teamId,
@@ -376,6 +422,7 @@ export default class Home extends Vue {
       maxDate: this.maxDate ? this.dateToStr(this.maxDate) : undefined,
       atDate: this.atDate ? this.dateToStr(this.atDate) : undefined,
       identifiers: this.identifiers,
+      labels: this.selLabels.join(",")
     };
     if (this.dateToStr(this.atDate)==this.dateToStr(new Date())){
       req.atDate=undefined;
@@ -390,6 +437,7 @@ export default class Home extends Vue {
       maxDate: this.maxDate ? this.dateToStr(this.maxDate) : undefined,
       atDate: this.atDate ? this.dateToStr(this.atDate) : undefined,
       identifiers: this.identifiers,
+      labels: this.selLabels.join(",")
     };
     if (this.dateToStr(this.atDate)==this.dateToStr(new Date())){
       req.atDate=undefined;
@@ -406,15 +454,20 @@ export default class Home extends Vue {
   }
 
   @Watch('atDate')
+  @Watch('selLabels', {deep: true})
   async onAtDateChanged(value: string, oldValue: string) {
     try {
 
-      if (!this.statsApi) {
+      if (!this.statsApi || !this.findingsApi) {
         throw new Error("no client api found");
       }
       
       this.getStatsOpen(
         this.statsApi,
+      );
+
+      this.loadLabels(
+        this.findingsApi
       );
 
     } catch (err) {
@@ -424,22 +477,27 @@ export default class Home extends Vue {
 
   @Watch('minDate')
   @Watch('maxDate')
+  @Watch('selLabels', {deep: true})
   async onMinMaxDateChange(value: string, oldValue: string) {
     try {
 
-      if (!this.statsApi) {
+      if (!this.statsApi || !this.findingsApi) {
         throw new Error("no client api found");
       }
       
       if (this.modeSelect=="open") {
-        await this.getStatsOpen(
+          this.getStatsOpen(
           this.statsApi,
         );
       } else if (this.modeSelect=="fixed") {
-        await this.getStatsFixed(
+          this.getStatsFixed(
           this.statsApi,
         );
       }
+
+      this.loadLabels(
+        this.findingsApi
+      );
       
     } catch (err) {
       this.$emit('handleerror', err);
@@ -542,10 +600,6 @@ export default class Home extends Vue {
         this.atDate.setFullYear(this.atDate.getFullYear() - 2);
       }
     }
-  }
-
-  rowclass(){
-    return "showcursor"
   }
 
   openSince(currentExposure) {

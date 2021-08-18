@@ -27,6 +27,9 @@ import {
     FindingsIssuesList,
     FindingsIssuesListFromJSON,
     FindingsIssuesListToJSON,
+    FindingsLabels,
+    FindingsLabelsFromJSON,
+    FindingsLabelsToJSON,
     FindingsList,
     FindingsListFromJSON,
     FindingsListToJSON,
@@ -45,6 +48,7 @@ export interface FindingsFindFindingsFromAIssueRequest {
     teamId: string;
     atDate?: string;
     identifiers?: string;
+    labels?: string;
     maxDate?: string;
     maxScore?: number;
     minDate?: string;
@@ -60,6 +64,7 @@ export interface FindingsFindFindingsFromATargetRequest {
     teamId: string;
     atDate?: string;
     identifiers?: string;
+    labels?: string;
     maxDate?: string;
     maxScore?: number;
     minDate?: string;
@@ -81,6 +86,7 @@ export interface FindingsListFindingsRequest {
     identifier?: string;
     identifiers?: string;
     issueID?: string;
+    labels?: string;
     maxDate?: string;
     maxScore?: number;
     minDate?: string;
@@ -96,6 +102,7 @@ export interface FindingsListFindingsIssuesRequest {
     teamId: string;
     atDate?: string;
     identifiers?: string;
+    labels?: string;
     maxDate?: string;
     minDate?: string;
     page?: number;
@@ -105,11 +112,21 @@ export interface FindingsListFindingsIssuesRequest {
     targetID?: string;
 }
 
+export interface FindingsListFindingsLabelsRequest {
+    teamId: string;
+    atDate?: string;
+    identifiers?: string;
+    maxDate?: string;
+    minDate?: string;
+    status?: string;
+}
+
 export interface FindingsListFindingsTargetsRequest {
     teamId: string;
     atDate?: string;
     identifiers?: string;
     issueID?: string;
+    labels?: string;
     maxDate?: string;
     minDate?: string;
     page?: number;
@@ -192,6 +209,10 @@ export class FindingsApi extends runtime.BaseAPI {
             queryParameters['identifiers'] = requestParameters.identifiers;
         }
 
+        if (requestParameters.labels !== undefined) {
+            queryParameters['labels'] = requestParameters.labels;
+        }
+
         if (requestParameters.maxDate !== undefined) {
             queryParameters['maxDate'] = requestParameters.maxDate;
         }
@@ -270,6 +291,10 @@ export class FindingsApi extends runtime.BaseAPI {
 
         if (requestParameters.identifiers !== undefined) {
             queryParameters['identifiers'] = requestParameters.identifiers;
+        }
+
+        if (requestParameters.labels !== undefined) {
+            queryParameters['labels'] = requestParameters.labels;
         }
 
         if (requestParameters.maxDate !== undefined) {
@@ -396,6 +421,10 @@ export class FindingsApi extends runtime.BaseAPI {
             queryParameters['issueID'] = requestParameters.issueID;
         }
 
+        if (requestParameters.labels !== undefined) {
+            queryParameters['labels'] = requestParameters.labels;
+        }
+
         if (requestParameters.maxDate !== undefined) {
             queryParameters['maxDate'] = requestParameters.maxDate;
         }
@@ -476,6 +505,10 @@ export class FindingsApi extends runtime.BaseAPI {
             queryParameters['identifiers'] = requestParameters.identifiers;
         }
 
+        if (requestParameters.labels !== undefined) {
+            queryParameters['labels'] = requestParameters.labels;
+        }
+
         if (requestParameters.maxDate !== undefined) {
             queryParameters['maxDate'] = requestParameters.maxDate;
         }
@@ -530,6 +563,62 @@ export class FindingsApi extends runtime.BaseAPI {
     }
 
     /**
+     * List all findings labels.
+     * List findings labels findings
+     */
+    async findingsListFindingsLabelsRaw(requestParameters: FindingsListFindingsLabelsRequest): Promise<runtime.ApiResponse<FindingsLabels>> {
+        if (requestParameters.teamId === null || requestParameters.teamId === undefined) {
+            throw new runtime.RequiredError('teamId','Required parameter requestParameters.teamId was null or undefined when calling findingsListFindingsLabels.');
+        }
+
+        const queryParameters: any = {};
+
+        if (requestParameters.atDate !== undefined) {
+            queryParameters['atDate'] = requestParameters.atDate;
+        }
+
+        if (requestParameters.identifiers !== undefined) {
+            queryParameters['identifiers'] = requestParameters.identifiers;
+        }
+
+        if (requestParameters.maxDate !== undefined) {
+            queryParameters['maxDate'] = requestParameters.maxDate;
+        }
+
+        if (requestParameters.minDate !== undefined) {
+            queryParameters['minDate'] = requestParameters.minDate;
+        }
+
+        if (requestParameters.status !== undefined) {
+            queryParameters['status'] = requestParameters.status;
+        }
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["authorization"] = this.configuration.apiKey("authorization"); // Bearer authentication
+        }
+
+        const response = await this.request({
+            path: `/teams/{team_id}/findings/labels`.replace(`{${"team_id"}}`, encodeURIComponent(String(requestParameters.teamId))),
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        });
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => FindingsLabelsFromJSON(jsonValue));
+    }
+
+    /**
+     * List all findings labels.
+     * List findings labels findings
+     */
+    async findingsListFindingsLabels(requestParameters: FindingsListFindingsLabelsRequest): Promise<FindingsLabels> {
+        const response = await this.findingsListFindingsLabelsRaw(requestParameters);
+        return await response.value();
+    }
+
+    /**
      * List number of findings and max score per target.
      * list findings targets findings
      */
@@ -550,6 +639,10 @@ export class FindingsApi extends runtime.BaseAPI {
 
         if (requestParameters.issueID !== undefined) {
             queryParameters['issueID'] = requestParameters.issueID;
+        }
+
+        if (requestParameters.labels !== undefined) {
+            queryParameters['labels'] = requestParameters.labels;
         }
 
         if (requestParameters.maxDate !== undefined) {

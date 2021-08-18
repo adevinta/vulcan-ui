@@ -47,6 +47,7 @@ export interface StatsFixedRequest {
     teamId: string;
     atDate?: string;
     identifiers?: string;
+    labels?: string;
     maxDate?: string;
     minDate?: string;
 }
@@ -61,6 +62,7 @@ export interface StatsOpenRequest {
     teamId: string;
     atDate?: string;
     identifiers?: string;
+    labels?: string;
     maxDate?: string;
     minDate?: string;
 }
@@ -173,6 +175,10 @@ export class StatsApi extends runtime.BaseAPI {
             queryParameters['identifiers'] = requestParameters.identifiers;
         }
 
+        if (requestParameters.labels !== undefined) {
+            queryParameters['labels'] = requestParameters.labels;
+        }
+
         if (requestParameters.maxDate !== undefined) {
             queryParameters['maxDate'] = requestParameters.maxDate;
         }
@@ -267,6 +273,10 @@ export class StatsApi extends runtime.BaseAPI {
 
         if (requestParameters.identifiers !== undefined) {
             queryParameters['identifiers'] = requestParameters.identifiers;
+        }
+
+        if (requestParameters.labels !== undefined) {
+            queryParameters['labels'] = requestParameters.labels;
         }
 
         if (requestParameters.maxDate !== undefined) {

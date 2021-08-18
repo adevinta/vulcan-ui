@@ -38,6 +38,12 @@ export interface Issue {
      */
     id?: string;
     /**
+     * Associated labels
+     * @type {Array<string>}
+     * @memberof Issue
+     */
+    labels?: Array<string>;
+    /**
      * Recommendations to fix the issue
      * @type {Array<string>}
      * @memberof Issue
@@ -70,6 +76,7 @@ export function IssueFromJSONTyped(json: any, ignoreDiscriminator: boolean): Iss
         'cweId': !exists(json, 'cwe_id') ? undefined : json['cwe_id'],
         'description': !exists(json, 'description') ? undefined : json['description'],
         'id': !exists(json, 'id') ? undefined : json['id'],
+        'labels': !exists(json, 'labels') ? undefined : json['labels'],
         'recommendations': !exists(json, 'recommendations') ? undefined : json['recommendations'],
         'referenceLinks': !exists(json, 'reference_links') ? undefined : json['reference_links'],
         'summary': !exists(json, 'summary') ? undefined : json['summary'],
@@ -88,6 +95,7 @@ export function IssueToJSON(value?: Issue | null): any {
         'cwe_id': value.cweId,
         'description': value.description,
         'id': value.id,
+        'labels': value.labels,
         'recommendations': value.recommendations,
         'reference_links': value.referenceLinks,
         'summary': value.summary,

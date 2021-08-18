@@ -251,6 +251,9 @@ export default class TableIssues extends Vue {
   @Prop({ required: true })
   private identifiers!: string;
 
+  @Prop({ required: true })
+  private labels!: string[];
+
   @Prop({ required: false, default: true })
   private paginated!: boolean;
 
@@ -297,7 +300,8 @@ export default class TableIssues extends Vue {
             this.minDate,
             this.maxDate,
             this.status,
-            this.identifiers
+            this.identifiers,
+            this.labels
           ]},
         function() {
           this.loadIssues();
@@ -322,7 +326,8 @@ export default class TableIssues extends Vue {
         minDate: this.minDate ? this.dateToStr(this.minDate) : undefined,
         maxDate: this.maxDate ? this.dateToStr(this.maxDate) : undefined,
         atDate: this.atDate ? this.dateToStr(this.atDate) : undefined,
-        identifiers: this.identifiers
+        identifiers: this.identifiers,
+        labels: this.labels.join(",")
       };
       if (this.dateToStr(this.atDate) == this.dateToStr(new Date())) {
         issuesReq.atDate = undefined;
@@ -361,7 +366,8 @@ export default class TableIssues extends Vue {
         minDate: this.minDate ? this.dateToStr(this.minDate) : "",
         maxDate: this.maxDate ? this.dateToStr(this.maxDate) : "",
         atDate: this.atDate ? this.dateToStr(this.atDate) : "",
-        identifiers: this.identifiers
+        identifiers: this.identifiers,
+        labels: this.labels.join(",")
       };
       if (this.dateToStr(this.atDate) == this.dateToStr(new Date())) {
         targetsReq.atDate = undefined;
@@ -464,7 +470,8 @@ export default class TableIssues extends Vue {
         minDate: this.minDate ? this.dateToStr(this.minDate) : undefined,
         maxDate: this.maxDate ? this.dateToStr(this.maxDate) : undefined,
         atDate: this.atDate ? this.dateToStr(this.atDate) : undefined,
-        identifiers: this.identifiers
+        identifiers: this.identifiers,
+        labels: this.labels.join(",")
       };
       if (this.dateToStr(this.atDate) == this.dateToStr(new Date())) {
         issuesReq.atDate = undefined;
@@ -493,7 +500,8 @@ export default class TableIssues extends Vue {
         minDate: this.minDate ? this.dateToStr(this.minDate) : "",
         maxDate: this.maxDate ? this.dateToStr(this.maxDate) : "",
         atDate: this.atDate ? this.dateToStr(this.atDate) : "",
-        identifiers: this.identifiers
+        identifiers: this.identifiers,
+        labels: this.labels.join(",")
       };
       if (this.dateToStr(this.atDate) == this.dateToStr(new Date())) {
         targetsReq.atDate = undefined;
