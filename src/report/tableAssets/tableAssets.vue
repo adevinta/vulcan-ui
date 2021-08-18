@@ -66,12 +66,12 @@ Copyright 2021 Adevinta
 
                 <template slot-scope="propsIssues">
                   <b-table-column field="summary" label="Issues">
-                    <b-icon icon="server" size="is-small"></b-icon>
+                    <b-icon icon="bug" size="is-small"></b-icon>
                     <a class="has-text-dark">{{ propsIssues.row.summary }}</a>
                   </b-table-column>
 
                   <b-table-column centered width="100" field="targetsCount" label="Affected Resources">
-                    <b-icon icon="bug" size="is-small"></b-icon>
+                    <b-icon icon="server" size="is-small"></b-icon>
                     <span class="tag">{{ propsIssues.row.targetsCount }}</span>
                   </b-table-column>
 
@@ -140,10 +140,8 @@ Copyright 2021 Adevinta
                       :show-detail-icon="false"
                     >
                       <template slot-scope="propsX">
-                        <b-table-column
-                          field="affectedResource"
-                          label="Resource"
-                        >{{ propsX.row.affectedResource }}
+                        <b-table-column field="affectedResource" label="Resource">
+                          {{ propsX.row.affectedResource }}
                         </b-table-column>
 
                         <!-- Direct Link -->
