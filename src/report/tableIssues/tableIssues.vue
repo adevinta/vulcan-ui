@@ -309,15 +309,12 @@ export default class TableIssues extends Vue {
 
     } catch (err) {
       this.$emit('handleerror', err);
-    } finally {
-      // TODO
     }
   }
 
   async loadIssues() {
-    // this.loading = true;
-
     try {
+      this.loading = true;
       const issuesReq: FindingsListFindingsIssuesRequest = {
         teamId: this.teamId,
         status: this.status,
@@ -342,7 +339,7 @@ export default class TableIssues extends Vue {
     } catch (err) {
       this.$emit('handleerror', err);
     } finally {
-      // this.loading = false;
+      this.loading = false;
     }
   }
 

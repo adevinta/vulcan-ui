@@ -300,13 +300,12 @@ export default class TableAssets extends Vue {
 
     } catch (err) {
       this.$emit('handleerror', err);
-    } finally {
-      // TODO
     }
   }
 
   async loadAssets() {
     try {
+      this.loading = true;
       const assetsReq: FindingsListFindingsTargetsRequest = {
         teamId: this.teamId,
         status: this.status,
@@ -330,6 +329,8 @@ export default class TableAssets extends Vue {
       this.assetsListTotal = assetsList.pagination!.total!;
     } catch (err) {
       this.$emit('handleerror', err);
+    } finally {
+      this.loading = false;
     }
   }
 
