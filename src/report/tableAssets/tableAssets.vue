@@ -28,9 +28,9 @@ Copyright 2021 Adevinta
           <a class="has-text-dark">{{ propsMainList.row.identifier }}</a>
         </b-table-column>
 
-        <b-table-column centered width="100" field="targetsCount" label="Issues">
+        <b-table-column centered width="100" field="issuesCount" label="Issues">
           <b-icon icon="bug" size="is-small"></b-icon>
-          <span class="tag">{{ propsMainList.row.findingsCount }}</span>
+          <span class="tag">{{ propsMainList.row.issuesCount }}</span>
         </b-table-column>
 
         <b-table-column centered width="100" field="Score" label="Score">
@@ -72,7 +72,7 @@ Copyright 2021 Adevinta
 
                   <b-table-column centered width="100" field="targetsCount" label="Affected Resources">
                     <b-icon icon="server" size="is-small"></b-icon>
-                    <span class="tag">{{ propsIssues.row.targetsCount }}</span>
+                    <span class="tag">{{ propsIssues.row.resourcesCount }}</span>
                   </b-table-column>
 
                   <b-table-column centered width="100" field="severity" label="Severity">

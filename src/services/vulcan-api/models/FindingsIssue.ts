@@ -32,6 +32,12 @@ export interface FindingsIssue {
      */
     maxScore?: number;
     /**
+     * Number of affected resources by the issue
+     * @type {number}
+     * @memberof FindingsIssue
+     */
+    resourcesCount?: number;
+    /**
      * Issue summary
      * @type {string}
      * @memberof FindingsIssue
@@ -57,6 +63,7 @@ export function FindingsIssueFromJSONTyped(json: any, ignoreDiscriminator: boole
         
         'issueId': !exists(json, 'issue_id') ? undefined : json['issue_id'],
         'maxScore': !exists(json, 'max_score') ? undefined : json['max_score'],
+        'resourcesCount': !exists(json, 'resources_count') ? undefined : json['resources_count'],
         'summary': !exists(json, 'summary') ? undefined : json['summary'],
         'targetsCount': !exists(json, 'targets_count') ? undefined : json['targets_count'],
     };
@@ -73,6 +80,7 @@ export function FindingsIssueToJSON(value?: FindingsIssue | null): any {
         
         'issue_id': value.issueId,
         'max_score': value.maxScore,
+        'resources_count': value.resourcesCount,
         'summary': value.summary,
         'targets_count': value.targetsCount,
     };
