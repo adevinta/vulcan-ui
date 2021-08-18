@@ -348,6 +348,7 @@ export default class Home extends Vue {
   
   private status: string = "OPEN";
   private identifiers: string = "";
+  private staticLabels: string[] = [];
   private allLabels: string[] = [];
   private selLabels: string[] = [];
 
@@ -368,6 +369,7 @@ export default class Home extends Vue {
         basePath: conf.apiUrl
       };
       this.apiUrl = conf.apiUrl;
+      this.staticLabels = conf.staticLabels;
 
       // Build the api clients
       const apiConfg = new ApiConf(c);
@@ -408,7 +410,7 @@ export default class Home extends Vue {
         labelsReq
       );
   
-      this.allLabels = labelsList.labels!;
+      this.allLabels = this.mergeLabels(this.staticLabels, labelsList.labels!);
     } catch (err) {
       this.$emit('handleerror', err);
     }
@@ -620,6 +622,17 @@ export default class Home extends Vue {
         this.modeSelect="FIXED";
       }
       this.identifiers = qparams.get('identifiers') || ""
+  }
+
+  // MergeLabels merges ls and ld arrays by pushing back ld
+  // elements into ls and discarding repeated ones
+  private mergeLabels(ls: string[], ld: string[]): string[] {
+    ld.forEach(l => {
+      if (ls.indexOf(l) == -1) {
+        ls.push(l);
+      }
+    });
+    return ls;
   }
 
   private handleError(err: any) {
