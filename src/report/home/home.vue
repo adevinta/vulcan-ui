@@ -844,7 +844,7 @@ export default class Home extends Vue {
   }
 
   onClickDateShortcut(range) {
-    if (this.modeSelect=='diff' || this.modeSelect=='fixed') {
+    if (this.modeSelect=='open' || this.modeSelect=='fixed') {
       this.maxDate=new Date();
       this.minDate=new Date(this.maxDate);
       if (range=='7days') {
