@@ -28,9 +28,9 @@ Copyright 2021 Adevinta
           <a class="has-text-dark">{{ propsMainList.row.identifier }}</a>
         </b-table-column>
 
-        <b-table-column centered width="100" field="targetsCount" label="Issues">
+        <b-table-column centered width="100" field="issuesCount" label="Issues">
           <b-icon icon="bug" size="is-small"></b-icon>
-          <span class="tag">{{ propsMainList.row.findingsCount }}</span>
+          <span class="tag">{{ propsMainList.row.issuesCount }}</span>
         </b-table-column>
 
         <b-table-column centered width="100" field="Score" label="Score">
@@ -66,13 +66,13 @@ Copyright 2021 Adevinta
 
                 <template slot-scope="propsIssues">
                   <b-table-column field="summary" label="Issues">
-                    <b-icon icon="server" size="is-small"></b-icon>
+                    <b-icon icon="bug" size="is-small"></b-icon>
                     <a class="has-text-dark">{{ propsIssues.row.summary }}</a>
                   </b-table-column>
 
                   <b-table-column centered width="100" field="targetsCount" label="Affected Resources">
-                    <b-icon icon="bug" size="is-small"></b-icon>
-                    <span class="tag">{{ propsIssues.row.targetsCount }}</span>
+                    <b-icon icon="server" size="is-small"></b-icon>
+                    <span class="tag">{{ propsIssues.row.resourcesCount }}</span>
                   </b-table-column>
 
                   <b-table-column centered width="100" field="severity" label="Severity">
@@ -140,10 +140,8 @@ Copyright 2021 Adevinta
                       :show-detail-icon="false"
                     >
                       <template slot-scope="propsX">
-                        <b-table-column
-                          field="affectedResource"
-                          label="Resource"
-                        >{{ propsX.row.affectedResource }}
+                        <b-table-column field="affectedResource" label="Resource">
+                          {{ propsX.row.affectedResource }}
                         </b-table-column>
 
                         <!-- Direct Link -->
@@ -242,6 +240,9 @@ export default class TableAssets extends Vue {
   @Prop({ required: true })
   private identifiers!: string;
 
+  @Prop({ required: true })
+  private labels!: string[];
+
   @Prop({ required: false, default: true })
   private paginated!: boolean;
 
@@ -288,7 +289,8 @@ export default class TableAssets extends Vue {
             this.minDate,
             this.maxDate,
             this.status,
-            this.identifiers
+            this.identifiers,
+            this.labels
           ]},
         function() {
           this.loadAssets();
@@ -296,13 +298,12 @@ export default class TableAssets extends Vue {
 
     } catch (err) {
       this.$emit('handleerror', err);
-    } finally {
-      // TODO
     }
   }
 
   async loadAssets() {
     try {
+      this.loading = true;
       const assetsReq: FindingsListFindingsTargetsRequest = {
         teamId: this.teamId,
         status: this.status,
@@ -311,7 +312,8 @@ export default class TableAssets extends Vue {
         minDate: this.minDate ? this.dateToStr(this.minDate) : undefined,
         maxDate: this.maxDate ? this.dateToStr(this.maxDate) : undefined,
         atDate: this.atDate ? this.dateToStr(this.atDate) : undefined,
-        identifiers: this.identifiers
+        identifiers: this.identifiers,
+        labels: this.labels.join(",")
       };
       if (this.dateToStr(this.atDate) == this.dateToStr(new Date())) {
         assetsReq.atDate = undefined;
@@ -325,6 +327,8 @@ export default class TableAssets extends Vue {
       this.assetsListTotal = assetsList.pagination!.total!;
     } catch (err) {
       this.$emit('handleerror', err);
+    } finally {
+      this.loading = false;
     }
   }
 
@@ -348,7 +352,8 @@ export default class TableAssets extends Vue {
         minDate: this.minDate ? this.dateToStr(this.minDate) : "",
         maxDate: this.maxDate ? this.dateToStr(this.maxDate) : "",
         atDate: this.atDate ? this.dateToStr(this.atDate) : "",
-        identifiers: this.identifiers
+        identifiers: this.identifiers,
+        labels: this.labels.join(",")
       };
       if (this.dateToStr(this.atDate) == this.dateToStr(new Date())) {
         issuesReq.atDate = undefined;
@@ -428,7 +433,8 @@ export default class TableAssets extends Vue {
         minDate: this.minDate ? this.dateToStr(this.minDate) : undefined,
         maxDate: this.maxDate ? this.dateToStr(this.maxDate) : undefined,
         atDate: this.atDate ? this.dateToStr(this.atDate) : undefined,
-        identifiers: this.identifiers
+        identifiers: this.identifiers,
+        labels: this.labels.join(",")
       };
       if (this.dateToStr(this.atDate) == this.dateToStr(new Date())) {
         targetsReq.atDate = undefined;
@@ -457,7 +463,8 @@ export default class TableAssets extends Vue {
         minDate: this.minDate ? this.dateToStr(this.minDate) : "",
         maxDate: this.maxDate ? this.dateToStr(this.maxDate) : "",
         atDate: this.atDate ? this.dateToStr(this.atDate) : "",
-        identifiers: this.identifiers
+        identifiers: this.identifiers,
+        labels: this.labels.join(",")
       };
       if (this.dateToStr(this.atDate) == this.dateToStr(new Date())) {
         issuesReq.atDate = undefined;

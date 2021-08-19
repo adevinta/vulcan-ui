@@ -1,4 +1,5 @@
 {
   "api_url": "https://vulcan.example.com/api/v1/",
-  "ask_credentials": true
+  "ask_credentials": true,
+  "static_labels": ["issue", "potential", "compliance", "informational"]
 }

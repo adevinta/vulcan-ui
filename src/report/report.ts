@@ -7,7 +7,7 @@ import report from './report.vue';
 import { CreateElement } from 'vue';
 
 //@ts-ignore
-import { ConfigProgrammatic, Table, Input, Switch, Button, Icon, Field, Datepicker, Tabs, Select, Collapse, Message, Tag, Modal, Tooltip } from 'buefy';
+import { ConfigProgrammatic, Table, Input, Switch, Button, Icon, Field, Datepicker, Tabs, Select, Collapse, Message, Tag, Modal, Tooltip, Checkbox } from 'buefy';
 
 import VueShowdown from 'vue-showdown';
 
@@ -40,6 +40,7 @@ Vue.use(Message);
 Vue.use(Tag);
 Vue.use(Modal);
 Vue.use(Tooltip);
+Vue.use(Checkbox);
 Vue.use(VueShowdown, {
 	options: {
 	  simpleLineBreaks: false,

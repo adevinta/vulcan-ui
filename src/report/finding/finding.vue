@@ -58,6 +58,16 @@ Copyright 2021 Adevinta
               <td style="width:100%">{{ propsFindingDetail.row.affectedResource }}</td>
             </tr>
             <tr>
+              <td class="has-text-weight-bold">Labels</td>
+              <td style="width:100%">
+                <b-taglist>
+                  <b-tag type="is-info" v-for="label in propsFindingDetail.row.issue.labels" :key="label">
+                    {{ label }}
+                  </b-tag>
+                </b-taglist>
+              </td>
+            </tr>
+            <tr>
               <td class="has-text-weight-bold">Impact</td>
               <td style="width:100%">{{ propsFindingDetail.row.impactDetails }}</td>
             </tr>

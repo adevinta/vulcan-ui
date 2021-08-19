@@ -39,6 +39,7 @@ models/FindingOverwrite.ts
 models/FindingOverwritePayload.ts
 models/FindingsIssue.ts
 models/FindingsIssuesList.ts
+models/FindingsLabels.ts
 models/FindingsList.ts
 models/FindingsTarget.ts
 models/FindingsTargetsList.ts

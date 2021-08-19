@@ -16,6 +16,7 @@ export * from './FindingOverwrite';
 export * from './FindingOverwritePayload';
 export * from './FindingsIssue';
 export * from './FindingsIssuesList';
+export * from './FindingsLabels';
 export * from './FindingsList';
 export * from './FindingsTarget';
 export * from './FindingsTargetsList';

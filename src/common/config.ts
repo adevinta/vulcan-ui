@@ -5,12 +5,14 @@ Copyright 2021 Adevinta
 interface fileConfig {
 	api_url: string;
 	ask_credentials: boolean;
+	static_labels: string[];
 }
 
 export class Config {
 	cfg: fileConfig = {
 		api_url: '',
-		ask_credentials: false
+		ask_credentials: false,
+		static_labels: []
 	};
 	constructor(cfg: fileConfig) {
 		this.cfg = cfg;
@@ -26,6 +28,10 @@ export class Config {
 
 	get askCredentials(): boolean {
 		return this.cfg.ask_credentials;
+	}
+
+	get staticLabels(): string[] {
+		return this.cfg.static_labels;
 	}
 }
 
