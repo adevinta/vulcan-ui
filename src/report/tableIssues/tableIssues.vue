@@ -46,12 +46,12 @@ Copyright 2021 Adevinta
             <div class="card-content">
               <div class="content">
                 <div>
-                  <h4 class="title is-4">{{ mapIssues.get(propsDetail.row.issueId).summary }}</h4>
+                  <h4 class="title is-4">{{ mapIssues.get(propsDetail.row.issueId).issue.summary }}</h4>
                   <hr />
                 </div>
                 <div>
                   <VueShowdown
-                    :markdown="mapIssues.get(propsDetail.row.issueId).description"
+                    :markdown="mapIssues.get(propsDetail.row.issueId).issue.description"
                     :extensions="['htmlSanitize']"
                   />
                 </div>
@@ -62,7 +62,7 @@ Copyright 2021 Adevinta
                     <td style="width:100%">
                       <table>
                         <tr
-                          v-for="recommendation in mapIssues.get(propsDetail.row.issueId).recommendations"
+                          v-for="recommendation in mapIssues.get(propsDetail.row.issueId).issue.recommendations"
                           :key="recommendation"
                         >
                           <td>
@@ -73,11 +73,11 @@ Copyright 2021 Adevinta
                     </td>
                   </tr>
                   <!-- References -->
-                  <tr v-if="mapIssues.get(propsDetail.row.issueId).referenceLinks">
+                  <tr v-if="mapIssues.get(propsDetail.row.issueId).issue.referenceLinks">
                     <td class="has-text-weight-bold">References</td>
                     <td style="width:100%">
                       <a
-                        v-for="reference in mapIssues.get(propsDetail.row.issueId).referenceLinks"
+                        v-for="reference in mapIssues.get(propsDetail.row.issueId).issue.referenceLinks"
                         :key="reference"
                         target="_blank"
                         rel="noopener noreferrer"
@@ -97,7 +97,7 @@ Copyright 2021 Adevinta
                 <b-table
                   :ref="'tableIssuesDetails-'+propsDetail.row.issueId"
                   :row-class="showcursor"
-                  :data="mapIssues.get(propsDetail.row.issueId).targetsList.targets"
+                  :data="mapIssues.get(propsDetail.row.issueId).targets"
                   :loading="loading"
                   :narrowed="true"
                   hoverable
@@ -106,7 +106,7 @@ Copyright 2021 Adevinta
                   :show-detail-icon="false"
                   paginated
                   backend-pagination
-                  :total="mapIssues.get(propsDetail.row.issueId).targetsList.pagination.total"
+                  :total="mapIssues.get(propsDetail.row.issueId).pagination.total"
                   :per-page="10"
                   @click="row => toggleTargetDetails(propsDetail.row.issueId, row)"
                   @page-change="page => onIssueDetailsPageChange(propsDetail.row.issueId, page)"
@@ -316,7 +316,7 @@ export default class TableIssues extends Vue {
   async loadIssues() {
     try {
       this.loading = true;
-      this.retrieveIssues();
+      await this.retrieveIssues();
     } catch (err) {
       this.$emit('handleerror', err);
     } finally {
@@ -327,7 +327,7 @@ export default class TableIssues extends Vue {
   async onMainListPageChange(page: number) {
     try {
       this.pageIssues = page;
-      this.retrieveIssues();
+      await this.retrieveIssues();
     } catch (err) {
       this.$emit('handleerror', err);
     }
@@ -361,33 +361,15 @@ export default class TableIssues extends Vue {
   async toggleIssueDetails(row: Object) {
     try {
       if (!this.mapIssues.has(row.issueId)) {
-        const targetsReq: FindingsListFindingsTargetsRequest = {
-          teamId: this.teamId,
-          issueID: row.issueId,
-          status: this.status,
-          sortBy: "-max_score",
-          page: 1,
-          size: 10,
-          minDate: this.minDate ? this.dateToStr(this.minDate) : "",
-          maxDate: this.maxDate ? this.dateToStr(this.maxDate) : "",
-          atDate: this.atDate ? this.dateToStr(this.atDate) : "",
-          identifiers: this.identifiers,
-          labels: this.labels.join(",")
-        };
-        if (this.dateToStr(this.atDate) == this.dateToStr(new Date())) {
-          targetsReq.atDate = undefined;
-        }
-    
-        const targetsList = await this.findingsApi.findingsListFindingsTargets(
-          targetsReq
-        );
+        
+        await this.retrieveAssetsFromIssue(row.issueId, 1);
     
         // get first finding for issue and target row
         // so we can display generic issue information
         const findFindingReq: FindingsListFindingsRequest = {
           teamId: this.teamId,
           issueID: row.issueId,
-          targetID: targetsList.targets[0].targetId,
+          targetID: this.mapIssues.get(row.issueId).targets[0].targetId,
           status: this.status,
           page: 1,
           size: 1,
@@ -403,8 +385,7 @@ export default class TableIssues extends Vue {
           findFindingReq
         );
     
-        this.mapIssues.set(row.issueId, findingsList.findings[0].issue);
-        this.mapIssues.get(row.issueId).targetsList = targetsList;
+        this.mapIssues.get(row.issueId).issue = findingsList.findings[0].issue;
       }
     } catch (err) {
       this.$emit('handleerror', err);
@@ -415,33 +396,37 @@ export default class TableIssues extends Vue {
 
   async onIssueDetailsPageChange(issueId: string, page: number) {
     try {
-      const targetsReq: FindingsListFindingsTargetsRequest = {
-        teamId: this.teamId,
-        issueID: issueId,
-        status: this.status,
-        sortBy: "-max_score",
-        page: page,
-        size: 10,
-        minDate: this.minDate ? this.dateToStr(this.minDate) : "",
-        maxDate: this.maxDate ? this.dateToStr(this.maxDate) : "",
-        atDate: this.atDate ? this.dateToStr(this.atDate) : "",
-        identifiers: this.identifiers,
-        labels: this.labels.join(",")
-      };
-      if (this.dateToStr(this.atDate) == this.dateToStr(new Date())) {
-        targetsReq.atDate = undefined;
-      }
-  
-      const targetsList = await this.findingsApi.findingsListFindingsTargets(
-        targetsReq
-      );
-      this.mapIssues.get(issueId).targetsList = targetsList;
+      await this.retrieveAssetsFromIssue(issueId, page);
     } catch (err) {
       this.$emit('handleerror', err);
     }
 
     this.$refs["tableIssuesDetails-" + issueId].$forceUpdate();
     this.$refs["tableMainList"].$forceUpdate();
+  }
+
+  async retrieveAssetsFromIssue(issueId: string, page: number) {
+    const targetsReq: FindingsListFindingsTargetsRequest = {
+      teamId: this.teamId,
+      issueID: issueId,
+      status: this.status,
+      sortBy: "-max_score",
+      page: page,
+      size: 10,
+      minDate: this.minDate ? this.dateToStr(this.minDate) : "",
+      maxDate: this.maxDate ? this.dateToStr(this.maxDate) : "",
+      atDate: this.atDate ? this.dateToStr(this.atDate) : "",
+      identifiers: this.identifiers,
+      labels: this.labels.join(",")
+    };
+    if (this.dateToStr(this.atDate) == this.dateToStr(new Date())) {
+      targetsReq.atDate = undefined;
+    }
+
+    const targetsList = await this.findingsApi.findingsListFindingsTargets(
+      targetsReq
+    );
+    this.mapIssues.set(issueId, targetsList);
   }
 
   /** Resources List from Issue and Target */

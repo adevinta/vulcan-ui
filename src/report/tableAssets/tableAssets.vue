@@ -305,7 +305,7 @@ export default class TableAssets extends Vue {
   async loadAssets() {
     try {
       this.loading = true;
-      this.retrieveAssets();
+      await this.retrieveAssets();
     } catch (err) {
       this.$emit('handleerror', err);
     } finally {
@@ -316,7 +316,7 @@ export default class TableAssets extends Vue {
   async onMainListPageChange(page: number) {
     try {
       this.pageAssets = page;
-      this.retrieveAssets();
+      await this.retrieveAssets();
     } catch (err) {
       this.$emit('handleerror', err);
     }
@@ -350,27 +350,7 @@ export default class TableAssets extends Vue {
   async toggleAssetDetails(row: Object) {
     try {
       if (!this.mapAssets.has(row.targetId)) {
-        const issuesReq: FindingsListFindingsIssuesRequest = {
-          teamId: this.teamId,
-          targetID: row.targetId,
-          status: this.status,
-          sortBy: "-max_score",
-          page: 1,
-          size: 10,
-          minDate: this.minDate ? this.dateToStr(this.minDate) : "",
-          maxDate: this.maxDate ? this.dateToStr(this.maxDate) : "",
-          atDate: this.atDate ? this.dateToStr(this.atDate) : "",
-          identifiers: this.identifiers,
-          labels: this.labels.join(",")
-        };
-        if (this.dateToStr(this.atDate) == this.dateToStr(new Date())) {
-          issuesReq.atDate = undefined;
-        }
-    
-        const issuesList = await this.findingsApi?.findingsListFindingsIssues(
-          issuesReq
-        );
-        this.mapAssets.set(row.targetId, issuesList);
+        await this.retrieveIssuesFromAsset(row.targetId, 1);
       }
     } catch (err) {
       this.$emit('handleerror', err);
@@ -381,33 +361,37 @@ export default class TableAssets extends Vue {
 
   async onAssetDetailsPageChange(targetId: string, page: number) {
     try {
-      const issuesReq: FindingsListFindingsIssuesRequest = {
-        teamId: this.teamId,
-        targetID: targetId,
-        status: this.status,
-        sortBy: "-max_score",
-        page: page,
-        size: 10,
-        minDate: this.minDate ? this.dateToStr(this.minDate) : "",
-        maxDate: this.maxDate ? this.dateToStr(this.maxDate) : "",
-        atDate: this.atDate ? this.dateToStr(this.atDate) : "",
-        identifiers: this.identifiers,
-        labels: this.labels.join(",")
-      };
-      if (this.dateToStr(this.atDate) == this.dateToStr(new Date())) {
-        issuesReq.atDate = undefined;
-      }
-  
-      const issuesList = await this.findingsApi.findingsListFindingsIssues(
-        issuesReq
-      );
-      this.mapAssets.set(targetId, issuesList);
+      await this.retrieveIssuesFromAsset(targetId, page);
     } catch (err) {
       this.$emit('handleerror', err);
     }
 
     this.$refs["tableTargetsDetails-" + targetId].$forceUpdate();
     this.$refs["tableMainList"].$forceUpdate();
+  }
+
+  async retrieveIssuesFromAsset(targetId: string, page: number) {
+    const issuesReq: FindingsListFindingsIssuesRequest = {
+      teamId: this.teamId,
+      targetID: targetId,
+      status: this.status,
+      sortBy: "-max_score",
+      page: page,
+      size: 10,
+      minDate: this.minDate ? this.dateToStr(this.minDate) : "",
+      maxDate: this.maxDate ? this.dateToStr(this.maxDate) : "",
+      atDate: this.atDate ? this.dateToStr(this.atDate) : "",
+      identifiers: this.identifiers,
+      labels: this.labels.join(",")
+    };
+    if (this.dateToStr(this.atDate) == this.dateToStr(new Date())) {
+      issuesReq.atDate = undefined;
+    }
+
+    const issuesList = await this.findingsApi.findingsListFindingsIssues(
+      issuesReq
+    );
+    this.mapAssets.set(targetId, issuesList);
   }
 
   /** Resources List from Target and Issue */
