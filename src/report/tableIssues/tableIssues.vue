@@ -353,50 +353,52 @@ export default class TableIssues extends Vue {
 
   async toggleDetails(row: Object) {
     try {
-      const targetsReq: FindingsListFindingsTargetsRequest = {
-        teamId: this.teamId,
-        issueID: row.issueId,
-        status: this.status,
-        sortBy: "-max_score",
-        page: 1,
-        size: 10,
-        minDate: this.minDate ? this.dateToStr(this.minDate) : "",
-        maxDate: this.maxDate ? this.dateToStr(this.maxDate) : "",
-        atDate: this.atDate ? this.dateToStr(this.atDate) : "",
-        identifiers: this.identifiers,
-        labels: this.labels.join(",")
-      };
-      if (this.dateToStr(this.atDate) == this.dateToStr(new Date())) {
-        targetsReq.atDate = undefined;
+      if (!this.mapIssues.has(row.issueId)) {
+        const targetsReq: FindingsListFindingsTargetsRequest = {
+          teamId: this.teamId,
+          issueID: row.issueId,
+          status: this.status,
+          sortBy: "-max_score",
+          page: 1,
+          size: 10,
+          minDate: this.minDate ? this.dateToStr(this.minDate) : "",
+          maxDate: this.maxDate ? this.dateToStr(this.maxDate) : "",
+          atDate: this.atDate ? this.dateToStr(this.atDate) : "",
+          identifiers: this.identifiers,
+          labels: this.labels.join(",")
+        };
+        if (this.dateToStr(this.atDate) == this.dateToStr(new Date())) {
+          targetsReq.atDate = undefined;
+        }
+    
+        const targetsList = await this.findingsApi.findingsListFindingsTargets(
+          targetsReq
+        );
+    
+        // get first finding for issue and target row
+        // so we can display generic issue information
+        const findFindingReq: FindingsListFindingsRequest = {
+          teamId: this.teamId,
+          issueID: row.issueId,
+          targetID: targetsList.targets[0].targetId,
+          status: this.status,
+          page: 1,
+          size: 1,
+          minDate: this.minDate ? this.dateToStr(this.minDate) : "",
+          maxDate: this.maxDate ? this.dateToStr(this.maxDate) : "",
+          atDate: this.atDate ? this.dateToStr(this.atDate) : ""
+        };
+        if (this.dateToStr(this.atDate) == this.dateToStr(new Date())) {
+          findFindingReq.atDate = undefined;
+        }
+    
+        const findingsList = await this.findingsApi.findingsListFindings(
+          findFindingReq
+        );
+    
+        this.mapIssues.set(row.issueId, findingsList.findings[0].issue);
+        this.mapIssues.get(row.issueId).targetsList = targetsList;
       }
-  
-      const targetsList = await this.findingsApi.findingsListFindingsTargets(
-        targetsReq
-      );
-  
-      // get first finding for issue and target row
-      // so we can display generic issue information
-      const findFindingReq: FindingsListFindingsRequest = {
-        teamId: this.teamId,
-        issueID: row.issueId,
-        targetID: targetsList.targets[0].targetId,
-        status: this.status,
-        page: 1,
-        size: 1,
-        minDate: this.minDate ? this.dateToStr(this.minDate) : "",
-        maxDate: this.maxDate ? this.dateToStr(this.maxDate) : "",
-        atDate: this.atDate ? this.dateToStr(this.atDate) : ""
-      };
-      if (this.dateToStr(this.atDate) == this.dateToStr(new Date())) {
-        findFindingReq.atDate = undefined;
-      }
-  
-      const findingsList = await this.findingsApi.findingsListFindings(
-        findFindingReq
-      );
-  
-      this.mapIssues.set(row.issueId, findingsList.findings[0].issue);
-      this.mapIssues.get(row.issueId).targetsList = targetsList;
     } catch (err) {
       this.$emit('handleerror', err);
     }
@@ -408,41 +410,45 @@ export default class TableIssues extends Vue {
     let page:number = 1;
     let more:boolean = true;
     
-    try {
-      // TODO: Use pagination through a "See more" button on table?
-      while (more) {
-        const findingsReq: FindingsListFindingsRequest = {
-          teamId: this.teamId,
-          issueID: issueId,
-          targetID: row.targetId,
-          status: this.status,
-          sortBy: "-score",
-          page: page,
-          size: 100,
-          minDate: this.minDate ? this.dateToStr(this.minDate) : "",
-          maxDate: this.maxDate ? this.dateToStr(this.maxDate) : "",
-          atDate: this.atDate ? this.dateToStr(this.atDate) : ""
-        };
-        if (this.dateToStr(this.atDate) == this.dateToStr(new Date())) {
-          findingsReq.atDate = undefined;
-        }
-    
-        const findingsList = await this.findingsApi.findingsListFindings(
-          findingsReq
-        );
-        if (this.mapIssues.get(issueId).findings == null) {
-          this.mapIssues.get(issueId).findings = new Map();
-        }
-  
-        if (page == 1) {
-          this.mapIssues.get(issueId).findings.set(row.targetId, findingsList.findings);
-        } else {
-          let findings = this.mapIssues.get(issueId).findings.get(row.targetId);
-          this.mapIssues.get(issueId).findings.set(row.targetId, findings.concat(findingsList.findings));
-        }
+    // TODO: Use pagination through a "See more" button on table?
 
-        page++;
-        more = findingsList.pagination?.more || false;
+    try {
+      if (this.mapIssues.get(issueId).findings == null ||
+        !this.mapIssues.get(issueId).findings.has(row.targetId)) {
+        while (more) {
+          const findingsReq: FindingsListFindingsRequest = {
+            teamId: this.teamId,
+            issueID: issueId,
+            targetID: row.targetId,
+            status: this.status,
+            sortBy: "-score",
+            page: page,
+            size: 100,
+            minDate: this.minDate ? this.dateToStr(this.minDate) : "",
+            maxDate: this.maxDate ? this.dateToStr(this.maxDate) : "",
+            atDate: this.atDate ? this.dateToStr(this.atDate) : ""
+          };
+          if (this.dateToStr(this.atDate) == this.dateToStr(new Date())) {
+            findingsReq.atDate = undefined;
+          }
+      
+          const findingsList = await this.findingsApi.findingsListFindings(
+            findingsReq
+          );
+          if (this.mapIssues.get(issueId).findings == null) {
+            this.mapIssues.get(issueId).findings = new Map();
+          }
+    
+          if (page == 1) {
+            this.mapIssues.get(issueId).findings.set(row.targetId, findingsList.findings);
+          } else {
+            let findings = this.mapIssues.get(issueId).findings.get(row.targetId);
+            this.mapIssues.get(issueId).findings.set(row.targetId, findings.concat(findingsList.findings));
+          }
+  
+          page++;
+          more = findingsList.pagination?.more || false;
+        }
       }
     } catch (err) {
       this.$emit('handleerror', err);

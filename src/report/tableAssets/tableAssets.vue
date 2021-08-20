@@ -342,27 +342,29 @@ export default class TableAssets extends Vue {
 
   async toggleDetails(row: Object) {
     try {
-      const issuesReq: FindingsListFindingsIssuesRequest = {
-        teamId: this.teamId,
-        targetID: row.targetId,
-        status: this.status,
-        sortBy: "-max_score",
-        page: 1,
-        size: 10,
-        minDate: this.minDate ? this.dateToStr(this.minDate) : "",
-        maxDate: this.maxDate ? this.dateToStr(this.maxDate) : "",
-        atDate: this.atDate ? this.dateToStr(this.atDate) : "",
-        identifiers: this.identifiers,
-        labels: this.labels.join(",")
-      };
-      if (this.dateToStr(this.atDate) == this.dateToStr(new Date())) {
-        issuesReq.atDate = undefined;
+      if (!this.mapAssets.has(row.targetId)) {
+        const issuesReq: FindingsListFindingsIssuesRequest = {
+          teamId: this.teamId,
+          targetID: row.targetId,
+          status: this.status,
+          sortBy: "-max_score",
+          page: 1,
+          size: 10,
+          minDate: this.minDate ? this.dateToStr(this.minDate) : "",
+          maxDate: this.maxDate ? this.dateToStr(this.maxDate) : "",
+          atDate: this.atDate ? this.dateToStr(this.atDate) : "",
+          identifiers: this.identifiers,
+          labels: this.labels.join(",")
+        };
+        if (this.dateToStr(this.atDate) == this.dateToStr(new Date())) {
+          issuesReq.atDate = undefined;
+        }
+    
+        const issuesList = await this.findingsApi?.findingsListFindingsIssues(
+          issuesReq
+        );
+        this.mapAssets.set(row.targetId, issuesList);
       }
-  
-      const issuesList = await this.findingsApi?.findingsListFindingsIssues(
-        issuesReq
-      );
-      this.mapAssets.set(row.targetId, issuesList);
     } catch (err) {
       this.$emit('handleerror', err);
     }
@@ -374,41 +376,45 @@ export default class TableAssets extends Vue {
     let page:number = 1;
     let more:boolean = true;
     
+    // TODO: Use pagination through a "See more" button on table?
+
     try {
-      // TODO: Use pagination through a "See more" button on table?
-      while (more) {
-        const findingsReq: FindingsListFindingsRequest = {
-          teamId: this.teamId,
-          issueID: row.issueId,
-          targetID: targetId,
-          status: this.status,
-          sortBy: "-score",
-          page: page,
-          size: 100,
-          minDate: this.minDate ? this.dateToStr(this.minDate) : "",
-          maxDate: this.maxDate ? this.dateToStr(this.maxDate) : "",
-          atDate: this.atDate ? this.dateToStr(this.atDate) : ""
-        };
-        if (this.dateToStr(this.atDate) == this.dateToStr(new Date())) {
-          findingsReq.atDate = undefined;
-        }
+      if (this.mapAssets.get(targetId).findings == null ||
+        !this.mapAssets.get(targetId).findings.has(row.issueId)) {
+        while (more) {
+          const findingsReq: FindingsListFindingsRequest = {
+            teamId: this.teamId,
+            issueID: row.issueId,
+            targetID: targetId,
+            status: this.status,
+            sortBy: "-score",
+            page: page,
+            size: 100,
+            minDate: this.minDate ? this.dateToStr(this.minDate) : "",
+            maxDate: this.maxDate ? this.dateToStr(this.maxDate) : "",
+            atDate: this.atDate ? this.dateToStr(this.atDate) : ""
+          };
+          if (this.dateToStr(this.atDate) == this.dateToStr(new Date())) {
+            findingsReq.atDate = undefined;
+          }
+      
+          const findingsList = await this.findingsApi.findingsListFindings(
+            findingsReq
+          );
+          if (this.mapAssets.get(targetId).findings == null) {
+            this.mapAssets.get(targetId).findings = new Map();
+          }
+          
+          if (page == 1) {
+            this.mapAssets.get(targetId).findings.set(row.issueId, findingsList.findings);
+          } else {
+            let findings = this.mapAssets.get(targetId).findings.get(row.issueId);
+            this.mapAssets.get(targetId).findings.set(row.issueId, findings.concat(findingsList.findings));
+          }
     
-        const findingsList = await this.findingsApi.findingsListFindings(
-          findingsReq
-        );
-        if (this.mapAssets.get(targetId).findings == null) {
-          this.mapAssets.get(targetId).findings = new Map();
+          page++;
+          more = findingsList.pagination?.more || false;
         }
-        
-        if (page == 1) {
-          this.mapAssets.get(targetId).findings.set(row.issueId, findingsList.findings);
-        } else {
-          let findings = this.mapAssets.get(targetId).findings.get(row.issueId);
-          this.mapAssets.get(targetId).findings.set(row.issueId, findings.concat(findingsList.findings));
-        }
-  
-        page++;
-        more = findingsList.pagination?.more || false;
       }
     } catch (err) {
       this.$emit('handleerror', err);
