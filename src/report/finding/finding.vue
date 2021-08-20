@@ -19,7 +19,11 @@ Copyright 2021 Adevinta
           <table class="table is-striped is-fullwidth">
             <tr>
               <td class="has-text-weight-bold">Asset</td>
-              <td style="width:100%">{{ propsFindingDetail.row.target.identifier }}</td>
+              <td style="width:100%">
+                <a target="_blank" rel="noopener noreferrer" :href="buildTargetViewLink(propsFindingDetail.row.target.identifier)">
+                  <span>{{ propsFindingDetail.row.target.identifier }}</span>
+                </a>
+              </td>
             </tr>
             <tr>
               <td class="has-text-weight-bold">Score / Severity</td>
@@ -188,6 +192,10 @@ export default class FindingDetails extends Vue {
                 }
             },
         });
+  }
+
+  private buildTargetViewLink(identifier: string): string {
+    return "/report/report.html?team_id=" + this.teamId + "&identifiers=" + identifier;
   }
 
 }

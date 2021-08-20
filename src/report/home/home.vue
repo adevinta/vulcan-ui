@@ -301,9 +301,10 @@ import {
   Statsfixed
 } from "../../services/vulcan-api/models";
 
-const digestModeDesc = "Showing all findings that are still OPEN until the selected date.";
-const openModeDesc = "Showing all findings that were DETECTED during a time range.";
-const fixedModeDesc = "Showing all findings that were FIXED during a time range.";
+const digestModeDesc = "Showing all findings that are still OPEN until the selected date";
+const openModeDesc = "Showing all findings that were DETECTED during a time range";
+const fixedModeDesc = "Showing all findings that were FIXED during a time range";
+const identifierMode = " for assets: ";
 
 @Component({
   name: "Home",
@@ -548,6 +549,12 @@ export default class Home extends Vue {
       this.digestDateClass = "is-hidden";
       this.diffMinDateClass = "";
       this.diffMaxDateClass = "";
+    }
+
+    // If identifiers param is set, complete mode description
+    // with list of assets that are being applied on filter
+    if (this.identifiers != "") {
+      this.modeDescription = this.modeDescription + identifierMode + this.identifiers;
     }
   }
 
