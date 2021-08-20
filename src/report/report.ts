@@ -18,6 +18,7 @@ import DOMPurify from 'dompurify';
 // Import styles
 import '../../node_modules/bulma/css/bulma.css';
 import '../../node_modules/font-awesome/css/font-awesome.css';
+import '@mdi/font/css/materialdesignicons.css'
 import '../styles/style.scss';
 import '../style.css';
 import router from "./router"

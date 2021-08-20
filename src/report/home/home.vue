@@ -167,6 +167,12 @@ Copyright 2021 Adevinta
                       <b-checkbox-button type="is-info" v-model="selLabels" v-for="label in allLabels" :key="label"
                           :native-value="label"
                       >
+                        <b-icon v-if="label == 'issue'" icon="bug"></b-icon>
+                        <b-icon v-if="label == 'potential'" pack="mdi" icon="alert-circle-outline"></b-icon>
+                        <b-icon v-if="label == 'compliance'" pack="mdi" icon="clipboard-text-outline"></b-icon>
+                        <!-- <b-icon v-if="label == 'compliance'" pack="mdi" icon="clipboard-text-search-outline"></b-icon> -->
+                        <b-icon v-if="label == 'informational'" pack="mdi" icon="information-outline"></b-icon>
+                        <!-- <b-icon v-if="label == 'informational'" pack="mdi" icon="information-variant"></b-icon> -->
                         <span>{{ label }}</span>
                       </b-checkbox-button>
                     </b-field>
