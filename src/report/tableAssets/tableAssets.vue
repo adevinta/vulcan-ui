@@ -349,7 +349,11 @@ export default class TableAssets extends Vue {
   /** Issues List From Target */
   async toggleAssetDetails(row: Object) {
     try {
-      if (!this.mapAssets.has(row.targetId)) {
+      // Only request target details data if it has not been loaded yet
+      // or if the loaded data for the target does not correspond to page 1
+      if (!this.mapAssets.has(row.targetId) ||
+        this.mapAssets.get(row.targetId).pagination.offset != 0) {
+
         await this.retrieveIssuesFromAsset(row.targetId, 1);
       }
     } catch (err) {
@@ -402,8 +406,10 @@ export default class TableAssets extends Vue {
     // TODO: Use pagination through a "See more" button on table?
 
     try {
+      // Prevent request for data that's already loaded
       if (this.mapAssets.get(targetId).findings == null ||
         !this.mapAssets.get(targetId).findings.has(row.issueId)) {
+        
         while (more) {
           const findingsReq: FindingsListFindingsRequest = {
             teamId: this.teamId,

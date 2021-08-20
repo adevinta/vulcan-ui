@@ -360,32 +360,17 @@ export default class TableIssues extends Vue {
   /** Targets List From Issue */
   async toggleIssueDetails(row: Object) {
     try {
-      if (!this.mapIssues.has(row.issueId)) {
+      // Only request issue details data if it has not been loaded yet
+      // or if the loaded data for the issue does not correspond to page 1
+      if (!this.mapIssues.has(row.issueId) ||
+        this.mapIssues.get(row.issueId).pagination.offset != 0) {
         
         await this.retrieveAssetsFromIssue(row.issueId, 1);
-    
-        // get first finding for issue and target row
+        
+        // Get first finding for issue and target row
         // so we can display generic issue information
-        const findFindingReq: FindingsListFindingsRequest = {
-          teamId: this.teamId,
-          issueID: row.issueId,
-          targetID: this.mapIssues.get(row.issueId).targets[0].targetId,
-          status: this.status,
-          page: 1,
-          size: 1,
-          minDate: this.minDate ? this.dateToStr(this.minDate) : "",
-          maxDate: this.maxDate ? this.dateToStr(this.maxDate) : "",
-          atDate: this.atDate ? this.dateToStr(this.atDate) : ""
-        };
-        if (this.dateToStr(this.atDate) == this.dateToStr(new Date())) {
-          findFindingReq.atDate = undefined;
-        }
-    
-        const findingsList = await this.findingsApi.findingsListFindings(
-          findFindingReq
-        );
-    
-        this.mapIssues.get(row.issueId).issue = findingsList.findings[0].issue;
+        const targetId = this.mapIssues.get(row.issueId).targets[0].targetId;
+        await this.retrieveIssueDataFromFinding(row.issueId, targetId);
       }
     } catch (err) {
       this.$emit('handleerror', err);
@@ -429,6 +414,29 @@ export default class TableIssues extends Vue {
     this.mapIssues.set(issueId, targetsList);
   }
 
+  async retrieveIssueDataFromFinding(issueId: string, targetId: string) {
+    const findFindingReq: FindingsListFindingsRequest = {
+      teamId: this.teamId,
+      issueID: issueId,
+      targetID: targetId,
+      status: this.status,
+      page: 1,
+      size: 1,
+      minDate: this.minDate ? this.dateToStr(this.minDate) : "",
+      maxDate: this.maxDate ? this.dateToStr(this.maxDate) : "",
+      atDate: this.atDate ? this.dateToStr(this.atDate) : ""
+    };
+    if (this.dateToStr(this.atDate) == this.dateToStr(new Date())) {
+      findFindingReq.atDate = undefined;
+    }
+
+    const findingsList = await this.findingsApi.findingsListFindings(
+      findFindingReq
+    );
+
+    this.mapIssues.get(issueId).issue = findingsList.findings[0].issue;
+  }
+
   /** Resources List from Issue and Target */
   async toggleTargetDetails(issueId: string, row: Object) {
     let page:number = 1;
@@ -437,8 +445,10 @@ export default class TableIssues extends Vue {
     // TODO: Use pagination through a "See more" button on table?
 
     try {
+      // Prevent request for data that's already loaded
       if (this.mapIssues.get(issueId).findings == null ||
         !this.mapIssues.get(issueId).findings.has(row.targetId)) {
+        
         while (more) {
           const findingsReq: FindingsListFindingsRequest = {
             teamId: this.teamId,
