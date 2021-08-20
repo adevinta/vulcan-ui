@@ -518,8 +518,8 @@ export default class TableIssues extends Vue {
       this.$emit('handleerror', err);
     }
 
-    this.$refs["tableIssuesDetails-" + issueId].$forceUpdate(); // TODO
-    this.$refs["tableMainList"].$forceUpdate(); // TODO
+    this.$refs["tableIssuesDetails-" + issueId].$forceUpdate();
+    this.$refs["tableMainList"].$forceUpdate();
   }
 }
 </script>

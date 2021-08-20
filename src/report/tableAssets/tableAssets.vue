@@ -484,8 +484,8 @@ export default class TableAssets extends Vue {
       this.$emit('handleerror', err);
     }
 
-    this.$refs["tableTargetsDetails-" + targetId].$forceUpdate(); // TODO
-    this.$refs["tableMainList"].$forceUpdate(); // TODO
+    this.$refs["tableTargetsDetails-" + targetId].$forceUpdate();
+    this.$refs["tableMainList"].$forceUpdate();
   }
 }
 </script>
