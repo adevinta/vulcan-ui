@@ -19,7 +19,7 @@ Copyright 2021 Adevinta
       backend-pagination
       :total="issuesListTotal"
       :per-page="perPageIssues"
-      @click="toggleDetails"
+      @click="toggleIssueDetails"
       @page-change="onMainListPageChange"
     >
       <template slot-scope="propsMainList">
@@ -109,7 +109,7 @@ Copyright 2021 Adevinta
                   :total="mapIssues.get(propsDetail.row.issueId).targetsList.pagination.total"
                   :per-page="10"
                   @click="row => toggleTargetDetails(propsDetail.row.issueId, row)"
-                  @page-change="page => onTargetDetailsPageChange(propsDetail.row.issueId, page)"
+                  @page-change="page => onIssueDetailsPageChange(propsDetail.row.issueId, page)"
                 >
                   <template slot-scope="propsTargets">
                     <b-table-column field="identifier" label="Asset">
@@ -312,30 +312,11 @@ export default class TableIssues extends Vue {
     }
   }
 
+  /** Main Issues List */
   async loadIssues() {
     try {
       this.loading = true;
-      const issuesReq: FindingsListFindingsIssuesRequest = {
-        teamId: this.teamId,
-        status: this.status,
-        page: this.pageIssues,
-        size: this.perPageIssues,
-        minDate: this.minDate ? this.dateToStr(this.minDate) : undefined,
-        maxDate: this.maxDate ? this.dateToStr(this.maxDate) : undefined,
-        atDate: this.atDate ? this.dateToStr(this.atDate) : undefined,
-        identifiers: this.identifiers,
-        labels: this.labels.join(",")
-      };
-      if (this.dateToStr(this.atDate) == this.dateToStr(new Date())) {
-        issuesReq.atDate = undefined;
-      }
-  
-      const issuesList = await this.findingsApi.findingsListFindingsIssues(
-        issuesReq
-      );
-  
-      this.issuesList = issuesList.issues!;
-      this.issuesListTotal = issuesList.pagination!.total!;
+      this.retrieveIssues();
     } catch (err) {
       this.$emit('handleerror', err);
     } finally {
@@ -343,15 +324,41 @@ export default class TableIssues extends Vue {
     }
   }
 
-  dateToStr(date: Date): string {
-    const year = new Intl.DateTimeFormat("en", { year: "numeric" }).format(date);
-    const month = new Intl.DateTimeFormat("en", { month: "2-digit" }).format(date);
-    const day = new Intl.DateTimeFormat("en", { day: "2-digit" }).format(date);
-
-    return year + "-" + month + "-" + day;
+  async onMainListPageChange(page: number) {
+    try {
+      this.pageIssues = page;
+      this.retrieveIssues();
+    } catch (err) {
+      this.$emit('handleerror', err);
+    }
   }
 
-  async toggleDetails(row: Object) {
+  async retrieveIssues() {
+    const issuesReq: FindingsListFindingsIssuesRequest = {
+      teamId: this.teamId,
+      status: this.status,
+      page: this.pageIssues,
+      size: this.perPageIssues,
+      minDate: this.minDate ? this.dateToStr(this.minDate) : undefined,
+      maxDate: this.maxDate ? this.dateToStr(this.maxDate) : undefined,
+      atDate: this.atDate ? this.dateToStr(this.atDate) : undefined,
+      identifiers: this.identifiers,
+      labels: this.labels.join(",")
+    };
+    if (this.dateToStr(this.atDate) == this.dateToStr(new Date())) {
+      issuesReq.atDate = undefined;
+    }
+
+    const issuesList = await this.findingsApi.findingsListFindingsIssues(
+      issuesReq
+    );
+
+    this.issuesList = issuesList.issues!;
+    this.issuesListTotal = issuesList.pagination!.total!;
+  }
+
+  /** Targets List From Issue */
+  async toggleIssueDetails(row: Object) {
     try {
       if (!this.mapIssues.has(row.issueId)) {
         const targetsReq: FindingsListFindingsTargetsRequest = {
@@ -406,6 +413,38 @@ export default class TableIssues extends Vue {
     this.$refs.tableMainList.toggleDetails(row);
   }
 
+  async onIssueDetailsPageChange(issueId: string, page: number) {
+    try {
+      const targetsReq: FindingsListFindingsTargetsRequest = {
+        teamId: this.teamId,
+        issueID: issueId,
+        status: this.status,
+        sortBy: "-max_score",
+        page: page,
+        size: 10,
+        minDate: this.minDate ? this.dateToStr(this.minDate) : "",
+        maxDate: this.maxDate ? this.dateToStr(this.maxDate) : "",
+        atDate: this.atDate ? this.dateToStr(this.atDate) : "",
+        identifiers: this.identifiers,
+        labels: this.labels.join(",")
+      };
+      if (this.dateToStr(this.atDate) == this.dateToStr(new Date())) {
+        targetsReq.atDate = undefined;
+      }
+  
+      const targetsList = await this.findingsApi.findingsListFindingsTargets(
+        targetsReq
+      );
+      this.mapIssues.get(issueId).targetsList = targetsList;
+    } catch (err) {
+      this.$emit('handleerror', err);
+    }
+
+    this.$refs["tableIssuesDetails-" + issueId].$forceUpdate();
+    this.$refs["tableMainList"].$forceUpdate();
+  }
+
+  /** Resources List from Issue and Target */
   async toggleTargetDetails(issueId: string, row: Object) {
     let page:number = 1;
     let more:boolean = true;
@@ -458,68 +497,16 @@ export default class TableIssues extends Vue {
     this.$refs["tableIssuesDetails-" + issueId].toggleDetails(row);
   }
 
+  dateToStr(date: Date): string {
+    const year = new Intl.DateTimeFormat("en", { year: "numeric" }).format(date);
+    const month = new Intl.DateTimeFormat("en", { month: "2-digit" }).format(date);
+    const day = new Intl.DateTimeFormat("en", { day: "2-digit" }).format(date);
+
+    return year + "-" + month + "-" + day;
+  }
+
   private showcursor() {
     return "showcursor";
-  }
-
-  async onMainListPageChange(page: number) {
-    try {
-      this.pageIssues = page;
-      const issuesReq: FindingsListFindingsIssuesRequest = {
-        teamId: this.teamId,
-        status: this.status,
-        page: this.pageIssues,
-        size: this.perPageIssues,
-        minDate: this.minDate ? this.dateToStr(this.minDate) : undefined,
-        maxDate: this.maxDate ? this.dateToStr(this.maxDate) : undefined,
-        atDate: this.atDate ? this.dateToStr(this.atDate) : undefined,
-        identifiers: this.identifiers,
-        labels: this.labels.join(",")
-      };
-      if (this.dateToStr(this.atDate) == this.dateToStr(new Date())) {
-        issuesReq.atDate = undefined;
-      }
-  
-      const issuesList = await this.findingsApi.findingsListFindingsIssues(
-        issuesReq
-      );
-  
-      this.issuesList = issuesList.issues!;
-      this.issuesListTotal = issuesList.pagination!.total!;
-    } catch (err) {
-      this.$emit('handleerror', err);
-    }
-  }
-
-  async onTargetDetailsPageChange(issueId: string, page: number) {
-    try {
-      const targetsReq: FindingsListFindingsTargetsRequest = {
-        teamId: this.teamId,
-        issueID: issueId,
-        status: this.status,
-        sortBy: "-max_score",
-        page: page,
-        size: 10,
-        minDate: this.minDate ? this.dateToStr(this.minDate) : "",
-        maxDate: this.maxDate ? this.dateToStr(this.maxDate) : "",
-        atDate: this.atDate ? this.dateToStr(this.atDate) : "",
-        identifiers: this.identifiers,
-        labels: this.labels.join(",")
-      };
-      if (this.dateToStr(this.atDate) == this.dateToStr(new Date())) {
-        targetsReq.atDate = undefined;
-      }
-  
-      const targetsList = await this.findingsApi.findingsListFindingsTargets(
-        targetsReq
-      );
-      this.mapIssues.get(issueId).targetsList = targetsList;
-    } catch (err) {
-      this.$emit('handleerror', err);
-    }
-
-    this.$refs["tableIssuesDetails-" + issueId].$forceUpdate();
-    this.$refs["tableMainList"].$forceUpdate();
   }
 }
 </script>
