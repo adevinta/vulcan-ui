@@ -381,7 +381,12 @@ export default class TableIssues extends Vue {
 
   async onIssueDetailsPageChange(issueId: string, page: number) {
     try {
+      // Prevent generic issue data from being
+      // overwritten by new targets data page
+      const issue = this.mapIssues.get(issueId).issue;
       await this.retrieveAssetsFromIssue(issueId, page);
+      // Restore generic issue data
+      this.mapIssues.get(issueId).issue = issue;
     } catch (err) {
       this.$emit('handleerror', err);
     }
