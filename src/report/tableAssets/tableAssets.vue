@@ -44,7 +44,7 @@ Copyright 2021 Adevinta
         <div>
           <div class="card">
             <div class="card-content">
-              <div class>
+              <div>
                   <!-- Issues Table -->
                   <b-table
                   :ref="'tableTargetsDetails-'+propsDetail.row.targetId"

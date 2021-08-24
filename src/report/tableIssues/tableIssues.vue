@@ -44,7 +44,7 @@ Copyright 2021 Adevinta
         <div>
           <div class="card">
             <div class="card-content">
-              <div class="content">
+              <div>
                 <div>
                   <h4 class="title is-4">{{ mapIssues.get(propsDetail.row.issueId).issue.summary }}</h4>
                   <hr />
