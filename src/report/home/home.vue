@@ -517,7 +517,6 @@ export default class Home extends Vue {
     this.status = "OPEN";
 
     if (value == "digest") {
-      
       this.modeDescription = digestModeDesc;
       
       this.atDate = new Date();
@@ -529,7 +528,6 @@ export default class Home extends Vue {
       this.diffMaxDateClass = "is-hidden";
 
     } else if (value == "open" || value == "fixed"){
-      
       this.modeDescription = openModeDesc;
       if (value == "fixed") {
         this.status = "FIXED";

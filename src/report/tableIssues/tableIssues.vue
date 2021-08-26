@@ -33,7 +33,7 @@ Copyright 2021 Adevinta
           <span class="tag">{{ propsMainList.row.targetsCount }}</span>
         </b-table-column>
 
-        <b-table-column centered width="100" field="Severity" label="Severity">
+        <b-table-column centered width="100" field="severity" label="Severity">
           <span
             v-bind:class="severityStyle(propsMainList.row.maxScore)" style="width: 70"
           > {{ severityText(propsMainList.row.maxScore) }}</span>
@@ -124,7 +124,7 @@ Copyright 2021 Adevinta
                       field="findingsCount"
                       label="Affected Resources"
                     >
-                      <b-icon icon="bug" size="is-small"></b-icon>
+                      <b-icon icon="server" size="is-small"></b-icon>
                       <span class="tag">{{ propsTargets.row.findingsCount }}</span>
                     </b-table-column>
 

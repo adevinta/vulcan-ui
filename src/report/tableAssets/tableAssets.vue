@@ -33,7 +33,7 @@ Copyright 2021 Adevinta
           <span class="tag">{{ propsMainList.row.issuesCount }}</span>
         </b-table-column>
 
-        <b-table-column centered width="100" field="Score" label="Score">
+        <b-table-column centered width="100" field="severity" label="Severity">
           <span
             v-bind:class="severityStyle(propsMainList.row.maxScore)" style="width: 70"
           > {{ severityText(propsMainList.row.maxScore) }}</span>
