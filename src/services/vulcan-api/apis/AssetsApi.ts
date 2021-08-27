@@ -49,6 +49,7 @@ export interface AssetsDeleteRequest {
 
 export interface AssetsListRequest {
     teamId: string;
+    identifier?: string;
 }
 
 export interface AssetsShowRequest {
@@ -68,7 +69,7 @@ export interface AssetsUpdateRequest {
 export class AssetsApi extends runtime.BaseAPI {
 
     /**
-     * Creates assets in bulk mode.    This operation accepts an array of assets and an optional array of group identifiers, and returns an array of successfully created assets.    If no groups are specified, assets will be added to the team\'s Default group.    If one of the specified assets already exists for the team but is currently not associated with the requested groups, the association is created.    If for any reason, the creation of an asset fails, an error message will be returned referencing the failed asset and the entire operation will be rolled back.    ---    Valid asset types:    - AWSAccount    - DomainName    - Hostname    - IP    - IPRange    - DockerImage    - WebAddress    - GitRepository    ---    If the asset type is informed, then Vulcan will use that value to create the new asset.    Otherwise, Vulcan will try to automatically discover the asset type.    Notice that this may result in Vulcan creating more than one asset.    For instance, an user trying to create an asset for \"vulcan.example.com\", without specifying the asset type, will end up with two assets created:    - vulcan.example.com (DomainName) and    - vulcan.example.com (Hostname).
+     * Creates assets in bulk mode.    This operation accepts an array of assets, an optional array of group identifiers, an optional map of annotations, and returns an array of successfully created assets.    If no groups are specified, assets will be added to the team\'s Default group.    If one of the specified assets already exists for the team but is currently not associated with the requested groups, the association is created.    If for any reason, the creation of an asset fails, an error message will be returned referencing the failed asset and the entire operation will be rolled back.    ---    Valid asset types:    - AWSAccount    - DomainName    - Hostname    - IP    - IPRange    - DockerImage    - WebAddress    - GitRepository    ---    If the asset type is informed, then Vulcan will use that value to create the new asset.    Otherwise, Vulcan will try to automatically discover the asset type.    Notice that this may result in Vulcan creating more than one asset.    For instance, an user trying to create an asset for \"vulcan.example.com\", without specifying the asset type, will end up with two assets created:    - vulcan.example.com (DomainName) and    - vulcan.example.com (Hostname).
      * create assets
      */
     async assetsCreateRaw(requestParameters: AssetsCreateRequest): Promise<runtime.ApiResponse<Array<Asset>>> {
@@ -102,7 +103,7 @@ export class AssetsApi extends runtime.BaseAPI {
     }
 
     /**
-     * Creates assets in bulk mode.    This operation accepts an array of assets and an optional array of group identifiers, and returns an array of successfully created assets.    If no groups are specified, assets will be added to the team\'s Default group.    If one of the specified assets already exists for the team but is currently not associated with the requested groups, the association is created.    If for any reason, the creation of an asset fails, an error message will be returned referencing the failed asset and the entire operation will be rolled back.    ---    Valid asset types:    - AWSAccount    - DomainName    - Hostname    - IP    - IPRange    - DockerImage    - WebAddress    - GitRepository    ---    If the asset type is informed, then Vulcan will use that value to create the new asset.    Otherwise, Vulcan will try to automatically discover the asset type.    Notice that this may result in Vulcan creating more than one asset.    For instance, an user trying to create an asset for \"vulcan.example.com\", without specifying the asset type, will end up with two assets created:    - vulcan.example.com (DomainName) and    - vulcan.example.com (Hostname).
+     * Creates assets in bulk mode.    This operation accepts an array of assets, an optional array of group identifiers, an optional map of annotations, and returns an array of successfully created assets.    If no groups are specified, assets will be added to the team\'s Default group.    If one of the specified assets already exists for the team but is currently not associated with the requested groups, the association is created.    If for any reason, the creation of an asset fails, an error message will be returned referencing the failed asset and the entire operation will be rolled back.    ---    Valid asset types:    - AWSAccount    - DomainName    - Hostname    - IP    - IPRange    - DockerImage    - WebAddress    - GitRepository    ---    If the asset type is informed, then Vulcan will use that value to create the new asset.    Otherwise, Vulcan will try to automatically discover the asset type.    Notice that this may result in Vulcan creating more than one asset.    For instance, an user trying to create an asset for \"vulcan.example.com\", without specifying the asset type, will end up with two assets created:    - vulcan.example.com (DomainName) and    - vulcan.example.com (Hostname).
      * create assets
      */
     async assetsCreate(requestParameters: AssetsCreateRequest): Promise<Array<Asset>> {
@@ -202,6 +203,10 @@ export class AssetsApi extends runtime.BaseAPI {
         }
 
         const queryParameters: any = {};
+
+        if (requestParameters.identifier !== undefined) {
+            queryParameters['identifier'] = requestParameters.identifier;
+        }
 
         const headerParameters: runtime.HTTPHeaders = {};
 

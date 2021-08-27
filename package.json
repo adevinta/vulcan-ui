@@ -16,6 +16,7 @@
   },
   "dependencies": {
     "@babel/polyfill": "^7.11.5",
+    "@mdi/font": "^5.9.55",
     "@ts-stack/markdown": "^1.2.0",
     "@types/jquery": "^3.5.1",
     "axios": "^0.21.1",

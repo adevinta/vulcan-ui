@@ -5,12 +5,14 @@ Copyright 2021 Adevinta
 interface fileConfig {
 	api_url: string;
 	ask_credentials: boolean;
+	static_labels: string[];
 }
 
 export class Config {
 	cfg: fileConfig = {
 		api_url: '',
-		ask_credentials: false
+		ask_credentials: false,
+		static_labels: []
 	};
 	constructor(cfg: fileConfig) {
 		this.cfg = cfg;
@@ -27,10 +29,14 @@ export class Config {
 	get askCredentials(): boolean {
 		return this.cfg.ask_credentials;
 	}
+
+	get staticLabels(): string[] {
+		return this.cfg.static_labels;
+	}
 }
 
 export default async function loadConfig(): Promise<Config> {
-	const url = `/config.json`;
+	const url = `/config.json?q=` + new Date().getTime(); // Avoid caching conflict
 	const resp = await fetch(url);
 	if (resp.status === 200) {
 		const ret = await resp.json();

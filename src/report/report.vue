@@ -35,7 +35,11 @@ Copyright 2021 Adevinta
           </div>
         </div>
         <hr/>
-        <router-view v-on:handleerror="handleError" v-on:toggleUserListTeams="toggleUserListTeams" :key="$route.fullPath"></router-view>
+        <keep-alive>
+            <router-view v-on:handleerror="handleError" v-on:toggleUserListTeams="toggleUserListTeams" :key="$route.fullPath">
+
+            </router-view>
+        </keep-alive>
       </Loading>
     </Session>
   </div>
@@ -185,10 +189,11 @@ export default class LiveReport extends Vue {
       console.log(`error: " ${err.message}`);
       this.errorMessage = `unexpected error: ${err.message}`;
       this.showError = true;
-      return;
+    } else {
+      console.log(`unexpected error: " ${JSON.stringify(err)}`);
+      this.showError = true;
     }
-    console.log(`unexpected error: " ${JSON.stringify(err)}`);
-    this.showError = true;
+    window.scrollTo(0,0);
   }
 
   onSelectTeam(){

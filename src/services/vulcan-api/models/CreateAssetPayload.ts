@@ -28,6 +28,12 @@ import {
 export interface CreateAssetPayload {
     /**
      * 
+     * @type {object}
+     * @memberof CreateAssetPayload
+     */
+    annotations?: object;
+    /**
+     * 
      * @type {Array<AssetPayload>}
      * @memberof CreateAssetPayload
      */
@@ -50,6 +56,7 @@ export function CreateAssetPayloadFromJSONTyped(json: any, ignoreDiscriminator: 
     }
     return {
         
+        'annotations': !exists(json, 'annotations') ? undefined : json['annotations'],
         'assets': ((json['assets'] as Array<any>).map(AssetPayloadFromJSON)),
         'groups': !exists(json, 'groups') ? undefined : json['groups'],
     };
@@ -64,6 +71,7 @@ export function CreateAssetPayloadToJSON(value?: CreateAssetPayload | null): any
     }
     return {
         
+        'annotations': value.annotations,
         'assets': ((value.assets as Array<any>).map(AssetPayloadToJSON)),
         'groups': value.groups,
     };

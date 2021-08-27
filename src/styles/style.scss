@@ -37,35 +37,13 @@ $link-focus-border: $primary;
     background-color: hsl(0, 0%, 96%);
 }
 
-.live-report .detail ul:not(.pagination-list) {
-    list-style: disc outside;
-}
 
-.live-report .detail li:not(.pagination .pagination-list) {
-    margin-left: 20px;
-}
-
-.live-report .detail p:not(.pagination-list) {
-    margin-bottom: 10px;
+.live-report .detail .pagination-list {
+    list-style: none;
 }
 
 .live-report a .reference {
     margin-right: 10px;
-}
-
-.table-pagination {
-    .select:not(.is-multiple):not(.is-loading)::after {
-        border-color: #3273dc;
-    }
-
-    .show-label {
-        padding-top: 18px;
-        padding-right: 8px
-    }
-
-    .select-container {
-        padding-left: 0px
-    }
 }
 
 .showcursor{
