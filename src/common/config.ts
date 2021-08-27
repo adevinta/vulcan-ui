@@ -36,7 +36,7 @@ export class Config {
 }
 
 export default async function loadConfig(): Promise<Config> {
-	const url = `/config.json`;
+	const url = `/config.json?q=` + new Date().getTime(); // Avoid caching conflict
 	const resp = await fetch(url);
 	if (resp.status === 200) {
 		const ret = await resp.json();
