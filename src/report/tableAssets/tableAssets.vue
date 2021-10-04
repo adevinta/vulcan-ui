@@ -38,6 +38,12 @@ Copyright 2021 Adevinta
             v-bind:class="severityStyle(propsMainList.row.maxScore)" style="width: 70"
           > {{ severityText(propsMainList.row.maxScore) }}</span>
         </b-table-column>
+
+        <b-table-column centered width="100" field="assetInfo" label="Asset Info">
+          <b-button type="is-info is-text is-small"  inverted @click.stop="showAssetInfo(propsMainList.row.identifier)">
+            <b-icon pack="mdi" icon="information"></b-icon>
+          </b-button>
+        </b-table-column>
       </template>
 
       <template slot="detail" slot-scope="propsDetail">
@@ -213,12 +219,15 @@ import teamID from "../../common/team";
 
 //@ts-ignore
 import { Table } from "buefy";
+import { BModalComponent } from "buefy/types/components";
+import AssetInfoForm from "../assetInfoForm/assetInfoForm.vue";
 
 @Component({
   name: "TableAssets",
-  components: {}
+  components: {
+      AssetInfoForm,
+  }
 })
-
 export default class TableAssets extends Vue {
   private apiUrl: string = "";
   private teamId: string = "";
@@ -251,6 +260,8 @@ export default class TableAssets extends Vue {
 
   private assetsList: Array<FindingsTarget> = [];
   private assetsListTotal: number = 0;
+
+  private assetsInfoModal!: BModalComponent
 
   private loading: boolean = false;
 
@@ -459,6 +470,28 @@ export default class TableAssets extends Vue {
     const day = new Intl.DateTimeFormat("en", { day: "2-digit" }).format(date);
 
     return year + "-" + month + "-" + day;
+  }
+
+  private showAssetInfo(assetIdentifier: string) {
+    this.assetsInfoModal = this.$buefy.modal.open({
+            parent: this,
+            component: AssetInfoForm,
+            hasModalCard: true,
+            fullScreen: false,
+            trapFocus: true,
+            props: {
+              teamId: this.teamId,
+              assetIdentifier: assetIdentifier,
+            },
+            events: {
+                'handleerror': (err: Error) =>{
+                    this.$emit('handleerror', err);
+                },
+                'close': () => {
+                    this.assetsInfoModal.close();
+                }
+            },
+        });
   }
 
   private showcursor() {
