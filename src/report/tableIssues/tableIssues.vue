@@ -141,7 +141,6 @@ Copyright 2021 Adevinta
                         <b-icon pack="mdi" icon="information"></b-icon>
                       </b-button>
                     </b-table-column>
-                    
                   </template>
 
                   <!-- Resources table -->
