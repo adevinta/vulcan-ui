@@ -44,6 +44,7 @@ Copyright 2021 Adevinta
             <b-icon pack="mdi" icon="information"></b-icon>
           </b-button>
         </b-table-column>
+
       </template>
 
       <template slot="detail" slot-scope="propsDetail">
@@ -228,6 +229,7 @@ import AssetInfoForm from "../assetInfoForm/assetInfoForm.vue";
       AssetInfoForm,
   }
 })
+
 export default class TableAssets extends Vue {
   private apiUrl: string = "";
   private teamId: string = "";
