@@ -43,6 +43,12 @@ import {
  */
 export interface Finding {
     /**
+     * Affected Resource
+     * @type {string}
+     * @memberof Finding
+     */
+    affectedResource?: string;
+    /**
      * Attachments
      * @type {Array<Attachment>}
      * @memberof Finding
@@ -126,6 +132,7 @@ export function FindingFromJSONTyped(json: any, ignoreDiscriminator: boolean): F
     }
     return {
         
+        'affectedResource': !exists(json, 'affected_resource') ? undefined : json['affected_resource'],
         'attachments': !exists(json, 'attachments') ? undefined : ((json['attachments'] as Array<any>).map(AttachmentFromJSON)),
         'currentExposure': !exists(json, 'current_exposure') ? undefined : json['current_exposure'],
         'details': !exists(json, 'details') ? undefined : json['details'],
@@ -150,6 +157,7 @@ export function FindingToJSON(value?: Finding | null): any {
     }
     return {
         
+        'affected_resource': value.affectedResource,
         'attachments': value.attachments === undefined ? undefined : ((value.attachments as Array<any>).map(AttachmentToJSON)),
         'current_exposure': value.currentExposure,
         'details': value.details,

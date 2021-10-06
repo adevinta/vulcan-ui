@@ -15,6 +15,9 @@
 
 import * as runtime from '../runtime';
 import {
+    Exposure,
+    ExposureFromJSON,
+    ExposureToJSON,
     Mttr,
     MttrFromJSON,
     MttrToJSON,
@@ -33,9 +36,18 @@ export interface StatsCoverageRequest {
     teamId: string;
 }
 
+export interface StatsExposureRequest {
+    teamId: string;
+    atDate?: string;
+    maxScore?: number;
+    minScore?: number;
+}
+
 export interface StatsFixedRequest {
     teamId: string;
     atDate?: string;
+    identifiers?: string;
+    labels?: string;
     maxDate?: string;
     minDate?: string;
 }
@@ -50,6 +62,7 @@ export interface StatsOpenRequest {
     teamId: string;
     atDate?: string;
     identifiers?: string;
+    labels?: string;
     maxDate?: string;
     minDate?: string;
 }
@@ -96,6 +109,54 @@ export class StatsApi extends runtime.BaseAPI {
     }
 
     /**
+     * Get exposure statistics for a team.
+     * exposure stats
+     */
+    async statsExposureRaw(requestParameters: StatsExposureRequest): Promise<runtime.ApiResponse<Exposure>> {
+        if (requestParameters.teamId === null || requestParameters.teamId === undefined) {
+            throw new runtime.RequiredError('teamId','Required parameter requestParameters.teamId was null or undefined when calling statsExposure.');
+        }
+
+        const queryParameters: any = {};
+
+        if (requestParameters.atDate !== undefined) {
+            queryParameters['atDate'] = requestParameters.atDate;
+        }
+
+        if (requestParameters.maxScore !== undefined) {
+            queryParameters['maxScore'] = requestParameters.maxScore;
+        }
+
+        if (requestParameters.minScore !== undefined) {
+            queryParameters['minScore'] = requestParameters.minScore;
+        }
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["authorization"] = this.configuration.apiKey("authorization"); // Bearer authentication
+        }
+
+        const response = await this.request({
+            path: `/teams/{team_id}/stats/exposure`.replace(`{${"team_id"}}`, encodeURIComponent(String(requestParameters.teamId))),
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        });
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => ExposureFromJSON(jsonValue));
+    }
+
+    /**
+     * Get exposure statistics for a team.
+     * exposure stats
+     */
+    async statsExposure(requestParameters: StatsExposureRequest): Promise<Exposure> {
+        const response = await this.statsExposureRaw(requestParameters);
+        return await response.value();
+    }
+
+    /**
      * Get fixed issues statistics for a team.
      * fixed stats
      */
@@ -108,6 +169,14 @@ export class StatsApi extends runtime.BaseAPI {
 
         if (requestParameters.atDate !== undefined) {
             queryParameters['atDate'] = requestParameters.atDate;
+        }
+
+        if (requestParameters.identifiers !== undefined) {
+            queryParameters['identifiers'] = requestParameters.identifiers;
+        }
+
+        if (requestParameters.labels !== undefined) {
+            queryParameters['labels'] = requestParameters.labels;
         }
 
         if (requestParameters.maxDate !== undefined) {
@@ -204,6 +273,10 @@ export class StatsApi extends runtime.BaseAPI {
 
         if (requestParameters.identifiers !== undefined) {
             queryParameters['identifiers'] = requestParameters.identifiers;
+        }
+
+        if (requestParameters.labels !== undefined) {
+            queryParameters['labels'] = requestParameters.labels;
         }
 
         if (requestParameters.maxDate !== undefined) {

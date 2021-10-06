@@ -15,10 +15,19 @@
 
 import * as runtime from '../runtime';
 import {
+    Exposure,
+    ExposureFromJSON,
+    ExposureToJSON,
     Mttr,
     MttrFromJSON,
     MttrToJSON,
 } from '../models';
+
+export interface GlobalStatsExposureRequest {
+    atDate?: string;
+    maxScore?: number;
+    minScore?: number;
+}
 
 export interface GlobalStatsMttrRequest {
     maxDate?: string;
@@ -31,7 +40,51 @@ export interface GlobalStatsMttrRequest {
 export class GlobalStatsApi extends runtime.BaseAPI {
 
     /**
-     * Get global MTR statistics.
+     * Get global exposure statistics.
+     * exposure global-stats
+     */
+    async globalStatsExposureRaw(requestParameters: GlobalStatsExposureRequest): Promise<runtime.ApiResponse<Exposure>> {
+        const queryParameters: any = {};
+
+        if (requestParameters.atDate !== undefined) {
+            queryParameters['atDate'] = requestParameters.atDate;
+        }
+
+        if (requestParameters.maxScore !== undefined) {
+            queryParameters['maxScore'] = requestParameters.maxScore;
+        }
+
+        if (requestParameters.minScore !== undefined) {
+            queryParameters['minScore'] = requestParameters.minScore;
+        }
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["authorization"] = this.configuration.apiKey("authorization"); // Bearer authentication
+        }
+
+        const response = await this.request({
+            path: `/stats/exposure`,
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        });
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => ExposureFromJSON(jsonValue));
+    }
+
+    /**
+     * Get global exposure statistics.
+     * exposure global-stats
+     */
+    async globalStatsExposure(requestParameters: GlobalStatsExposureRequest): Promise<Exposure> {
+        const response = await this.globalStatsExposureRaw(requestParameters);
+        return await response.value();
+    }
+
+    /**
+     * Get global MTTR statistics.
      * mttr global-stats
      */
     async globalStatsMttrRaw(requestParameters: GlobalStatsMttrRequest): Promise<runtime.ApiResponse<Mttr>> {
@@ -62,7 +115,7 @@ export class GlobalStatsApi extends runtime.BaseAPI {
     }
 
     /**
-     * Get global MTR statistics.
+     * Get global MTTR statistics.
      * mttr global-stats
      */
     async globalStatsMttr(requestParameters: GlobalStatsMttrRequest): Promise<Mttr> {

@@ -32,6 +32,12 @@ export interface FindingsTarget {
      */
     identifier?: string;
     /**
+     * Number of issues for the target
+     * @type {number}
+     * @memberof FindingsTarget
+     */
+    issuesCount?: number;
+    /**
      * Max score for the issue among the affected assets
      * @type {number}
      * @memberof FindingsTarget
@@ -57,6 +63,7 @@ export function FindingsTargetFromJSONTyped(json: any, ignoreDiscriminator: bool
         
         'findingsCount': !exists(json, 'findings_count') ? undefined : json['findings_count'],
         'identifier': !exists(json, 'identifier') ? undefined : json['identifier'],
+        'issuesCount': !exists(json, 'issues_count') ? undefined : json['issues_count'],
         'maxScore': !exists(json, 'max_score') ? undefined : json['max_score'],
         'targetId': !exists(json, 'target_id') ? undefined : json['target_id'],
     };
@@ -73,6 +80,7 @@ export function FindingsTargetToJSON(value?: FindingsTarget | null): any {
         
         'findings_count': value.findingsCount,
         'identifier': value.identifier,
+        'issues_count': value.issuesCount,
         'max_score': value.maxScore,
         'target_id': value.targetId,
     };
