@@ -134,6 +134,13 @@ Copyright 2021 Adevinta
                         v-bind:class="severityStyle(propsTargets.row.maxScore)" style="width: 70"
                       >{{ severityText(propsTargets.row.maxScore) }}</span>
                     </b-table-column>
+
+                    <!-- Asset Info -->
+                    <b-table-column centered width="100" field="assetInfo" label="Asset Info">
+                      <b-button type="is-info is-text is-small"  inverted @click.stop="showAssetInfo(propsTargets.row.identifier)">
+                        <b-icon pack="mdi" icon="information"></b-icon>
+                      </b-button>
+                    </b-table-column>
                   </template>
 
                   <!-- Resources table -->
@@ -224,10 +231,14 @@ import teamID from "../../common/team";
 
 //@ts-ignore
 import { Table } from "buefy";
+import { BModalComponent } from "buefy/types/components";
+import AssetInfoForm from "../assetInfoForm/assetInfoForm.vue";
 
 @Component({
   name: "TableIssues",
-  components: {}
+  components: {
+    AssetInfoForm,
+  }
 })
 
 export default class TableIssues extends Vue {
@@ -262,6 +273,8 @@ export default class TableIssues extends Vue {
 
   private issuesList: Array<FindingsIssue> = [];
   private issuesListTotal: number = 0;
+
+  private assetsInfoModal!: BModalComponent
 
   private loading: boolean = false;
 
@@ -495,6 +508,28 @@ export default class TableIssues extends Vue {
 
     //@ts-ignore
     this.$refs["tableIssuesDetails-" + issueId].toggleDetails(row);
+  }
+
+  private showAssetInfo(assetIdentifier: string) {
+    this.assetsInfoModal = this.$buefy.modal.open({
+            parent: this,
+            component: AssetInfoForm,
+            hasModalCard: true,
+            fullScreen: false,
+            trapFocus: true,
+            props: {
+              teamId: this.teamId,
+              assetIdentifier: assetIdentifier,
+            },
+            events: {
+                'handleerror': (err: Error) =>{
+                    this.$emit('handleerror', err);
+                },
+                'close': () => {
+                    this.assetsInfoModal.close();
+                }
+            },
+        });
   }
 
   dateToStr(date: Date): string {
