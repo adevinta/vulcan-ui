@@ -76,9 +76,21 @@ export default class AssetInfoForm extends Vue {
           identifier: this.assetIdentifier,
       }
       this.data = await this.assetsApi.assetsList(assetReq);
+      this.filterAssetsData(this.data);
     } catch (err) {
       this.handleError(err);
     } 
+  }
+
+  private filterAssetsData(data: Listassetentry[]) {
+    for (let entry of data) {
+      for (let attribute in entry) {
+        if (attribute == "groups" ||
+          entry[attribute] == null || entry[attribute] == "") {
+          delete entry[attribute];
+        }
+      }
+    }
   }
 
   private handleError(err: any) {
