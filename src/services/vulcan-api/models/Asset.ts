@@ -33,6 +33,12 @@ export interface Asset {
      */
     alias?: string;
     /**
+     * 
+     * @type {object}
+     * @memberof Asset
+     */
+    annotations?: object;
+    /**
      * Classified At
      * @type {string}
      * @memberof Asset
@@ -93,6 +99,7 @@ export function AssetFromJSONTyped(json: any, ignoreDiscriminator: boolean): Ass
     return {
         
         'alias': !exists(json, 'alias') ? undefined : json['alias'],
+        'annotations': !exists(json, 'annotations') ? undefined : json['annotations'],
         'classifiedAt': !exists(json, 'classified_at') ? undefined : json['classified_at'],
         'environmentalCvss': !exists(json, 'environmental_cvss') ? undefined : json['environmental_cvss'],
         'id': !exists(json, 'id') ? undefined : json['id'],
@@ -114,6 +121,7 @@ export function AssetToJSON(value?: Asset | null): any {
     return {
         
         'alias': value.alias,
+        'annotations': value.annotations,
         'classified_at': value.classifiedAt,
         'environmental_cvss': value.environmentalCvss,
         'id': value.id,
