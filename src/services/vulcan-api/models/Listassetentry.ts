@@ -37,6 +37,12 @@ export interface Listassetentry {
      */
     alias?: string;
     /**
+     * 
+     * @type {object}
+     * @memberof Listassetentry
+     */
+    annotations?: object;
+    /**
      * Classified At
      * @type {string}
      * @memberof Listassetentry
@@ -103,6 +109,7 @@ export function ListassetentryFromJSONTyped(json: any, ignoreDiscriminator: bool
     return {
         
         'alias': !exists(json, 'alias') ? undefined : json['alias'],
+        'annotations': !exists(json, 'annotations') ? undefined : json['annotations'],
         'classifiedAt': !exists(json, 'classified_at') ? undefined : json['classified_at'],
         'environmentalCvss': !exists(json, 'environmental_cvss') ? undefined : json['environmental_cvss'],
         'groups': !exists(json, 'groups') ? undefined : ((json['groups'] as Array<any>).map(GroupWithoutAssetsCountFromJSON)),
@@ -125,6 +132,7 @@ export function ListassetentryToJSON(value?: Listassetentry | null): any {
     return {
         
         'alias': value.alias,
+        'annotations': value.annotations,
         'classified_at': value.classifiedAt,
         'environmental_cvss': value.environmentalCvss,
         'groups': value.groups === undefined ? undefined : ((value.groups as Array<any>).map(GroupWithoutAssetsCountToJSON)),
