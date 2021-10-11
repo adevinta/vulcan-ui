@@ -460,6 +460,9 @@ function handleGroups(assets){
         assets[i].webScanningIcon = "";
         assets[i].scannableIcon = "";
         assets[i].autoDiscoveredIcon = "";
+        
+        // Build belonging display icons for
+        // Auto Discovered, Web Scanning and Scannable groups
         if (assets[i].groups == null) {
             assets[i].groups = [];
         }
@@ -472,6 +475,11 @@ function handleGroups(assets){
         if (assets[i].groups.filter(group => group.name === 'security-team-discovered-assets').length > 0) {
             assets[i].autoDiscoveredIcon = "<i class=\"fa fa-check-circle\"></i>";
         }
+
+        // Build Live Report link for identifier
+        let teamID = common.teamID();
+        let identifier = assets[i].identifier;
+        assets[i].identifier = "<a href=\"/report/report.html?team_id=" + teamID + "&identifiers=" + identifier + "\">" + identifier + "</a>";
     }
 }
 
