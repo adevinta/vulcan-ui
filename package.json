@@ -9,7 +9,7 @@
   "scripts": {
     "prewatch": "rm -rf dist && mkdir -p dist && cp -r src/config.json dist/config.json",
     "prebuild": "rm -rf dist && mkdir -p dist && cp -r src/config.json dist/config.json",
-    "preserve": "rm -rf dist && mkdir -p dist && cp -r src/config.json dist/config.json",
+    "preserve": "rm -rf dist && mkdir -p dist && cp -r src/config.json dist/config.json && cp -r config.local.json dist/config.json 2>/dev/null",
     "build": "parcel build src/*.html src/**/*.html --detailed-report",
     "watch": "parcel watch src/*.html src/**/*.html",
     "serve": "parcel serve src/*.html src/**/*.html"
