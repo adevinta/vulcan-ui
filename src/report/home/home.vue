@@ -630,7 +630,7 @@ export default class Home extends Vue {
         this.modeSelect="digest";
       }
       if (qparams.get('status')=="FIXED") {
-        this.modeSelect="FIXED";
+        this.modeSelect="fixed";
       }
       this.identifiers = qparams.get('identifiers') || ""
   }
