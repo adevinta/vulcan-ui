@@ -51,7 +51,16 @@ export default class Session extends Vue {
   }
 
   private addr(): string {
-    return `${this.apiUrl}/login?redirect_to=${window.location}`;
+    var redirectTo: string = window.location.toString();
+    if (this.isDecoded(redirectTo)) {
+      redirectTo = encodeURIComponent(window.location.toString());
+    }
+    return `${this.apiUrl}/login?redirect_to=${redirectTo}`;
+  }
+
+  private isDecoded(uri: string): boolean {
+    uri = uri || '';
+    return uri === decodeURIComponent(uri);
   }
 }
 </script>
