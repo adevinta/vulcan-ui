@@ -567,10 +567,10 @@ export default class Home extends Vue {
       this.maxDate=new Date();
       this.minDate=new Date(this.maxDate);
       if (range=='7days') {
-        this.minDate.setDate(this.minDate.getDay() - 7);
+        this.minDate.setDate(this.minDate.getDate() - 7);
       }
       if (range=='15days') {
-        this.minDate.setDate(this.minDate.getDay() - 15);
+        this.minDate.setDate(this.minDate.getDate() - 15);
       }
       if (range=='1month') {
         this.minDate.setMonth(this.minDate.getMonth() - 1);
@@ -592,10 +592,10 @@ export default class Home extends Vue {
     if (this.modeSelect=='digest') {
       this.atDate=new Date();
       if (range=='7days') {
-        this.atDate.setDate(this.atDate.getDay() - 7);
+        this.atDate.setDate(this.atDate.getDate() - 7);
       }
       if (range=='15days') {
-        this.atDate.setDate(this.atDate.getDay() - 15);
+        this.atDate.setDate(this.atDate.getDate() - 15);
       }
       if (range=='1month') {
         this.atDate.setMonth(this.atDate.getMonth() - 1);
