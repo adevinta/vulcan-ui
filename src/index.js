@@ -76,7 +76,7 @@ async function loadData(client, config) {
         if (teams.length < 1) {
             $('#body').html(`
                 <h2 class="title" style="margin-top:50px;line-height:2em;">Welcome to Vulcan, the security platform by Adevinta.</h2>
-                <h2 class="subtitle" style="line-height:2em;"><b>You have not been added as a member of any team in Vulcan.</b><br>Teams use Vulcan to automatically scan their assets for security vulnerabilities and learn how to improve their security.<br>You can ask a colleague to add you as a member of an existing team or request the creation of a new team.</h2>
+                <h2 class="subtitle" style="line-height:2em;"><b>You have not been added as a member of any team in Vulcan.</b><br>Teams use Vulcan to automatically scan their assets for security vulnerabilities and learn how to improve their security.<br>You can ask a colleague to add you as a member of an existing team or <a href="newteam.html">request the creation of a new team.</a></h2>
             `);
         } else {
             showTeams(teams);
