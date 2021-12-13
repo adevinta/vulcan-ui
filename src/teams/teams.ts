@@ -7,7 +7,7 @@ import teams from './teams.vue';
 import { CreateElement } from 'vue';
 
 //@ts-ignore
-import { ConfigProgrammatic, Table, Input, Switch, Button, Icon, Field, Datepicker, Tabs, Select, Collapse, Message, Tag, Modal, Tooltip, Checkbox } from 'buefy';
+import { ConfigProgrammatic, Table, Input, Switch, Button, Icon, Field, Datepicker, Tabs, Select, Collapse, Message, Tag, Modal, Tooltip, Checkbox, Dialog } from 'buefy';
 
 import VueShowdown from 'vue-showdown';
 
@@ -35,6 +35,7 @@ Vue.use(Tag);
 Vue.use(Modal);
 Vue.use(Tooltip);
 Vue.use(Checkbox);
+Vue.use(Dialog);
 
 Vue.config.productionTip = false;
 const app = new Vue({

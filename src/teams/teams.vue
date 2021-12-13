@@ -14,7 +14,7 @@ Copyright 2021 Adevinta
             <span class="icon is-small" style="margin-right:.5em">
               <i class="fa fa-users"></i>
             </span>
-            <span>Create new team</span>
+            <span>Teams</span>
           </h1>
           <h1 id="team" class="subtitle">
             <span class="icon is-small" style="margin-right:1.0em"></span>
