@@ -9,7 +9,7 @@ Copyright 2021 Adevinta
         <p>Session expired</p>
       </div>
       <div id="sessionExpiredBody" class="message-body has-text-centered">
-        <br />Oops it seems your session has expired.
+        <br />Your session expired or you don't have permission for this team.
         <a target="_self" :href="addr()">Log in to vulcan</a>
       </div>
     </article>
