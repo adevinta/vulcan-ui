@@ -112,7 +112,7 @@ function showLogin(cfg) {
     let team = teamID();
     let scan = scanID();
     if (!scan || !team) {
-        $("#sessionExpiredBody").html(`Oops it seems your session has expired.
+        $("#sessionExpiredBody").html(`Your session expired or you don't have permission for this team.
         </BR>
         Can not generate a login link this time because the current
         url does not contain required information.
