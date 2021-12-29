@@ -6,13 +6,15 @@ interface fileConfig {
 	api_url: string;
 	ask_credentials: boolean;
 	static_labels: string[];
+	teams_crud: boolean;
 }
 
 export class Config {
 	cfg: fileConfig = {
 		api_url: '',
 		ask_credentials: false,
-		static_labels: []
+		static_labels: [],
+		teams_crud: false,
 	};
 	constructor(cfg: fileConfig) {
 		this.cfg = cfg;
@@ -32,6 +34,10 @@ export class Config {
 
 	get staticLabels(): string[] {
 		return this.cfg.static_labels;
+	}
+
+	get teamsCrud(): boolean {
+		return this.cfg.teams_crud;
 	}
 }
 

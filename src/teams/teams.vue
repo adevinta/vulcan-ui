@@ -1,7 +1,3 @@
-<!--
-Copyright 2021 Adevinta
--->
-
 <template>
   <div>
     <div class="container">
@@ -25,7 +21,7 @@ Copyright 2021 Adevinta
       </div>
     </div>
     <hr />
-    <keep-alive>
+    <keep-alive v-if="teamsCrudEnabled">
       <router-view :key="$route.fullPath"></router-view>
     </keep-alive>
   </div>
@@ -52,25 +48,13 @@ import VueRouter, { RouteConfig } from "vue-router";
 })
 export default class Teams extends Vue {
   private apiUrl: string = "";
+  private teamsCrudEnabled: boolean = false;
 
   async mounted() {
     try {
       // Load the config paramters needed to build the apli clients.
       const conf = await loadConfig();
-      const tProvider = tokenProvider(conf);
-      const c: ConfigurationParameters = {
-        apiKey: tProvider,
-        basePath: conf.apiUrl
-      };
-      this.apiUrl = conf.apiUrl;
-      const apiConfg = new ApiConf(c);
-      const userApi = new UserApi(apiConfg);
-
-      console.log(tProvider);
-      console.log(c);
-      console.log(this.apiUrl);
-      const prof = await userApi.userProfile()
-      console.log(prof);
+      this.teamsCrudEnabled = (conf.teamsCrud === true);
     } catch (err) {
       console.log(err);
     }

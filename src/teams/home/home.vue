@@ -1,7 +1,3 @@
-<!--
-Copyright 2021 Adevinta
--->
-
 <template>
   <div>
     <div class="container">
@@ -28,6 +24,16 @@ Copyright 2021 Adevinta
                 </div>
               </section>
             </form>
+            <b-collapse :open="false" aria-id="dangerZone" v-if="teamId!=''">
+              <template #trigger>
+                <b-button label="Danger Zone" class="button is-light" aria-controls="dangerZone" />
+              </template>
+              <div class="notification">
+                <div class="buttons">
+                  <b-button label="Delete Team" type="is-danger" @click="confirmDelete" />
+                </div>
+              </div>
+            </b-collapse>
           </template>
         </div>
         <div class="tile is-2 is-vertical"></div>
@@ -49,9 +55,11 @@ import {
   TeamsApi,
   TeamsCreateRequest,
   TeamsShowRequest,
-  TeamsUpdateRequest
+  TeamsUpdateRequest,
+  TeamsDeleteRequest
 } from "../../services/vulcan-api/apis";
 import ErrorDialog from "../../components/error.vue";
+import router from "../router";
 import { DialogProgrammatic as Dialog } from "buefy";
 
 @Component({
@@ -63,7 +71,7 @@ import { DialogProgrammatic as Dialog } from "buefy";
 export default class Home extends Vue {
   private teamsApi!: TeamsApi;
 
-  private teamId: string = "-";
+  private teamId: string = "";
   private name: string = "";
   private description: string = "";
   private tag: string = "";
@@ -119,7 +127,10 @@ export default class Home extends Vue {
         };
 
         const team = await this.teamsApi.teamsCreate(req);
-        this.teamId=team.id;
+        this.teamId = team.id;
+        this.description = team.description;
+        this.name = team.name;
+        this.tag = team.tag;
       } else {
         msg = "Team updated with success";
         console.log("updateTeam");
@@ -133,6 +144,9 @@ export default class Home extends Vue {
         };
 
         const team = await this.teamsApi.teamsUpdate(req);
+        this.description = team.description;
+        this.name = team.name;
+        this.tag = team.tag;
       }
       Dialog.alert({
         title: "Success",
@@ -144,21 +158,21 @@ export default class Home extends Vue {
         ariaRole: "alertdialog",
         ariaModal: true
       });
+      window.history.replaceState(null, null, "?team_id=" + this.teamId);
     } catch (err) {
       this.handleError(err);
     }
   }
 
-  private handleError(err: any) {
+  async handleError(err: any) {
     if (err instanceof Response) {
-      console.log(`${err.status} ": " ${err.statusText}`);
-      this.errorMessage = `unexpected error calling vulcan api, status code: ${
-        err.status
-      }`;
+      console.log(`${err.statusText} ": " ${err.statusText}`);
+      this.errorMessage = `unexpected error calling vulcan api: ${await err.text()}`;
       this.showError = true;
       return;
     }
     if (err instanceof Error) {
+      console.log(JSON.stringify(err, null, 4));
       console.log(`error: " ${err.message}`);
       this.errorMessage = `unexpected error: ${err.message}`;
       this.showError = true;
@@ -166,6 +180,34 @@ export default class Home extends Vue {
     }
     console.log(`unexpected error: " ${JSON.stringify(err)}`);
     this.showError = true;
+  }
+
+  confirmDelete() {
+    this.$buefy.dialog.confirm({
+      title: "Deleting team",
+      message:
+        "Are you sure you want to <b>delete</b> this team? This action cannot be undone.",
+      confirmText: "Delete Team",
+      type: "is-danger",
+      hasIcon: true,
+      onConfirm: () => {
+        this.deleteTeam(this.teamId);
+      }
+    });
+  }
+
+  async deleteTeam(teamId: string) {
+    const req: TeamsDeleteRequest = {
+      teamId: this.teamId
+    };
+
+    const team = await this.teamsApi.teamsDelete(req);
+    this.$buefy.dialog.confirm({
+      message: "Team deleted with sucess",
+      onConfirm: () => window.close(),
+      type: "is-danger",
+      canCancel: false,
+    });
   }
 }
 </script>
