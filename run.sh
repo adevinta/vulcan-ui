@@ -12,8 +12,14 @@ export UI_CONTACT_SLACK=${UI_CONTACT_SLACK:-/}
 
 # Apply env variables
 envsubst < config.json > /usr/share/nginx/html/config.json
-envsubst < /usr/share/nginx/html/index.html | tee /usr/share/nginx/html/index.html
-envsubst < /usr/share/nginx/html/assets/index.html | tee /usr/share/nginx/html/assets/index.html
+
+UI_ROOT_PATH=/usr/share/nginx/html/index.html
+TMP_UI_ROOT_PATH=$(mktemp)
+envsubst < "${UI_ROOT_PATH}" > "$TMP_UI_ROOT_PATH" && mv "$TMP_UI_ROOT_PATH" "$UI_ROOT_PATH"
+
+UI_ASSET_PATH=/usr/share/nginx/html/assets/index.html
+TMP_UI_ASSET_PATH=$(mktemp)
+envsubst < "${UI_ASSET_PATH}" > "$TMP_UI_ASSET_PATH" && mv "$TMP_UI_ASSET_PATH" "$UI_ASSET_PATH"
 
 if echo "$PORT" | grep -Eq '[0-9]+'; then
   sed -i "s/^[[:space:]]\+listen .*/    listen $PORT;/g" /etc/nginx/conf.d/default.conf
