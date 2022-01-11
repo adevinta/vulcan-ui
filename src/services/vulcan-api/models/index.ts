@@ -59,6 +59,7 @@ export * from './SchedulePayload';
 export * from './ScheduleUpdatePayload';
 export * from './Source';
 export * from './Stats';
+export * from './Statsassets';
 export * from './Statsaverages';
 export * from './Statscoverage';
 export * from './Statsfixed';

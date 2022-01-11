@@ -81,6 +81,7 @@ models/SchedulePayload.ts
 models/ScheduleUpdatePayload.ts
 models/Source.ts
 models/Stats.ts
+models/Statsassets.ts
 models/Statsaverages.ts
 models/Statscoverage.ts
 models/Statsfixed.ts
