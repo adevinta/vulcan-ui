@@ -18,11 +18,13 @@ import {
     FindingsIssueFromJSON,
     FindingsIssueFromJSONTyped,
     FindingsIssueToJSON,
+} from './FindingsIssue';
+import {
     Pagination,
     PaginationFromJSON,
     PaginationFromJSONTyped,
     PaginationToJSON,
-} from './';
+} from './Pagination';
 
 /**
  * Findings by Issue list (default view)
@@ -72,5 +74,4 @@ export function FindingsIssuesListToJSON(value?: FindingsIssuesList | null): any
         'pagination': PaginationToJSON(value.pagination),
     };
 }
-
 

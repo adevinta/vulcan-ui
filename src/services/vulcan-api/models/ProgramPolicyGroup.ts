@@ -18,11 +18,13 @@ import {
     GroupFromJSON,
     GroupFromJSONTyped,
     GroupToJSON,
+} from './Group';
+import {
     Policy,
     PolicyFromJSON,
     PolicyFromJSONTyped,
     PolicyToJSON,
-} from './';
+} from './Policy';
 
 /**
  * Program_policy_group media type (default view)
@@ -72,5 +74,4 @@ export function ProgramPolicyGroupToJSON(value?: ProgramPolicyGroup | null): any
         'policy': PolicyToJSON(value.policy),
     };
 }
-
 

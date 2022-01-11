@@ -18,7 +18,7 @@ import {
     StatstotalFromJSON,
     StatstotalFromJSONTyped,
     StatstotalToJSON,
-} from './';
+} from './Statstotal';
 
 /**
  * MTTR stats (default view)
@@ -60,5 +60,4 @@ export function MttrToJSON(value?: Mttr | null): any {
         'mttr': StatstotalToJSON(value.mttr),
     };
 }
-
 

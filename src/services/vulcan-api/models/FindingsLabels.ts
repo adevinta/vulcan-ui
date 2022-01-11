@@ -54,4 +54,3 @@ export function FindingsLabelsToJSON(value?: FindingsLabels | null): any {
     };
 }
 
-

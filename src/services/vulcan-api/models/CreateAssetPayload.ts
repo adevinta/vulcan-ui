@@ -18,7 +18,7 @@ import {
     AssetPayloadFromJSON,
     AssetPayloadFromJSONTyped,
     AssetPayloadToJSON,
-} from './';
+} from './AssetPayload';
 
 /**
  * 
@@ -76,5 +76,4 @@ export function CreateAssetPayloadToJSON(value?: CreateAssetPayload | null): any
         'groups': value.groups,
     };
 }
-
 

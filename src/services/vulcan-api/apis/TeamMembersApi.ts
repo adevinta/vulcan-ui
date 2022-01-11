@@ -60,7 +60,7 @@ export class TeamMembersApi extends runtime.BaseAPI {
      * Create a team-member association.    ---    At least one of the following fields must be specified: \"email\", \"user_id\".    Otherwise the operation will fail.    If an email is specified, but the user does not exists on the database yet, a new user will be created for that email.    ---    Valid values for \'role\' attribute:    - member    - owner
      * create team-members
      */
-    async teamMembersCreateRaw(requestParameters: TeamMembersCreateRequest): Promise<runtime.ApiResponse<Teammember>> {
+    async teamMembersCreateRaw(requestParameters: TeamMembersCreateRequest, initOverrides?: RequestInit): Promise<runtime.ApiResponse<Teammember>> {
         if (requestParameters.teamId === null || requestParameters.teamId === undefined) {
             throw new runtime.RequiredError('teamId','Required parameter requestParameters.teamId was null or undefined when calling teamMembersCreate.');
         }
@@ -85,7 +85,7 @@ export class TeamMembersApi extends runtime.BaseAPI {
             headers: headerParameters,
             query: queryParameters,
             body: TeamMemberPayloadToJSON(requestParameters.payload),
-        });
+        }, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => TeammemberFromJSON(jsonValue));
     }
@@ -94,8 +94,8 @@ export class TeamMembersApi extends runtime.BaseAPI {
      * Create a team-member association.    ---    At least one of the following fields must be specified: \"email\", \"user_id\".    Otherwise the operation will fail.    If an email is specified, but the user does not exists on the database yet, a new user will be created for that email.    ---    Valid values for \'role\' attribute:    - member    - owner
      * create team-members
      */
-    async teamMembersCreate(requestParameters: TeamMembersCreateRequest): Promise<Teammember> {
-        const response = await this.teamMembersCreateRaw(requestParameters);
+    async teamMembersCreate(requestParameters: TeamMembersCreateRequest, initOverrides?: RequestInit): Promise<Teammember> {
+        const response = await this.teamMembersCreateRaw(requestParameters, initOverrides);
         return await response.value();
     }
 
@@ -103,7 +103,7 @@ export class TeamMembersApi extends runtime.BaseAPI {
      * Delete a member from a team.
      * delete team-members
      */
-    async teamMembersDeleteRaw(requestParameters: TeamMembersDeleteRequest): Promise<runtime.ApiResponse<void>> {
+    async teamMembersDeleteRaw(requestParameters: TeamMembersDeleteRequest, initOverrides?: RequestInit): Promise<runtime.ApiResponse<void>> {
         if (requestParameters.teamId === null || requestParameters.teamId === undefined) {
             throw new runtime.RequiredError('teamId','Required parameter requestParameters.teamId was null or undefined when calling teamMembersDelete.');
         }
@@ -125,7 +125,7 @@ export class TeamMembersApi extends runtime.BaseAPI {
             method: 'DELETE',
             headers: headerParameters,
             query: queryParameters,
-        });
+        }, initOverrides);
 
         return new runtime.VoidApiResponse(response);
     }
@@ -134,15 +134,15 @@ export class TeamMembersApi extends runtime.BaseAPI {
      * Delete a member from a team.
      * delete team-members
      */
-    async teamMembersDelete(requestParameters: TeamMembersDeleteRequest): Promise<void> {
-        await this.teamMembersDeleteRaw(requestParameters);
+    async teamMembersDelete(requestParameters: TeamMembersDeleteRequest, initOverrides?: RequestInit): Promise<void> {
+        await this.teamMembersDeleteRaw(requestParameters, initOverrides);
     }
 
     /**
      * List all members from a team.
      * list team-members
      */
-    async teamMembersListRaw(requestParameters: TeamMembersListRequest): Promise<runtime.ApiResponse<Array<Teammember>>> {
+    async teamMembersListRaw(requestParameters: TeamMembersListRequest, initOverrides?: RequestInit): Promise<runtime.ApiResponse<Array<Teammember>>> {
         if (requestParameters.teamId === null || requestParameters.teamId === undefined) {
             throw new runtime.RequiredError('teamId','Required parameter requestParameters.teamId was null or undefined when calling teamMembersList.');
         }
@@ -160,7 +160,7 @@ export class TeamMembersApi extends runtime.BaseAPI {
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
-        });
+        }, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => jsonValue.map(TeammemberFromJSON));
     }
@@ -169,8 +169,8 @@ export class TeamMembersApi extends runtime.BaseAPI {
      * List all members from a team.
      * list team-members
      */
-    async teamMembersList(requestParameters: TeamMembersListRequest): Promise<Array<Teammember>> {
-        const response = await this.teamMembersListRaw(requestParameters);
+    async teamMembersList(requestParameters: TeamMembersListRequest, initOverrides?: RequestInit): Promise<Array<Teammember>> {
+        const response = await this.teamMembersListRaw(requestParameters, initOverrides);
         return await response.value();
     }
 
@@ -178,7 +178,7 @@ export class TeamMembersApi extends runtime.BaseAPI {
      * Describe a team-member association.
      * show team-members
      */
-    async teamMembersShowRaw(requestParameters: TeamMembersShowRequest): Promise<runtime.ApiResponse<Teammember>> {
+    async teamMembersShowRaw(requestParameters: TeamMembersShowRequest, initOverrides?: RequestInit): Promise<runtime.ApiResponse<Teammember>> {
         if (requestParameters.teamId === null || requestParameters.teamId === undefined) {
             throw new runtime.RequiredError('teamId','Required parameter requestParameters.teamId was null or undefined when calling teamMembersShow.');
         }
@@ -200,7 +200,7 @@ export class TeamMembersApi extends runtime.BaseAPI {
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
-        });
+        }, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => TeammemberFromJSON(jsonValue));
     }
@@ -209,8 +209,8 @@ export class TeamMembersApi extends runtime.BaseAPI {
      * Describe a team-member association.
      * show team-members
      */
-    async teamMembersShow(requestParameters: TeamMembersShowRequest): Promise<Teammember> {
-        const response = await this.teamMembersShowRaw(requestParameters);
+    async teamMembersShow(requestParameters: TeamMembersShowRequest, initOverrides?: RequestInit): Promise<Teammember> {
+        const response = await this.teamMembersShowRaw(requestParameters, initOverrides);
         return await response.value();
     }
 
@@ -218,7 +218,7 @@ export class TeamMembersApi extends runtime.BaseAPI {
      * Update a team-member association.  Valid values for \'role\' attribute: \'member\', \'owner\'.
      * update team-members
      */
-    async teamMembersUpdateRaw(requestParameters: TeamMembersUpdateRequest): Promise<runtime.ApiResponse<Teammember>> {
+    async teamMembersUpdateRaw(requestParameters: TeamMembersUpdateRequest, initOverrides?: RequestInit): Promise<runtime.ApiResponse<Teammember>> {
         if (requestParameters.teamId === null || requestParameters.teamId === undefined) {
             throw new runtime.RequiredError('teamId','Required parameter requestParameters.teamId was null or undefined when calling teamMembersUpdate.');
         }
@@ -247,7 +247,7 @@ export class TeamMembersApi extends runtime.BaseAPI {
             headers: headerParameters,
             query: queryParameters,
             body: TeamMemberUpdatePayloadToJSON(requestParameters.payload),
-        });
+        }, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => TeammemberFromJSON(jsonValue));
     }
@@ -256,8 +256,8 @@ export class TeamMembersApi extends runtime.BaseAPI {
      * Update a team-member association.  Valid values for \'role\' attribute: \'member\', \'owner\'.
      * update team-members
      */
-    async teamMembersUpdate(requestParameters: TeamMembersUpdateRequest): Promise<Teammember> {
-        const response = await this.teamMembersUpdateRaw(requestParameters);
+    async teamMembersUpdate(requestParameters: TeamMembersUpdateRequest, initOverrides?: RequestInit): Promise<Teammember> {
+        const response = await this.teamMembersUpdateRaw(requestParameters, initOverrides);
         return await response.value();
     }
 

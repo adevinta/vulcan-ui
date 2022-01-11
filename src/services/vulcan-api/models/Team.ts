@@ -78,4 +78,3 @@ export function TeamToJSON(value?: Team | null): any {
     };
 }
 
-

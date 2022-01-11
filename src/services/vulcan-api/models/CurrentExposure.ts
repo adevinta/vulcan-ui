@@ -21,34 +21,34 @@ import {
 } from './Statsaverages';
 
 /**
- * Exposure stats (default view)
+ * Current exposure stats (default view)
  * @export
- * @interface Exposure
+ * @interface CurrentExposure
  */
-export interface Exposure {
+export interface CurrentExposure {
     /**
      * 
      * @type {Statsaverages}
-     * @memberof Exposure
+     * @memberof CurrentExposure
      */
-    exposure?: Statsaverages;
+    currentExposure?: Statsaverages;
 }
 
-export function ExposureFromJSON(json: any): Exposure {
-    return ExposureFromJSONTyped(json, false);
+export function CurrentExposureFromJSON(json: any): CurrentExposure {
+    return CurrentExposureFromJSONTyped(json, false);
 }
 
-export function ExposureFromJSONTyped(json: any, ignoreDiscriminator: boolean): Exposure {
+export function CurrentExposureFromJSONTyped(json: any, ignoreDiscriminator: boolean): CurrentExposure {
     if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
-        'exposure': !exists(json, 'exposure') ? undefined : StatsaveragesFromJSON(json['exposure']),
+        'currentExposure': !exists(json, 'current_exposure') ? undefined : StatsaveragesFromJSON(json['current_exposure']),
     };
 }
 
-export function ExposureToJSON(value?: Exposure | null): any {
+export function CurrentExposureToJSON(value?: CurrentExposure | null): any {
     if (value === undefined) {
         return undefined;
     }
@@ -57,7 +57,7 @@ export function ExposureToJSON(value?: Exposure | null): any {
     }
     return {
         
-        'exposure': StatsaveragesToJSON(value.exposure),
+        'current_exposure': StatsaveragesToJSON(value.currentExposure),
     };
 }
 

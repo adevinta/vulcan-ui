@@ -18,11 +18,13 @@ import {
     FindingFromJSON,
     FindingFromJSONTyped,
     FindingToJSON,
+} from './Finding';
+import {
     Pagination,
     PaginationFromJSON,
     PaginationFromJSONTyped,
     PaginationToJSON,
-} from './';
+} from './Pagination';
 
 /**
  * Findings list (default view)
@@ -72,5 +74,4 @@ export function FindingsListToJSON(value?: FindingsList | null): any {
         'pagination': PaginationToJSON(value.pagination),
     };
 }
-
 

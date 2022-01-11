@@ -49,7 +49,7 @@ export class AssetGroupApi extends runtime.BaseAPI {
      * Associate an asset to a group.
      * create asset-group
      */
-    async assetGroupCreateRaw(requestParameters: AssetGroupCreateRequest): Promise<runtime.ApiResponse<Asset>> {
+    async assetGroupCreateRaw(requestParameters: AssetGroupCreateRequest, initOverrides?: RequestInit): Promise<runtime.ApiResponse<Asset>> {
         if (requestParameters.groupId === null || requestParameters.groupId === undefined) {
             throw new runtime.RequiredError('groupId','Required parameter requestParameters.groupId was null or undefined when calling assetGroupCreate.');
         }
@@ -78,7 +78,7 @@ export class AssetGroupApi extends runtime.BaseAPI {
             headers: headerParameters,
             query: queryParameters,
             body: AssetGroupPayloadToJSON(requestParameters.payload),
-        });
+        }, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => AssetFromJSON(jsonValue));
     }
@@ -87,8 +87,8 @@ export class AssetGroupApi extends runtime.BaseAPI {
      * Associate an asset to a group.
      * create asset-group
      */
-    async assetGroupCreate(requestParameters: AssetGroupCreateRequest): Promise<Asset> {
-        const response = await this.assetGroupCreateRaw(requestParameters);
+    async assetGroupCreate(requestParameters: AssetGroupCreateRequest, initOverrides?: RequestInit): Promise<Asset> {
+        const response = await this.assetGroupCreateRaw(requestParameters, initOverrides);
         return await response.value();
     }
 
@@ -96,7 +96,7 @@ export class AssetGroupApi extends runtime.BaseAPI {
      * Remove an asset from a group.
      * delete asset-group
      */
-    async assetGroupDeleteRaw(requestParameters: AssetGroupDeleteRequest): Promise<runtime.ApiResponse<void>> {
+    async assetGroupDeleteRaw(requestParameters: AssetGroupDeleteRequest, initOverrides?: RequestInit): Promise<runtime.ApiResponse<void>> {
         if (requestParameters.assetId === null || requestParameters.assetId === undefined) {
             throw new runtime.RequiredError('assetId','Required parameter requestParameters.assetId was null or undefined when calling assetGroupDelete.');
         }
@@ -122,7 +122,7 @@ export class AssetGroupApi extends runtime.BaseAPI {
             method: 'DELETE',
             headers: headerParameters,
             query: queryParameters,
-        });
+        }, initOverrides);
 
         return new runtime.VoidApiResponse(response);
     }
@@ -131,15 +131,15 @@ export class AssetGroupApi extends runtime.BaseAPI {
      * Remove an asset from a group.
      * delete asset-group
      */
-    async assetGroupDelete(requestParameters: AssetGroupDeleteRequest): Promise<void> {
-        await this.assetGroupDeleteRaw(requestParameters);
+    async assetGroupDelete(requestParameters: AssetGroupDeleteRequest, initOverrides?: RequestInit): Promise<void> {
+        await this.assetGroupDeleteRaw(requestParameters, initOverrides);
     }
 
     /**
      * List all assets from a group.
      * list asset-group
      */
-    async assetGroupListRaw(requestParameters: AssetGroupListRequest): Promise<runtime.ApiResponse<Array<Asset>>> {
+    async assetGroupListRaw(requestParameters: AssetGroupListRequest, initOverrides?: RequestInit): Promise<runtime.ApiResponse<Array<Asset>>> {
         if (requestParameters.groupId === null || requestParameters.groupId === undefined) {
             throw new runtime.RequiredError('groupId','Required parameter requestParameters.groupId was null or undefined when calling assetGroupList.');
         }
@@ -161,7 +161,7 @@ export class AssetGroupApi extends runtime.BaseAPI {
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
-        });
+        }, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => jsonValue.map(AssetFromJSON));
     }
@@ -170,8 +170,8 @@ export class AssetGroupApi extends runtime.BaseAPI {
      * List all assets from a group.
      * list asset-group
      */
-    async assetGroupList(requestParameters: AssetGroupListRequest): Promise<Array<Asset>> {
-        const response = await this.assetGroupListRaw(requestParameters);
+    async assetGroupList(requestParameters: AssetGroupListRequest, initOverrides?: RequestInit): Promise<Array<Asset>> {
+        const response = await this.assetGroupListRaw(requestParameters, initOverrides);
         return await response.value();
     }
 

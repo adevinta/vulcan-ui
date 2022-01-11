@@ -18,7 +18,7 @@ import {
     ProgramFromJSON,
     ProgramFromJSONTyped,
     ProgramToJSON,
-} from './';
+} from './Program';
 
 /**
  * Scan (default view)
@@ -124,5 +124,4 @@ export function ScanToJSON(value?: Scan | null): any {
         'status': value.status,
     };
 }
-
 

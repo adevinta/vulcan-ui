@@ -15,6 +15,9 @@
 
 import * as runtime from '../runtime';
 import {
+    CurrentExposure,
+    CurrentExposureFromJSON,
+    CurrentExposureToJSON,
     Exposure,
     ExposureFromJSON,
     ExposureToJSON,
@@ -22,6 +25,11 @@ import {
     MttrFromJSON,
     MttrToJSON,
 } from '../models';
+
+export interface GlobalStatsCurrentExposureRequest {
+    maxScore?: number;
+    minScore?: number;
+}
 
 export interface GlobalStatsExposureRequest {
     atDate?: string;
@@ -40,10 +48,50 @@ export interface GlobalStatsMttrRequest {
 export class GlobalStatsApi extends runtime.BaseAPI {
 
     /**
-     * Get global exposure statistics.
+     * Get global current exposure statistics. This metric takes into account only the exposure for open vulnerabilities since the last time they were detected.
+     * current exposure global-stats
+     */
+    async globalStatsCurrentExposureRaw(requestParameters: GlobalStatsCurrentExposureRequest, initOverrides?: RequestInit): Promise<runtime.ApiResponse<CurrentExposure>> {
+        const queryParameters: any = {};
+
+        if (requestParameters.maxScore !== undefined) {
+            queryParameters['maxScore'] = requestParameters.maxScore;
+        }
+
+        if (requestParameters.minScore !== undefined) {
+            queryParameters['minScore'] = requestParameters.minScore;
+        }
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["authorization"] = this.configuration.apiKey("authorization"); // Bearer authentication
+        }
+
+        const response = await this.request({
+            path: `/stats/exposure/current`,
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => CurrentExposureFromJSON(jsonValue));
+    }
+
+    /**
+     * Get global current exposure statistics. This metric takes into account only the exposure for open vulnerabilities since the last time they were detected.
+     * current exposure global-stats
+     */
+    async globalStatsCurrentExposure(requestParameters: GlobalStatsCurrentExposureRequest = {}, initOverrides?: RequestInit): Promise<CurrentExposure> {
+        const response = await this.globalStatsCurrentExposureRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Get global exposure statistics. This metric takes into account the exposure across all lifecycle of vulnerabilities.
      * exposure global-stats
      */
-    async globalStatsExposureRaw(requestParameters: GlobalStatsExposureRequest): Promise<runtime.ApiResponse<Exposure>> {
+    async globalStatsExposureRaw(requestParameters: GlobalStatsExposureRequest, initOverrides?: RequestInit): Promise<runtime.ApiResponse<Exposure>> {
         const queryParameters: any = {};
 
         if (requestParameters.atDate !== undefined) {
@@ -69,17 +117,17 @@ export class GlobalStatsApi extends runtime.BaseAPI {
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
-        });
+        }, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => ExposureFromJSON(jsonValue));
     }
 
     /**
-     * Get global exposure statistics.
+     * Get global exposure statistics. This metric takes into account the exposure across all lifecycle of vulnerabilities.
      * exposure global-stats
      */
-    async globalStatsExposure(requestParameters: GlobalStatsExposureRequest): Promise<Exposure> {
-        const response = await this.globalStatsExposureRaw(requestParameters);
+    async globalStatsExposure(requestParameters: GlobalStatsExposureRequest = {}, initOverrides?: RequestInit): Promise<Exposure> {
+        const response = await this.globalStatsExposureRaw(requestParameters, initOverrides);
         return await response.value();
     }
 
@@ -87,7 +135,7 @@ export class GlobalStatsApi extends runtime.BaseAPI {
      * Get global MTTR statistics.
      * mttr global-stats
      */
-    async globalStatsMttrRaw(requestParameters: GlobalStatsMttrRequest): Promise<runtime.ApiResponse<Mttr>> {
+    async globalStatsMttrRaw(requestParameters: GlobalStatsMttrRequest, initOverrides?: RequestInit): Promise<runtime.ApiResponse<Mttr>> {
         const queryParameters: any = {};
 
         if (requestParameters.maxDate !== undefined) {
@@ -109,7 +157,7 @@ export class GlobalStatsApi extends runtime.BaseAPI {
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
-        });
+        }, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => MttrFromJSON(jsonValue));
     }
@@ -118,8 +166,8 @@ export class GlobalStatsApi extends runtime.BaseAPI {
      * Get global MTTR statistics.
      * mttr global-stats
      */
-    async globalStatsMttr(requestParameters: GlobalStatsMttrRequest): Promise<Mttr> {
-        const response = await this.globalStatsMttrRaw(requestParameters);
+    async globalStatsMttr(requestParameters: GlobalStatsMttrRequest = {}, initOverrides?: RequestInit): Promise<Mttr> {
+        const response = await this.globalStatsMttrRaw(requestParameters, initOverrides);
         return await response.value();
     }
 

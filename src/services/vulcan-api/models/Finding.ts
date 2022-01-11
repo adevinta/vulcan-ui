@@ -18,23 +18,31 @@ import {
     AttachmentFromJSON,
     AttachmentFromJSONTyped,
     AttachmentToJSON,
+} from './Attachment';
+import {
     Issue,
     IssueFromJSON,
     IssueFromJSONTyped,
     IssueToJSON,
+} from './Issue';
+import {
     Resource,
     ResourceFromJSON,
     ResourceFromJSONTyped,
     ResourceToJSON,
+} from './Resource';
+import {
     Source,
     SourceFromJSON,
     SourceFromJSONTyped,
     SourceToJSON,
+} from './Source';
+import {
     Target,
     TargetFromJSON,
     TargetFromJSONTyped,
     TargetToJSON,
-} from './';
+} from './Target';
 
 /**
  * Finding (default view)
@@ -172,5 +180,4 @@ export function FindingToJSON(value?: Finding | null): any {
         'total_exposure': value.totalExposure,
     };
 }
-
 

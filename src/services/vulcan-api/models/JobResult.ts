@@ -14,48 +14,41 @@
 
 import { exists, mapValues } from '../runtime';
 /**
- * attachment (default view)
+ * Result of the job operation
  * @export
- * @interface Attachment
+ * @interface JobResult
  */
-export interface Attachment {
+export interface JobResult {
     /**
-     * Content Type of the attachment
-     * @type {string}
-     * @memberof Attachment
-     */
-    contentType?: string;
-    /**
-     * attachment data
+     * Optionally populated field when the job finishes correctly, that returns execution related data. The format of the data is defined per operation type
      * @type {object}
-     * @memberof Attachment
+     * @memberof JobResult
      */
     data?: object;
     /**
-     * Attachment name
+     * When not empty indicates that the job failed
      * @type {string}
-     * @memberof Attachment
+     * @memberof JobResult
      */
-    name?: string;
+    error?: string;
 }
 
-export function AttachmentFromJSON(json: any): Attachment {
-    return AttachmentFromJSONTyped(json, false);
+export function JobResultFromJSON(json: any): JobResult {
+    return JobResultFromJSONTyped(json, false);
 }
 
-export function AttachmentFromJSONTyped(json: any, ignoreDiscriminator: boolean): Attachment {
+export function JobResultFromJSONTyped(json: any, ignoreDiscriminator: boolean): JobResult {
     if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
-        'contentType': !exists(json, 'content_type') ? undefined : json['content_type'],
         'data': !exists(json, 'data') ? undefined : json['data'],
-        'name': !exists(json, 'name') ? undefined : json['name'],
+        'error': !exists(json, 'error') ? undefined : json['error'],
     };
 }
 
-export function AttachmentToJSON(value?: Attachment | null): any {
+export function JobResultToJSON(value?: JobResult | null): any {
     if (value === undefined) {
         return undefined;
     }
@@ -64,9 +57,8 @@ export function AttachmentToJSON(value?: Attachment | null): any {
     }
     return {
         
-        'content_type': value.contentType,
         'data': value.data,
-        'name': value.name,
+        'error': value.error,
     };
 }
 

@@ -18,11 +18,13 @@ import {
     AssettypeFromJSON,
     AssettypeFromJSONTyped,
     AssettypeToJSON,
+} from './Assettype';
+import {
     GroupWithoutAssetsCount,
     GroupWithoutAssetsCountFromJSON,
     GroupWithoutAssetsCountFromJSONTyped,
     GroupWithoutAssetsCountToJSON,
-} from './';
+} from './GroupWithoutAssetsCount';
 
 /**
  * List Asset Entry (default view)
@@ -144,5 +146,4 @@ export function ListassetentryToJSON(value?: Listassetentry | null): any {
         'type': AssettypeToJSON(value.type),
     };
 }
-
 

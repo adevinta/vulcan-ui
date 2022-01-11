@@ -18,11 +18,13 @@ import {
     ProgramPolicyGroupFromJSON,
     ProgramPolicyGroupFromJSONTyped,
     ProgramPolicyGroupToJSON,
+} from './ProgramPolicyGroup';
+import {
     Schedule,
     ScheduleFromJSON,
     ScheduleFromJSONTyped,
     ScheduleToJSON,
-} from './';
+} from './Schedule';
 
 /**
  * Program (default view)
@@ -112,5 +114,4 @@ export function ProgramToJSON(value?: Program | null): any {
         'schedule': ScheduleToJSON(value.schedule),
     };
 }
-
 

@@ -34,7 +34,7 @@ export class ProgramScansApi extends runtime.BaseAPI {
      * List the scans of a program.
      * list program-scans
      */
-    async programScansListRaw(requestParameters: ProgramScansListRequest): Promise<runtime.ApiResponse<Array<Scan>>> {
+    async programScansListRaw(requestParameters: ProgramScansListRequest, initOverrides?: RequestInit): Promise<runtime.ApiResponse<Array<Scan>>> {
         if (requestParameters.programId === null || requestParameters.programId === undefined) {
             throw new runtime.RequiredError('programId','Required parameter requestParameters.programId was null or undefined when calling programScansList.');
         }
@@ -56,7 +56,7 @@ export class ProgramScansApi extends runtime.BaseAPI {
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
-        });
+        }, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => jsonValue.map(ScanFromJSON));
     }
@@ -65,8 +65,8 @@ export class ProgramScansApi extends runtime.BaseAPI {
      * List the scans of a program.
      * list program-scans
      */
-    async programScansList(requestParameters: ProgramScansListRequest): Promise<Array<Scan>> {
-        const response = await this.programScansListRaw(requestParameters);
+    async programScansList(requestParameters: ProgramScansListRequest, initOverrides?: RequestInit): Promise<Array<Scan>> {
+        const response = await this.programScansListRaw(requestParameters, initOverrides);
         return await response.value();
     }
 

@@ -54,4 +54,3 @@ export function AssetannotationsResponseToJSON(value?: AssetannotationsResponse 
     };
 }
 
-

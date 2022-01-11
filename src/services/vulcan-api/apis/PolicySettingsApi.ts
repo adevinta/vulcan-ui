@@ -65,7 +65,7 @@ export class PolicySettingsApi extends runtime.BaseAPI {
      * Create a new policy setting.
      * create policy-settings
      */
-    async policySettingsCreateRaw(requestParameters: PolicySettingsCreateRequest): Promise<runtime.ApiResponse<Policysetting>> {
+    async policySettingsCreateRaw(requestParameters: PolicySettingsCreateRequest, initOverrides?: RequestInit): Promise<runtime.ApiResponse<Policysetting>> {
         if (requestParameters.policyId === null || requestParameters.policyId === undefined) {
             throw new runtime.RequiredError('policyId','Required parameter requestParameters.policyId was null or undefined when calling policySettingsCreate.');
         }
@@ -94,7 +94,7 @@ export class PolicySettingsApi extends runtime.BaseAPI {
             headers: headerParameters,
             query: queryParameters,
             body: PolicySettingPayloadToJSON(requestParameters.payload),
-        });
+        }, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => PolicysettingFromJSON(jsonValue));
     }
@@ -103,8 +103,8 @@ export class PolicySettingsApi extends runtime.BaseAPI {
      * Create a new policy setting.
      * create policy-settings
      */
-    async policySettingsCreate(requestParameters: PolicySettingsCreateRequest): Promise<Policysetting> {
-        const response = await this.policySettingsCreateRaw(requestParameters);
+    async policySettingsCreate(requestParameters: PolicySettingsCreateRequest, initOverrides?: RequestInit): Promise<Policysetting> {
+        const response = await this.policySettingsCreateRaw(requestParameters, initOverrides);
         return await response.value();
     }
 
@@ -112,7 +112,7 @@ export class PolicySettingsApi extends runtime.BaseAPI {
      * Delete a policy setting.
      * delete policy-settings
      */
-    async policySettingsDeleteRaw(requestParameters: PolicySettingsDeleteRequest): Promise<runtime.ApiResponse<void>> {
+    async policySettingsDeleteRaw(requestParameters: PolicySettingsDeleteRequest, initOverrides?: RequestInit): Promise<runtime.ApiResponse<void>> {
         if (requestParameters.policyId === null || requestParameters.policyId === undefined) {
             throw new runtime.RequiredError('policyId','Required parameter requestParameters.policyId was null or undefined when calling policySettingsDelete.');
         }
@@ -138,7 +138,7 @@ export class PolicySettingsApi extends runtime.BaseAPI {
             method: 'DELETE',
             headers: headerParameters,
             query: queryParameters,
-        });
+        }, initOverrides);
 
         return new runtime.VoidApiResponse(response);
     }
@@ -147,15 +147,15 @@ export class PolicySettingsApi extends runtime.BaseAPI {
      * Delete a policy setting.
      * delete policy-settings
      */
-    async policySettingsDelete(requestParameters: PolicySettingsDeleteRequest): Promise<void> {
-        await this.policySettingsDeleteRaw(requestParameters);
+    async policySettingsDelete(requestParameters: PolicySettingsDeleteRequest, initOverrides?: RequestInit): Promise<void> {
+        await this.policySettingsDeleteRaw(requestParameters, initOverrides);
     }
 
     /**
      * List settings for a policy.
      * list policy-settings
      */
-    async policySettingsListRaw(requestParameters: PolicySettingsListRequest): Promise<runtime.ApiResponse<Array<Policysetting>>> {
+    async policySettingsListRaw(requestParameters: PolicySettingsListRequest, initOverrides?: RequestInit): Promise<runtime.ApiResponse<Array<Policysetting>>> {
         if (requestParameters.policyId === null || requestParameters.policyId === undefined) {
             throw new runtime.RequiredError('policyId','Required parameter requestParameters.policyId was null or undefined when calling policySettingsList.');
         }
@@ -177,7 +177,7 @@ export class PolicySettingsApi extends runtime.BaseAPI {
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
-        });
+        }, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => jsonValue.map(PolicysettingFromJSON));
     }
@@ -186,8 +186,8 @@ export class PolicySettingsApi extends runtime.BaseAPI {
      * List settings for a policy.
      * list policy-settings
      */
-    async policySettingsList(requestParameters: PolicySettingsListRequest): Promise<Array<Policysetting>> {
-        const response = await this.policySettingsListRaw(requestParameters);
+    async policySettingsList(requestParameters: PolicySettingsListRequest, initOverrides?: RequestInit): Promise<Array<Policysetting>> {
+        const response = await this.policySettingsListRaw(requestParameters, initOverrides);
         return await response.value();
     }
 
@@ -195,7 +195,7 @@ export class PolicySettingsApi extends runtime.BaseAPI {
      * Describe a policy setting.
      * show policy-settings
      */
-    async policySettingsShowRaw(requestParameters: PolicySettingsShowRequest): Promise<runtime.ApiResponse<Policysetting>> {
+    async policySettingsShowRaw(requestParameters: PolicySettingsShowRequest, initOverrides?: RequestInit): Promise<runtime.ApiResponse<Policysetting>> {
         if (requestParameters.policyId === null || requestParameters.policyId === undefined) {
             throw new runtime.RequiredError('policyId','Required parameter requestParameters.policyId was null or undefined when calling policySettingsShow.');
         }
@@ -221,7 +221,7 @@ export class PolicySettingsApi extends runtime.BaseAPI {
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
-        });
+        }, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => PolicysettingFromJSON(jsonValue));
     }
@@ -230,8 +230,8 @@ export class PolicySettingsApi extends runtime.BaseAPI {
      * Describe a policy setting.
      * show policy-settings
      */
-    async policySettingsShow(requestParameters: PolicySettingsShowRequest): Promise<Policysetting> {
-        const response = await this.policySettingsShowRaw(requestParameters);
+    async policySettingsShow(requestParameters: PolicySettingsShowRequest, initOverrides?: RequestInit): Promise<Policysetting> {
+        const response = await this.policySettingsShowRaw(requestParameters, initOverrides);
         return await response.value();
     }
 
@@ -239,7 +239,7 @@ export class PolicySettingsApi extends runtime.BaseAPI {
      * Update a policy setting.
      * update policy-settings
      */
-    async policySettingsUpdateRaw(requestParameters: PolicySettingsUpdateRequest): Promise<runtime.ApiResponse<Policysetting>> {
+    async policySettingsUpdateRaw(requestParameters: PolicySettingsUpdateRequest, initOverrides?: RequestInit): Promise<runtime.ApiResponse<Policysetting>> {
         if (requestParameters.policyId === null || requestParameters.policyId === undefined) {
             throw new runtime.RequiredError('policyId','Required parameter requestParameters.policyId was null or undefined when calling policySettingsUpdate.');
         }
@@ -272,7 +272,7 @@ export class PolicySettingsApi extends runtime.BaseAPI {
             headers: headerParameters,
             query: queryParameters,
             body: PolicySettingUploadPayloadToJSON(requestParameters.payload),
-        });
+        }, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => PolicysettingFromJSON(jsonValue));
     }
@@ -281,8 +281,8 @@ export class PolicySettingsApi extends runtime.BaseAPI {
      * Update a policy setting.
      * update policy-settings
      */
-    async policySettingsUpdate(requestParameters: PolicySettingsUpdateRequest): Promise<Policysetting> {
-        const response = await this.policySettingsUpdateRaw(requestParameters);
+    async policySettingsUpdate(requestParameters: PolicySettingsUpdateRequest, initOverrides?: RequestInit): Promise<Policysetting> {
+        const response = await this.policySettingsUpdateRaw(requestParameters, initOverrides);
         return await response.value();
     }
 

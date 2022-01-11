@@ -54,4 +54,3 @@ export function StatscoverageToJSON(value?: Statscoverage | null): any {
     };
 }
 
-

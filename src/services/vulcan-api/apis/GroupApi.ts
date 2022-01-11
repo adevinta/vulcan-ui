@@ -57,7 +57,7 @@ export class GroupApi extends runtime.BaseAPI {
      * Create a new group of assets.
      * create group
      */
-    async groupCreateRaw(requestParameters: GroupCreateRequest): Promise<runtime.ApiResponse<Group>> {
+    async groupCreateRaw(requestParameters: GroupCreateRequest, initOverrides?: RequestInit): Promise<runtime.ApiResponse<Group>> {
         if (requestParameters.teamId === null || requestParameters.teamId === undefined) {
             throw new runtime.RequiredError('teamId','Required parameter requestParameters.teamId was null or undefined when calling groupCreate.');
         }
@@ -82,7 +82,7 @@ export class GroupApi extends runtime.BaseAPI {
             headers: headerParameters,
             query: queryParameters,
             body: GroupPayloadToJSON(requestParameters.payload),
-        });
+        }, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => GroupFromJSON(jsonValue));
     }
@@ -91,8 +91,8 @@ export class GroupApi extends runtime.BaseAPI {
      * Create a new group of assets.
      * create group
      */
-    async groupCreate(requestParameters: GroupCreateRequest): Promise<Group> {
-        const response = await this.groupCreateRaw(requestParameters);
+    async groupCreate(requestParameters: GroupCreateRequest, initOverrides?: RequestInit): Promise<Group> {
+        const response = await this.groupCreateRaw(requestParameters, initOverrides);
         return await response.value();
     }
 
@@ -100,7 +100,7 @@ export class GroupApi extends runtime.BaseAPI {
      * Delete a group of assets.
      * delete group
      */
-    async groupDeleteRaw(requestParameters: GroupDeleteRequest): Promise<runtime.ApiResponse<void>> {
+    async groupDeleteRaw(requestParameters: GroupDeleteRequest, initOverrides?: RequestInit): Promise<runtime.ApiResponse<void>> {
         if (requestParameters.groupId === null || requestParameters.groupId === undefined) {
             throw new runtime.RequiredError('groupId','Required parameter requestParameters.groupId was null or undefined when calling groupDelete.');
         }
@@ -122,7 +122,7 @@ export class GroupApi extends runtime.BaseAPI {
             method: 'DELETE',
             headers: headerParameters,
             query: queryParameters,
-        });
+        }, initOverrides);
 
         return new runtime.VoidApiResponse(response);
     }
@@ -131,15 +131,15 @@ export class GroupApi extends runtime.BaseAPI {
      * Delete a group of assets.
      * delete group
      */
-    async groupDelete(requestParameters: GroupDeleteRequest): Promise<void> {
-        await this.groupDeleteRaw(requestParameters);
+    async groupDelete(requestParameters: GroupDeleteRequest, initOverrides?: RequestInit): Promise<void> {
+        await this.groupDeleteRaw(requestParameters, initOverrides);
     }
 
     /**
      * List all groups of assets from a team.
      * list group
      */
-    async groupListRaw(requestParameters: GroupListRequest): Promise<runtime.ApiResponse<Array<Group>>> {
+    async groupListRaw(requestParameters: GroupListRequest, initOverrides?: RequestInit): Promise<runtime.ApiResponse<Array<Group>>> {
         if (requestParameters.teamId === null || requestParameters.teamId === undefined) {
             throw new runtime.RequiredError('teamId','Required parameter requestParameters.teamId was null or undefined when calling groupList.');
         }
@@ -157,7 +157,7 @@ export class GroupApi extends runtime.BaseAPI {
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
-        });
+        }, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => jsonValue.map(GroupFromJSON));
     }
@@ -166,8 +166,8 @@ export class GroupApi extends runtime.BaseAPI {
      * List all groups of assets from a team.
      * list group
      */
-    async groupList(requestParameters: GroupListRequest): Promise<Array<Group>> {
-        const response = await this.groupListRaw(requestParameters);
+    async groupList(requestParameters: GroupListRequest, initOverrides?: RequestInit): Promise<Array<Group>> {
+        const response = await this.groupListRaw(requestParameters, initOverrides);
         return await response.value();
     }
 
@@ -175,7 +175,7 @@ export class GroupApi extends runtime.BaseAPI {
      * Describe a group of assets.
      * show group
      */
-    async groupShowRaw(requestParameters: GroupShowRequest): Promise<runtime.ApiResponse<Group>> {
+    async groupShowRaw(requestParameters: GroupShowRequest, initOverrides?: RequestInit): Promise<runtime.ApiResponse<Group>> {
         if (requestParameters.groupId === null || requestParameters.groupId === undefined) {
             throw new runtime.RequiredError('groupId','Required parameter requestParameters.groupId was null or undefined when calling groupShow.');
         }
@@ -197,7 +197,7 @@ export class GroupApi extends runtime.BaseAPI {
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
-        });
+        }, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => GroupFromJSON(jsonValue));
     }
@@ -206,8 +206,8 @@ export class GroupApi extends runtime.BaseAPI {
      * Describe a group of assets.
      * show group
      */
-    async groupShow(requestParameters: GroupShowRequest): Promise<Group> {
-        const response = await this.groupShowRaw(requestParameters);
+    async groupShow(requestParameters: GroupShowRequest, initOverrides?: RequestInit): Promise<Group> {
+        const response = await this.groupShowRaw(requestParameters, initOverrides);
         return await response.value();
     }
 
@@ -215,7 +215,7 @@ export class GroupApi extends runtime.BaseAPI {
      * Update a group of assets.
      * update group
      */
-    async groupUpdateRaw(requestParameters: GroupUpdateRequest): Promise<runtime.ApiResponse<Group>> {
+    async groupUpdateRaw(requestParameters: GroupUpdateRequest, initOverrides?: RequestInit): Promise<runtime.ApiResponse<Group>> {
         if (requestParameters.groupId === null || requestParameters.groupId === undefined) {
             throw new runtime.RequiredError('groupId','Required parameter requestParameters.groupId was null or undefined when calling groupUpdate.');
         }
@@ -244,7 +244,7 @@ export class GroupApi extends runtime.BaseAPI {
             headers: headerParameters,
             query: queryParameters,
             body: GroupPayloadToJSON(requestParameters.payload),
-        });
+        }, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => GroupFromJSON(jsonValue));
     }
@@ -253,8 +253,8 @@ export class GroupApi extends runtime.BaseAPI {
      * Update a group of assets.
      * update group
      */
-    async groupUpdate(requestParameters: GroupUpdateRequest): Promise<Group> {
-        const response = await this.groupUpdateRaw(requestParameters);
+    async groupUpdate(requestParameters: GroupUpdateRequest, initOverrides?: RequestInit): Promise<Group> {
+        const response = await this.groupUpdateRaw(requestParameters, initOverrides);
         return await response.value();
     }
 

@@ -6,6 +6,7 @@ apis/FindingsApi.ts
 apis/GlobalStatsApi.ts
 apis/GroupApi.ts
 apis/HealthcheckApi.ts
+apis/JobsApi.ts
 apis/PoliciesApi.ts
 apis/PolicySettingsApi.ts
 apis/ProgramScansApi.ts
@@ -27,12 +28,15 @@ models/AssetAnnotationRequest.ts
 models/AssetGroupPayload.ts
 models/AssetPayload.ts
 models/AssetUpdatePayload.ts
+models/AssetWithAnnotationsPayload.ts
 models/AssetannotationsResponse.ts
 models/Assetresponse.ts
 models/Assettype.ts
 models/Attachment.ts
 models/CreateAssetPayload.ts
+models/CurrentExposure.ts
 models/DigestPayload.ts
+models/DiscoveredAssetsPayload.ts
 models/Exposure.ts
 models/Finding.ts
 models/FindingOverwrite.ts
@@ -48,6 +52,8 @@ models/GroupPayload.ts
 models/GroupWithoutAssetsCount.ts
 models/Healthcheck.ts
 models/Issue.ts
+models/Job.ts
+models/JobResult.ts
 models/Listassetentry.ts
 models/ModelError.ts
 models/Mttr.ts

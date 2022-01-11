@@ -70,4 +70,3 @@ export function PolicysettingToJSON(value?: Policysetting | null): any {
     };
 }
 
-

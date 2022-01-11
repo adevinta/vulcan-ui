@@ -54,4 +54,3 @@ export function ScheduleUpdatePayloadToJSON(value?: ScheduleUpdatePayload | null
     };
 }
 
-

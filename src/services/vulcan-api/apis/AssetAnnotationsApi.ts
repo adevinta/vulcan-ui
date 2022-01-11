@@ -64,7 +64,7 @@ export class AssetAnnotationsApi extends runtime.BaseAPI {
      * Create one or more annotation for a given asset.
      * create asset-annotations
      */
-    async assetAnnotationsCreateRaw(requestParameters: AssetAnnotationsCreateRequest): Promise<runtime.ApiResponse<AssetannotationsResponse>> {
+    async assetAnnotationsCreateRaw(requestParameters: AssetAnnotationsCreateRequest, initOverrides?: RequestInit): Promise<runtime.ApiResponse<AssetannotationsResponse>> {
         if (requestParameters.assetId === null || requestParameters.assetId === undefined) {
             throw new runtime.RequiredError('assetId','Required parameter requestParameters.assetId was null or undefined when calling assetAnnotationsCreate.');
         }
@@ -93,7 +93,7 @@ export class AssetAnnotationsApi extends runtime.BaseAPI {
             headers: headerParameters,
             query: queryParameters,
             body: AssetAnnotationRequestToJSON(requestParameters.payload),
-        });
+        }, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => AssetannotationsResponseFromJSON(jsonValue));
     }
@@ -102,8 +102,8 @@ export class AssetAnnotationsApi extends runtime.BaseAPI {
      * Create one or more annotation for a given asset.
      * create asset-annotations
      */
-    async assetAnnotationsCreate(requestParameters: AssetAnnotationsCreateRequest): Promise<AssetannotationsResponse> {
-        const response = await this.assetAnnotationsCreateRaw(requestParameters);
+    async assetAnnotationsCreate(requestParameters: AssetAnnotationsCreateRequest, initOverrides?: RequestInit): Promise<AssetannotationsResponse> {
+        const response = await this.assetAnnotationsCreateRaw(requestParameters, initOverrides);
         return await response.value();
     }
 
@@ -111,7 +111,7 @@ export class AssetAnnotationsApi extends runtime.BaseAPI {
      * Delete one or more annotation for a given asset.
      * delete asset-annotations
      */
-    async assetAnnotationsDeleteRaw(requestParameters: AssetAnnotationsDeleteRequest): Promise<runtime.ApiResponse<void>> {
+    async assetAnnotationsDeleteRaw(requestParameters: AssetAnnotationsDeleteRequest, initOverrides?: RequestInit): Promise<runtime.ApiResponse<void>> {
         if (requestParameters.assetId === null || requestParameters.assetId === undefined) {
             throw new runtime.RequiredError('assetId','Required parameter requestParameters.assetId was null or undefined when calling assetAnnotationsDelete.');
         }
@@ -140,7 +140,7 @@ export class AssetAnnotationsApi extends runtime.BaseAPI {
             headers: headerParameters,
             query: queryParameters,
             body: AssetAnnotationDeleteRequestToJSON(requestParameters.payload),
-        });
+        }, initOverrides);
 
         return new runtime.VoidApiResponse(response);
     }
@@ -149,15 +149,15 @@ export class AssetAnnotationsApi extends runtime.BaseAPI {
      * Delete one or more annotation for a given asset.
      * delete asset-annotations
      */
-    async assetAnnotationsDelete(requestParameters: AssetAnnotationsDeleteRequest): Promise<void> {
-        await this.assetAnnotationsDeleteRaw(requestParameters);
+    async assetAnnotationsDelete(requestParameters: AssetAnnotationsDeleteRequest, initOverrides?: RequestInit): Promise<void> {
+        await this.assetAnnotationsDeleteRaw(requestParameters, initOverrides);
     }
 
     /**
      * List annotations of a given asset.
      * list asset-annotations
      */
-    async assetAnnotationsListRaw(requestParameters: AssetAnnotationsListRequest): Promise<runtime.ApiResponse<AssetannotationsResponse>> {
+    async assetAnnotationsListRaw(requestParameters: AssetAnnotationsListRequest, initOverrides?: RequestInit): Promise<runtime.ApiResponse<AssetannotationsResponse>> {
         if (requestParameters.assetId === null || requestParameters.assetId === undefined) {
             throw new runtime.RequiredError('assetId','Required parameter requestParameters.assetId was null or undefined when calling assetAnnotationsList.');
         }
@@ -179,7 +179,7 @@ export class AssetAnnotationsApi extends runtime.BaseAPI {
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
-        });
+        }, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => AssetannotationsResponseFromJSON(jsonValue));
     }
@@ -188,8 +188,8 @@ export class AssetAnnotationsApi extends runtime.BaseAPI {
      * List annotations of a given asset.
      * list asset-annotations
      */
-    async assetAnnotationsList(requestParameters: AssetAnnotationsListRequest): Promise<AssetannotationsResponse> {
-        const response = await this.assetAnnotationsListRaw(requestParameters);
+    async assetAnnotationsList(requestParameters: AssetAnnotationsListRequest, initOverrides?: RequestInit): Promise<AssetannotationsResponse> {
+        const response = await this.assetAnnotationsListRaw(requestParameters, initOverrides);
         return await response.value();
     }
 
@@ -197,7 +197,7 @@ export class AssetAnnotationsApi extends runtime.BaseAPI {
      * Override all annotations with a new list
      * put asset-annotations
      */
-    async assetAnnotationsPutRaw(requestParameters: AssetAnnotationsPutRequest): Promise<runtime.ApiResponse<AssetannotationsResponse>> {
+    async assetAnnotationsPutRaw(requestParameters: AssetAnnotationsPutRequest, initOverrides?: RequestInit): Promise<runtime.ApiResponse<AssetannotationsResponse>> {
         if (requestParameters.assetId === null || requestParameters.assetId === undefined) {
             throw new runtime.RequiredError('assetId','Required parameter requestParameters.assetId was null or undefined when calling assetAnnotationsPut.');
         }
@@ -226,7 +226,7 @@ export class AssetAnnotationsApi extends runtime.BaseAPI {
             headers: headerParameters,
             query: queryParameters,
             body: AssetAnnotationRequestToJSON(requestParameters.payload),
-        });
+        }, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => AssetannotationsResponseFromJSON(jsonValue));
     }
@@ -235,8 +235,8 @@ export class AssetAnnotationsApi extends runtime.BaseAPI {
      * Override all annotations with a new list
      * put asset-annotations
      */
-    async assetAnnotationsPut(requestParameters: AssetAnnotationsPutRequest): Promise<AssetannotationsResponse> {
-        const response = await this.assetAnnotationsPutRaw(requestParameters);
+    async assetAnnotationsPut(requestParameters: AssetAnnotationsPutRequest, initOverrides?: RequestInit): Promise<AssetannotationsResponse> {
+        const response = await this.assetAnnotationsPutRaw(requestParameters, initOverrides);
         return await response.value();
     }
 
@@ -244,7 +244,7 @@ export class AssetAnnotationsApi extends runtime.BaseAPI {
      * Update one or more annotation for a given asset.
      * update asset-annotations
      */
-    async assetAnnotationsUpdateRaw(requestParameters: AssetAnnotationsUpdateRequest): Promise<runtime.ApiResponse<AssetannotationsResponse>> {
+    async assetAnnotationsUpdateRaw(requestParameters: AssetAnnotationsUpdateRequest, initOverrides?: RequestInit): Promise<runtime.ApiResponse<AssetannotationsResponse>> {
         if (requestParameters.assetId === null || requestParameters.assetId === undefined) {
             throw new runtime.RequiredError('assetId','Required parameter requestParameters.assetId was null or undefined when calling assetAnnotationsUpdate.');
         }
@@ -273,7 +273,7 @@ export class AssetAnnotationsApi extends runtime.BaseAPI {
             headers: headerParameters,
             query: queryParameters,
             body: AssetAnnotationRequestToJSON(requestParameters.payload),
-        });
+        }, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => AssetannotationsResponseFromJSON(jsonValue));
     }
@@ -282,8 +282,8 @@ export class AssetAnnotationsApi extends runtime.BaseAPI {
      * Update one or more annotation for a given asset.
      * update asset-annotations
      */
-    async assetAnnotationsUpdate(requestParameters: AssetAnnotationsUpdateRequest): Promise<AssetannotationsResponse> {
-        const response = await this.assetAnnotationsUpdateRaw(requestParameters);
+    async assetAnnotationsUpdate(requestParameters: AssetAnnotationsUpdateRequest, initOverrides?: RequestInit): Promise<AssetannotationsResponse> {
+        const response = await this.assetAnnotationsUpdateRaw(requestParameters, initOverrides);
         return await response.value();
     }
 
