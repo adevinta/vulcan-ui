@@ -94,4 +94,3 @@ export function StatsaveragesToJSON(value?: Statsaverages | null): any {
     };
 }
 
-

@@ -41,7 +41,7 @@ export class RecipientsApi extends runtime.BaseAPI {
      * List all recipients from a team.
      * list recipients
      */
-    async recipientsListRaw(requestParameters: RecipientsListRequest): Promise<runtime.ApiResponse<Array<Recipient>>> {
+    async recipientsListRaw(requestParameters: RecipientsListRequest, initOverrides?: RequestInit): Promise<runtime.ApiResponse<Array<Recipient>>> {
         if (requestParameters.teamId === null || requestParameters.teamId === undefined) {
             throw new runtime.RequiredError('teamId','Required parameter requestParameters.teamId was null or undefined when calling recipientsList.');
         }
@@ -59,7 +59,7 @@ export class RecipientsApi extends runtime.BaseAPI {
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
-        });
+        }, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => jsonValue.map(RecipientFromJSON));
     }
@@ -68,8 +68,8 @@ export class RecipientsApi extends runtime.BaseAPI {
      * List all recipients from a team.
      * list recipients
      */
-    async recipientsList(requestParameters: RecipientsListRequest): Promise<Array<Recipient>> {
-        const response = await this.recipientsListRaw(requestParameters);
+    async recipientsList(requestParameters: RecipientsListRequest, initOverrides?: RequestInit): Promise<Array<Recipient>> {
+        const response = await this.recipientsListRaw(requestParameters, initOverrides);
         return await response.value();
     }
 
@@ -77,7 +77,7 @@ export class RecipientsApi extends runtime.BaseAPI {
      * Update team recipients.
      * update recipients
      */
-    async recipientsUpdateRaw(requestParameters: RecipientsUpdateRequest): Promise<runtime.ApiResponse<Array<Recipient>>> {
+    async recipientsUpdateRaw(requestParameters: RecipientsUpdateRequest, initOverrides?: RequestInit): Promise<runtime.ApiResponse<Array<Recipient>>> {
         if (requestParameters.teamId === null || requestParameters.teamId === undefined) {
             throw new runtime.RequiredError('teamId','Required parameter requestParameters.teamId was null or undefined when calling recipientsUpdate.');
         }
@@ -102,7 +102,7 @@ export class RecipientsApi extends runtime.BaseAPI {
             headers: headerParameters,
             query: queryParameters,
             body: RecipientsPayloadToJSON(requestParameters.payload),
-        });
+        }, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => jsonValue.map(RecipientFromJSON));
     }
@@ -111,8 +111,8 @@ export class RecipientsApi extends runtime.BaseAPI {
      * Update team recipients.
      * update recipients
      */
-    async recipientsUpdate(requestParameters: RecipientsUpdateRequest): Promise<Array<Recipient>> {
-        const response = await this.recipientsUpdateRaw(requestParameters);
+    async recipientsUpdate(requestParameters: RecipientsUpdateRequest, initOverrides?: RequestInit): Promise<Array<Recipient>> {
+        const response = await this.recipientsUpdateRaw(requestParameters, initOverrides);
         return await response.value();
     }
 

@@ -110,4 +110,3 @@ export function FindingOverwriteToJSON(value?: FindingOverwrite | null): any {
     };
 }
 
-

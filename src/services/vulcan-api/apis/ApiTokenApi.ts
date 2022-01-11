@@ -33,7 +33,7 @@ export class ApiTokenApi extends runtime.BaseAPI {
      * Generate an API token for an user.
      * create api-token
      */
-    async apiTokenCreateRaw(requestParameters: ApiTokenCreateRequest): Promise<runtime.ApiResponse<Token>> {
+    async apiTokenCreateRaw(requestParameters: ApiTokenCreateRequest, initOverrides?: RequestInit): Promise<runtime.ApiResponse<Token>> {
         if (requestParameters.userId === null || requestParameters.userId === undefined) {
             throw new runtime.RequiredError('userId','Required parameter requestParameters.userId was null or undefined when calling apiTokenCreate.');
         }
@@ -51,7 +51,7 @@ export class ApiTokenApi extends runtime.BaseAPI {
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
-        });
+        }, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => TokenFromJSON(jsonValue));
     }
@@ -60,8 +60,8 @@ export class ApiTokenApi extends runtime.BaseAPI {
      * Generate an API token for an user.
      * create api-token
      */
-    async apiTokenCreate(requestParameters: ApiTokenCreateRequest): Promise<Token> {
-        const response = await this.apiTokenCreateRaw(requestParameters);
+    async apiTokenCreate(requestParameters: ApiTokenCreateRequest, initOverrides?: RequestInit): Promise<Token> {
+        const response = await this.apiTokenCreateRaw(requestParameters, initOverrides);
         return await response.value();
     }
 

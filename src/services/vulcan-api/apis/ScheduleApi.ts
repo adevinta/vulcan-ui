@@ -43,7 +43,7 @@ export class ScheduleApi extends runtime.BaseAPI {
      * Delete a schedule.
      * delete schedule
      */
-    async scheduleDeleteRaw(requestParameters: ScheduleDeleteRequest): Promise<runtime.ApiResponse<void>> {
+    async scheduleDeleteRaw(requestParameters: ScheduleDeleteRequest, initOverrides?: RequestInit): Promise<runtime.ApiResponse<void>> {
         if (requestParameters.programId === null || requestParameters.programId === undefined) {
             throw new runtime.RequiredError('programId','Required parameter requestParameters.programId was null or undefined when calling scheduleDelete.');
         }
@@ -65,7 +65,7 @@ export class ScheduleApi extends runtime.BaseAPI {
             method: 'DELETE',
             headers: headerParameters,
             query: queryParameters,
-        });
+        }, initOverrides);
 
         return new runtime.VoidApiResponse(response);
     }
@@ -74,15 +74,15 @@ export class ScheduleApi extends runtime.BaseAPI {
      * Delete a schedule.
      * delete schedule
      */
-    async scheduleDelete(requestParameters: ScheduleDeleteRequest): Promise<void> {
-        await this.scheduleDeleteRaw(requestParameters);
+    async scheduleDelete(requestParameters: ScheduleDeleteRequest, initOverrides?: RequestInit): Promise<void> {
+        await this.scheduleDeleteRaw(requestParameters, initOverrides);
     }
 
     /**
      * Update information about a schedule.
      * update schedule
      */
-    async scheduleUpdateRaw(requestParameters: ScheduleUpdateRequest): Promise<runtime.ApiResponse<Schedule>> {
+    async scheduleUpdateRaw(requestParameters: ScheduleUpdateRequest, initOverrides?: RequestInit): Promise<runtime.ApiResponse<Schedule>> {
         if (requestParameters.programId === null || requestParameters.programId === undefined) {
             throw new runtime.RequiredError('programId','Required parameter requestParameters.programId was null or undefined when calling scheduleUpdate.');
         }
@@ -111,7 +111,7 @@ export class ScheduleApi extends runtime.BaseAPI {
             headers: headerParameters,
             query: queryParameters,
             body: ScheduleUpdatePayloadToJSON(requestParameters.payload),
-        });
+        }, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => ScheduleFromJSON(jsonValue));
     }
@@ -120,8 +120,8 @@ export class ScheduleApi extends runtime.BaseAPI {
      * Update information about a schedule.
      * update schedule
      */
-    async scheduleUpdate(requestParameters: ScheduleUpdateRequest): Promise<Schedule> {
-        const response = await this.scheduleUpdateRaw(requestParameters);
+    async scheduleUpdate(requestParameters: ScheduleUpdateRequest, initOverrides?: RequestInit): Promise<Schedule> {
+        const response = await this.scheduleUpdateRaw(requestParameters, initOverrides);
         return await response.value();
     }
 

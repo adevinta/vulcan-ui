@@ -52,7 +52,7 @@ export class ScanReportApi extends runtime.BaseAPI {
      * Retrieve the report in html format to be sent by email.
      * email scan report
      */
-    async scanReportEmailRaw(requestParameters: ScanReportEmailRequest): Promise<runtime.ApiResponse<Reportemail>> {
+    async scanReportEmailRaw(requestParameters: ScanReportEmailRequest, initOverrides?: RequestInit): Promise<runtime.ApiResponse<Reportemail>> {
         if (requestParameters.scanId === null || requestParameters.scanId === undefined) {
             throw new runtime.RequiredError('scanId','Required parameter requestParameters.scanId was null or undefined when calling scanReportEmail.');
         }
@@ -74,7 +74,7 @@ export class ScanReportApi extends runtime.BaseAPI {
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
-        });
+        }, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => ReportemailFromJSON(jsonValue));
     }
@@ -83,8 +83,8 @@ export class ScanReportApi extends runtime.BaseAPI {
      * Retrieve the report in html format to be sent by email.
      * email scan report
      */
-    async scanReportEmail(requestParameters: ScanReportEmailRequest): Promise<Reportemail> {
-        const response = await this.scanReportEmailRaw(requestParameters);
+    async scanReportEmail(requestParameters: ScanReportEmailRequest, initOverrides?: RequestInit): Promise<Reportemail> {
+        const response = await this.scanReportEmailRaw(requestParameters, initOverrides);
         return await response.value();
     }
 
@@ -92,7 +92,7 @@ export class ScanReportApi extends runtime.BaseAPI {
      * Triggers report generation. The report will be generated asynchronously on Vulcan Backend.
      * generate scan report
      */
-    async scanReportGenerateRaw(requestParameters: ScanReportGenerateRequest): Promise<runtime.ApiResponse<void>> {
+    async scanReportGenerateRaw(requestParameters: ScanReportGenerateRequest, initOverrides?: RequestInit): Promise<runtime.ApiResponse<void>> {
         if (requestParameters.scanId === null || requestParameters.scanId === undefined) {
             throw new runtime.RequiredError('scanId','Required parameter requestParameters.scanId was null or undefined when calling scanReportGenerate.');
         }
@@ -114,7 +114,7 @@ export class ScanReportApi extends runtime.BaseAPI {
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
-        });
+        }, initOverrides);
 
         return new runtime.VoidApiResponse(response);
     }
@@ -123,15 +123,15 @@ export class ScanReportApi extends runtime.BaseAPI {
      * Triggers report generation. The report will be generated asynchronously on Vulcan Backend.
      * generate scan report
      */
-    async scanReportGenerate(requestParameters: ScanReportGenerateRequest): Promise<void> {
-        await this.scanReportGenerateRaw(requestParameters);
+    async scanReportGenerate(requestParameters: ScanReportGenerateRequest, initOverrides?: RequestInit): Promise<void> {
+        await this.scanReportGenerateRaw(requestParameters, initOverrides);
     }
 
     /**
      * Send the generated report by email to the team recipients.
      * send scan report
      */
-    async scanReportSendRaw(requestParameters: ScanReportSendRequest): Promise<runtime.ApiResponse<void>> {
+    async scanReportSendRaw(requestParameters: ScanReportSendRequest, initOverrides?: RequestInit): Promise<runtime.ApiResponse<void>> {
         if (requestParameters.scanId === null || requestParameters.scanId === undefined) {
             throw new runtime.RequiredError('scanId','Required parameter requestParameters.scanId was null or undefined when calling scanReportSend.');
         }
@@ -153,7 +153,7 @@ export class ScanReportApi extends runtime.BaseAPI {
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
-        });
+        }, initOverrides);
 
         return new runtime.VoidApiResponse(response);
     }
@@ -162,15 +162,15 @@ export class ScanReportApi extends runtime.BaseAPI {
      * Send the generated report by email to the team recipients.
      * send scan report
      */
-    async scanReportSend(requestParameters: ScanReportSendRequest): Promise<void> {
-        await this.scanReportSendRaw(requestParameters);
+    async scanReportSend(requestParameters: ScanReportSendRequest, initOverrides?: RequestInit): Promise<void> {
+        await this.scanReportSendRaw(requestParameters, initOverrides);
     }
 
     /**
      * Show information about a scan report
      * show scan report
      */
-    async scanReportShowRaw(requestParameters: ScanReportShowRequest): Promise<runtime.ApiResponse<Report>> {
+    async scanReportShowRaw(requestParameters: ScanReportShowRequest, initOverrides?: RequestInit): Promise<runtime.ApiResponse<Report>> {
         if (requestParameters.scanId === null || requestParameters.scanId === undefined) {
             throw new runtime.RequiredError('scanId','Required parameter requestParameters.scanId was null or undefined when calling scanReportShow.');
         }
@@ -192,7 +192,7 @@ export class ScanReportApi extends runtime.BaseAPI {
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
-        });
+        }, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => ReportFromJSON(jsonValue));
     }
@@ -201,8 +201,8 @@ export class ScanReportApi extends runtime.BaseAPI {
      * Show information about a scan report
      * show scan report
      */
-    async scanReportShow(requestParameters: ScanReportShowRequest): Promise<Report> {
-        const response = await this.scanReportShowRaw(requestParameters);
+    async scanReportShow(requestParameters: ScanReportShowRequest, initOverrides?: RequestInit): Promise<Report> {
+        const response = await this.scanReportShowRaw(requestParameters, initOverrides);
         return await response.value();
     }
 

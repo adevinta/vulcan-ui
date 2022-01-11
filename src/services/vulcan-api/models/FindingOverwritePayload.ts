@@ -62,4 +62,3 @@ export function FindingOverwritePayloadToJSON(value?: FindingOverwritePayload | 
     };
 }
 
-

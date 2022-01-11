@@ -70,4 +70,3 @@ export function ModelErrorToJSON(value?: ModelError | null): any {
     };
 }
 
-

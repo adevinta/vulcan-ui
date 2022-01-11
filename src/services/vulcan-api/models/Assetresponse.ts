@@ -18,7 +18,7 @@ import {
     AssettypeFromJSON,
     AssettypeFromJSONTyped,
     AssettypeToJSON,
-} from './';
+} from './Assettype';
 
 /**
  * Asset (default view)
@@ -132,5 +132,4 @@ export function AssetresponseToJSON(value?: Assetresponse | null): any {
         'type': AssettypeToJSON(value.type),
     };
 }
-
 

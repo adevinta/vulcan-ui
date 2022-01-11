@@ -54,4 +54,3 @@ export function ReportemailToJSON(value?: Reportemail | null): any {
     };
 }
 
-

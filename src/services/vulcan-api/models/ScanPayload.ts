@@ -62,4 +62,3 @@ export function ScanPayloadToJSON(value?: ScanPayload | null): any {
     };
 }
 
-

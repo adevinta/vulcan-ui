@@ -62,4 +62,3 @@ export function DigestPayloadToJSON(value?: DigestPayload | null): any {
     };
 }
 
-

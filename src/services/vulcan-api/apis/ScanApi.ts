@@ -42,7 +42,7 @@ export class ScanApi extends runtime.BaseAPI {
      * Create scan
      * create scan
      */
-    async scanCreateRaw(requestParameters: ScanCreateRequest): Promise<runtime.ApiResponse<Scan>> {
+    async scanCreateRaw(requestParameters: ScanCreateRequest, initOverrides?: RequestInit): Promise<runtime.ApiResponse<Scan>> {
         if (requestParameters.teamId === null || requestParameters.teamId === undefined) {
             throw new runtime.RequiredError('teamId','Required parameter requestParameters.teamId was null or undefined when calling scanCreate.');
         }
@@ -67,7 +67,7 @@ export class ScanApi extends runtime.BaseAPI {
             headers: headerParameters,
             query: queryParameters,
             body: ScanPayloadToJSON(requestParameters.payload),
-        });
+        }, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => ScanFromJSON(jsonValue));
     }
@@ -76,8 +76,8 @@ export class ScanApi extends runtime.BaseAPI {
      * Create scan
      * create scan
      */
-    async scanCreate(requestParameters: ScanCreateRequest): Promise<Scan> {
-        const response = await this.scanCreateRaw(requestParameters);
+    async scanCreate(requestParameters: ScanCreateRequest, initOverrides?: RequestInit): Promise<Scan> {
+        const response = await this.scanCreateRaw(requestParameters, initOverrides);
         return await response.value();
     }
 
@@ -85,7 +85,7 @@ export class ScanApi extends runtime.BaseAPI {
      * Describe scan
      * show scan
      */
-    async scanShowRaw(requestParameters: ScanShowRequest): Promise<runtime.ApiResponse<Scan>> {
+    async scanShowRaw(requestParameters: ScanShowRequest, initOverrides?: RequestInit): Promise<runtime.ApiResponse<Scan>> {
         if (requestParameters.scanId === null || requestParameters.scanId === undefined) {
             throw new runtime.RequiredError('scanId','Required parameter requestParameters.scanId was null or undefined when calling scanShow.');
         }
@@ -107,7 +107,7 @@ export class ScanApi extends runtime.BaseAPI {
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
-        });
+        }, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => ScanFromJSON(jsonValue));
     }
@@ -116,8 +116,8 @@ export class ScanApi extends runtime.BaseAPI {
      * Describe scan
      * show scan
      */
-    async scanShow(requestParameters: ScanShowRequest): Promise<Scan> {
-        const response = await this.scanShowRaw(requestParameters);
+    async scanShow(requestParameters: ScanShowRequest, initOverrides?: RequestInit): Promise<Scan> {
+        const response = await this.scanShowRaw(requestParameters, initOverrides);
         return await response.value();
     }
 

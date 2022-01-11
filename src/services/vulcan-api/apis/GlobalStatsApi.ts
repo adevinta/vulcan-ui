@@ -15,23 +15,67 @@
 
 import * as runtime from '../runtime';
 import {
+    CurrentExposure,
+    CurrentExposureFromJSON,
+    CurrentExposureToJSON,
     Exposure,
     ExposureFromJSON,
     ExposureToJSON,
     Mttr,
     MttrFromJSON,
     MttrToJSON,
+    Statsassets,
+    StatsassetsFromJSON,
+    StatsassetsToJSON,
+    Statsfixed,
+    StatsfixedFromJSON,
+    StatsfixedToJSON,
+    Statsopen,
+    StatsopenFromJSON,
+    StatsopenToJSON,
 } from '../models';
+
+export interface GlobalStatsAssetsRequest {
+    identifiers?: string;
+    labels?: string;
+    tags?: string;
+}
+
+export interface GlobalStatsCurrentExposureRequest {
+    maxScore?: number;
+    minScore?: number;
+    tags?: string;
+}
 
 export interface GlobalStatsExposureRequest {
     atDate?: string;
     maxScore?: number;
     minScore?: number;
+    tags?: string;
+}
+
+export interface GlobalStatsFixedRequest {
+    atDate?: string;
+    identifiers?: string;
+    labels?: string;
+    maxDate?: string;
+    minDate?: string;
+    tags?: string;
 }
 
 export interface GlobalStatsMttrRequest {
     maxDate?: string;
     minDate?: string;
+    tags?: string;
+}
+
+export interface GlobalStatsOpenRequest {
+    atDate?: string;
+    identifiers?: string;
+    labels?: string;
+    maxDate?: string;
+    minDate?: string;
+    tags?: string;
 }
 
 /**
@@ -40,10 +84,98 @@ export interface GlobalStatsMttrRequest {
 export class GlobalStatsApi extends runtime.BaseAPI {
 
     /**
-     * Get global exposure statistics.
+     * Get global assets per severity statistics.
+     * assets global-stats
+     */
+    async globalStatsAssetsRaw(requestParameters: GlobalStatsAssetsRequest, initOverrides?: RequestInit): Promise<runtime.ApiResponse<Statsassets>> {
+        const queryParameters: any = {};
+
+        if (requestParameters.identifiers !== undefined) {
+            queryParameters['identifiers'] = requestParameters.identifiers;
+        }
+
+        if (requestParameters.labels !== undefined) {
+            queryParameters['labels'] = requestParameters.labels;
+        }
+
+        if (requestParameters.tags !== undefined) {
+            queryParameters['tags'] = requestParameters.tags;
+        }
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["authorization"] = this.configuration.apiKey("authorization"); // Bearer authentication
+        }
+
+        const response = await this.request({
+            path: `/stats/assets`,
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => StatsassetsFromJSON(jsonValue));
+    }
+
+    /**
+     * Get global assets per severity statistics.
+     * assets global-stats
+     */
+    async globalStatsAssets(requestParameters: GlobalStatsAssetsRequest = {}, initOverrides?: RequestInit): Promise<Statsassets> {
+        const response = await this.globalStatsAssetsRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Get global current exposure statistics. This metric takes into account only the exposure for open vulnerabilities since the last time they were detected.
+     * current exposure global-stats
+     */
+    async globalStatsCurrentExposureRaw(requestParameters: GlobalStatsCurrentExposureRequest, initOverrides?: RequestInit): Promise<runtime.ApiResponse<CurrentExposure>> {
+        const queryParameters: any = {};
+
+        if (requestParameters.maxScore !== undefined) {
+            queryParameters['maxScore'] = requestParameters.maxScore;
+        }
+
+        if (requestParameters.minScore !== undefined) {
+            queryParameters['minScore'] = requestParameters.minScore;
+        }
+
+        if (requestParameters.tags !== undefined) {
+            queryParameters['tags'] = requestParameters.tags;
+        }
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["authorization"] = this.configuration.apiKey("authorization"); // Bearer authentication
+        }
+
+        const response = await this.request({
+            path: `/stats/exposure/current`,
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => CurrentExposureFromJSON(jsonValue));
+    }
+
+    /**
+     * Get global current exposure statistics. This metric takes into account only the exposure for open vulnerabilities since the last time they were detected.
+     * current exposure global-stats
+     */
+    async globalStatsCurrentExposure(requestParameters: GlobalStatsCurrentExposureRequest = {}, initOverrides?: RequestInit): Promise<CurrentExposure> {
+        const response = await this.globalStatsCurrentExposureRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Get global exposure statistics. This metric takes into account the exposure across all lifecycle of vulnerabilities.
      * exposure global-stats
      */
-    async globalStatsExposureRaw(requestParameters: GlobalStatsExposureRequest): Promise<runtime.ApiResponse<Exposure>> {
+    async globalStatsExposureRaw(requestParameters: GlobalStatsExposureRequest, initOverrides?: RequestInit): Promise<runtime.ApiResponse<Exposure>> {
         const queryParameters: any = {};
 
         if (requestParameters.atDate !== undefined) {
@@ -58,6 +190,10 @@ export class GlobalStatsApi extends runtime.BaseAPI {
             queryParameters['minScore'] = requestParameters.minScore;
         }
 
+        if (requestParameters.tags !== undefined) {
+            queryParameters['tags'] = requestParameters.tags;
+        }
+
         const headerParameters: runtime.HTTPHeaders = {};
 
         if (this.configuration && this.configuration.apiKey) {
@@ -69,17 +205,73 @@ export class GlobalStatsApi extends runtime.BaseAPI {
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
-        });
+        }, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => ExposureFromJSON(jsonValue));
     }
 
     /**
-     * Get global exposure statistics.
+     * Get global exposure statistics. This metric takes into account the exposure across all lifecycle of vulnerabilities.
      * exposure global-stats
      */
-    async globalStatsExposure(requestParameters: GlobalStatsExposureRequest): Promise<Exposure> {
-        const response = await this.globalStatsExposureRaw(requestParameters);
+    async globalStatsExposure(requestParameters: GlobalStatsExposureRequest = {}, initOverrides?: RequestInit): Promise<Exposure> {
+        const response = await this.globalStatsExposureRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Get global fixed issues statistics.
+     * fixed global-stats
+     */
+    async globalStatsFixedRaw(requestParameters: GlobalStatsFixedRequest, initOverrides?: RequestInit): Promise<runtime.ApiResponse<Statsfixed>> {
+        const queryParameters: any = {};
+
+        if (requestParameters.atDate !== undefined) {
+            queryParameters['atDate'] = requestParameters.atDate;
+        }
+
+        if (requestParameters.identifiers !== undefined) {
+            queryParameters['identifiers'] = requestParameters.identifiers;
+        }
+
+        if (requestParameters.labels !== undefined) {
+            queryParameters['labels'] = requestParameters.labels;
+        }
+
+        if (requestParameters.maxDate !== undefined) {
+            queryParameters['maxDate'] = requestParameters.maxDate;
+        }
+
+        if (requestParameters.minDate !== undefined) {
+            queryParameters['minDate'] = requestParameters.minDate;
+        }
+
+        if (requestParameters.tags !== undefined) {
+            queryParameters['tags'] = requestParameters.tags;
+        }
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["authorization"] = this.configuration.apiKey("authorization"); // Bearer authentication
+        }
+
+        const response = await this.request({
+            path: `/stats/fixed`,
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => StatsfixedFromJSON(jsonValue));
+    }
+
+    /**
+     * Get global fixed issues statistics.
+     * fixed global-stats
+     */
+    async globalStatsFixed(requestParameters: GlobalStatsFixedRequest = {}, initOverrides?: RequestInit): Promise<Statsfixed> {
+        const response = await this.globalStatsFixedRaw(requestParameters, initOverrides);
         return await response.value();
     }
 
@@ -87,7 +279,7 @@ export class GlobalStatsApi extends runtime.BaseAPI {
      * Get global MTTR statistics.
      * mttr global-stats
      */
-    async globalStatsMttrRaw(requestParameters: GlobalStatsMttrRequest): Promise<runtime.ApiResponse<Mttr>> {
+    async globalStatsMttrRaw(requestParameters: GlobalStatsMttrRequest, initOverrides?: RequestInit): Promise<runtime.ApiResponse<Mttr>> {
         const queryParameters: any = {};
 
         if (requestParameters.maxDate !== undefined) {
@@ -96,6 +288,10 @@ export class GlobalStatsApi extends runtime.BaseAPI {
 
         if (requestParameters.minDate !== undefined) {
             queryParameters['minDate'] = requestParameters.minDate;
+        }
+
+        if (requestParameters.tags !== undefined) {
+            queryParameters['tags'] = requestParameters.tags;
         }
 
         const headerParameters: runtime.HTTPHeaders = {};
@@ -109,7 +305,7 @@ export class GlobalStatsApi extends runtime.BaseAPI {
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
-        });
+        }, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => MttrFromJSON(jsonValue));
     }
@@ -118,8 +314,64 @@ export class GlobalStatsApi extends runtime.BaseAPI {
      * Get global MTTR statistics.
      * mttr global-stats
      */
-    async globalStatsMttr(requestParameters: GlobalStatsMttrRequest): Promise<Mttr> {
-        const response = await this.globalStatsMttrRaw(requestParameters);
+    async globalStatsMttr(requestParameters: GlobalStatsMttrRequest = {}, initOverrides?: RequestInit): Promise<Mttr> {
+        const response = await this.globalStatsMttrRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Get global open issues statistics.
+     * open global-stats
+     */
+    async globalStatsOpenRaw(requestParameters: GlobalStatsOpenRequest, initOverrides?: RequestInit): Promise<runtime.ApiResponse<Statsopen>> {
+        const queryParameters: any = {};
+
+        if (requestParameters.atDate !== undefined) {
+            queryParameters['atDate'] = requestParameters.atDate;
+        }
+
+        if (requestParameters.identifiers !== undefined) {
+            queryParameters['identifiers'] = requestParameters.identifiers;
+        }
+
+        if (requestParameters.labels !== undefined) {
+            queryParameters['labels'] = requestParameters.labels;
+        }
+
+        if (requestParameters.maxDate !== undefined) {
+            queryParameters['maxDate'] = requestParameters.maxDate;
+        }
+
+        if (requestParameters.minDate !== undefined) {
+            queryParameters['minDate'] = requestParameters.minDate;
+        }
+
+        if (requestParameters.tags !== undefined) {
+            queryParameters['tags'] = requestParameters.tags;
+        }
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["authorization"] = this.configuration.apiKey("authorization"); // Bearer authentication
+        }
+
+        const response = await this.request({
+            path: `/stats/open`,
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => StatsopenFromJSON(jsonValue));
+    }
+
+    /**
+     * Get global open issues statistics.
+     * open global-stats
+     */
+    async globalStatsOpen(requestParameters: GlobalStatsOpenRequest = {}, initOverrides?: RequestInit): Promise<Statsopen> {
+        const response = await this.globalStatsOpenRaw(requestParameters, initOverrides);
         return await response.value();
     }
 

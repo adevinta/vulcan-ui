@@ -1,15 +1,20 @@
+/* tslint:disable */
+/* eslint-disable */
 export * from './Asset';
 export * from './AssetAnnotationDeleteRequest';
 export * from './AssetAnnotationRequest';
 export * from './AssetGroupPayload';
 export * from './AssetPayload';
 export * from './AssetUpdatePayload';
+export * from './AssetWithAnnotationsPayload';
 export * from './AssetannotationsResponse';
 export * from './Assetresponse';
 export * from './Assettype';
 export * from './Attachment';
 export * from './CreateAssetPayload';
+export * from './CurrentExposure';
 export * from './DigestPayload';
+export * from './DiscoveredAssetsPayload';
 export * from './Exposure';
 export * from './Finding';
 export * from './FindingOverwrite';
@@ -25,6 +30,8 @@ export * from './GroupPayload';
 export * from './GroupWithoutAssetsCount';
 export * from './Healthcheck';
 export * from './Issue';
+export * from './Job';
+export * from './JobResult';
 export * from './Listassetentry';
 export * from './ModelError';
 export * from './Mttr';
@@ -52,6 +59,7 @@ export * from './SchedulePayload';
 export * from './ScheduleUpdatePayload';
 export * from './Source';
 export * from './Stats';
+export * from './Statsassets';
 export * from './Statsaverages';
 export * from './Statscoverage';
 export * from './Statsfixed';

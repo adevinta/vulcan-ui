@@ -18,7 +18,7 @@ import {
     UserFromJSON,
     UserFromJSONTyped,
     UserToJSON,
-} from './';
+} from './User';
 
 /**
  * Team Member (default view)
@@ -68,5 +68,4 @@ export function TeammemberToJSON(value?: Teammember | null): any {
         'user': UserToJSON(value.user),
     };
 }
-
 

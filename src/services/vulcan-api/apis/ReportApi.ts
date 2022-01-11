@@ -34,7 +34,7 @@ export class ReportApi extends runtime.BaseAPI {
      * Send digest report. If no dates are specified, the time range will be set for the last 30 days.
      * send digest report
      */
-    async reportSendDigestRaw(requestParameters: ReportSendDigestRequest): Promise<runtime.ApiResponse<void>> {
+    async reportSendDigestRaw(requestParameters: ReportSendDigestRequest, initOverrides?: RequestInit): Promise<runtime.ApiResponse<void>> {
         if (requestParameters.teamId === null || requestParameters.teamId === undefined) {
             throw new runtime.RequiredError('teamId','Required parameter requestParameters.teamId was null or undefined when calling reportSendDigest.');
         }
@@ -59,7 +59,7 @@ export class ReportApi extends runtime.BaseAPI {
             headers: headerParameters,
             query: queryParameters,
             body: DigestPayloadToJSON(requestParameters.payload),
-        });
+        }, initOverrides);
 
         return new runtime.VoidApiResponse(response);
     }
@@ -68,8 +68,8 @@ export class ReportApi extends runtime.BaseAPI {
      * Send digest report. If no dates are specified, the time range will be set for the last 30 days.
      * send digest report
      */
-    async reportSendDigest(requestParameters: ReportSendDigestRequest): Promise<void> {
-        await this.reportSendDigestRaw(requestParameters);
+    async reportSendDigest(requestParameters: ReportSendDigestRequest, initOverrides?: RequestInit): Promise<void> {
+        await this.reportSendDigestRaw(requestParameters, initOverrides);
     }
 
 }

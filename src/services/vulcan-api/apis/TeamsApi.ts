@@ -56,7 +56,7 @@ export class TeamsApi extends runtime.BaseAPI {
      * Create a new team.
      * create teams
      */
-    async teamsCreateRaw(requestParameters: TeamsCreateRequest): Promise<runtime.ApiResponse<Team>> {
+    async teamsCreateRaw(requestParameters: TeamsCreateRequest, initOverrides?: RequestInit): Promise<runtime.ApiResponse<Team>> {
         if (requestParameters.payload === null || requestParameters.payload === undefined) {
             throw new runtime.RequiredError('payload','Required parameter requestParameters.payload was null or undefined when calling teamsCreate.');
         }
@@ -77,7 +77,7 @@ export class TeamsApi extends runtime.BaseAPI {
             headers: headerParameters,
             query: queryParameters,
             body: TeamPayloadToJSON(requestParameters.payload),
-        });
+        }, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => TeamFromJSON(jsonValue));
     }
@@ -86,8 +86,8 @@ export class TeamsApi extends runtime.BaseAPI {
      * Create a new team.
      * create teams
      */
-    async teamsCreate(requestParameters: TeamsCreateRequest): Promise<Team> {
-        const response = await this.teamsCreateRaw(requestParameters);
+    async teamsCreate(requestParameters: TeamsCreateRequest, initOverrides?: RequestInit): Promise<Team> {
+        const response = await this.teamsCreateRaw(requestParameters, initOverrides);
         return await response.value();
     }
 
@@ -95,7 +95,7 @@ export class TeamsApi extends runtime.BaseAPI {
      * Delete a team.
      * delete teams
      */
-    async teamsDeleteRaw(requestParameters: TeamsDeleteRequest): Promise<runtime.ApiResponse<void>> {
+    async teamsDeleteRaw(requestParameters: TeamsDeleteRequest, initOverrides?: RequestInit): Promise<runtime.ApiResponse<void>> {
         if (requestParameters.teamId === null || requestParameters.teamId === undefined) {
             throw new runtime.RequiredError('teamId','Required parameter requestParameters.teamId was null or undefined when calling teamsDelete.');
         }
@@ -113,7 +113,7 @@ export class TeamsApi extends runtime.BaseAPI {
             method: 'DELETE',
             headers: headerParameters,
             query: queryParameters,
-        });
+        }, initOverrides);
 
         return new runtime.VoidApiResponse(response);
     }
@@ -122,15 +122,15 @@ export class TeamsApi extends runtime.BaseAPI {
      * Delete a team.
      * delete teams
      */
-    async teamsDelete(requestParameters: TeamsDeleteRequest): Promise<void> {
-        await this.teamsDeleteRaw(requestParameters);
+    async teamsDelete(requestParameters: TeamsDeleteRequest, initOverrides?: RequestInit): Promise<void> {
+        await this.teamsDeleteRaw(requestParameters, initOverrides);
     }
 
     /**
      * List all teams in Vulcan.
      * list teams
      */
-    async teamsListRaw(requestParameters: TeamsListRequest): Promise<runtime.ApiResponse<Array<Team>>> {
+    async teamsListRaw(requestParameters: TeamsListRequest, initOverrides?: RequestInit): Promise<runtime.ApiResponse<Array<Team>>> {
         const queryParameters: any = {};
 
         if (requestParameters.tag !== undefined) {
@@ -148,7 +148,7 @@ export class TeamsApi extends runtime.BaseAPI {
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
-        });
+        }, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => jsonValue.map(TeamFromJSON));
     }
@@ -157,8 +157,8 @@ export class TeamsApi extends runtime.BaseAPI {
      * List all teams in Vulcan.
      * list teams
      */
-    async teamsList(requestParameters: TeamsListRequest): Promise<Array<Team>> {
-        const response = await this.teamsListRaw(requestParameters);
+    async teamsList(requestParameters: TeamsListRequest = {}, initOverrides?: RequestInit): Promise<Array<Team>> {
+        const response = await this.teamsListRaw(requestParameters, initOverrides);
         return await response.value();
     }
 
@@ -166,7 +166,7 @@ export class TeamsApi extends runtime.BaseAPI {
      * Show information about a team.
      * show teams
      */
-    async teamsShowRaw(requestParameters: TeamsShowRequest): Promise<runtime.ApiResponse<Team>> {
+    async teamsShowRaw(requestParameters: TeamsShowRequest, initOverrides?: RequestInit): Promise<runtime.ApiResponse<Team>> {
         if (requestParameters.teamId === null || requestParameters.teamId === undefined) {
             throw new runtime.RequiredError('teamId','Required parameter requestParameters.teamId was null or undefined when calling teamsShow.');
         }
@@ -184,7 +184,7 @@ export class TeamsApi extends runtime.BaseAPI {
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
-        });
+        }, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => TeamFromJSON(jsonValue));
     }
@@ -193,8 +193,8 @@ export class TeamsApi extends runtime.BaseAPI {
      * Show information about a team.
      * show teams
      */
-    async teamsShow(requestParameters: TeamsShowRequest): Promise<Team> {
-        const response = await this.teamsShowRaw(requestParameters);
+    async teamsShow(requestParameters: TeamsShowRequest, initOverrides?: RequestInit): Promise<Team> {
+        const response = await this.teamsShowRaw(requestParameters, initOverrides);
         return await response.value();
     }
 
@@ -202,7 +202,7 @@ export class TeamsApi extends runtime.BaseAPI {
      * Update information about a team.
      * update teams
      */
-    async teamsUpdateRaw(requestParameters: TeamsUpdateRequest): Promise<runtime.ApiResponse<Team>> {
+    async teamsUpdateRaw(requestParameters: TeamsUpdateRequest, initOverrides?: RequestInit): Promise<runtime.ApiResponse<Team>> {
         if (requestParameters.teamId === null || requestParameters.teamId === undefined) {
             throw new runtime.RequiredError('teamId','Required parameter requestParameters.teamId was null or undefined when calling teamsUpdate.');
         }
@@ -227,7 +227,7 @@ export class TeamsApi extends runtime.BaseAPI {
             headers: headerParameters,
             query: queryParameters,
             body: TeamUpdatePayloadToJSON(requestParameters.payload),
-        });
+        }, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => TeamFromJSON(jsonValue));
     }
@@ -236,8 +236,8 @@ export class TeamsApi extends runtime.BaseAPI {
      * Update information about a team.
      * update teams
      */
-    async teamsUpdate(requestParameters: TeamsUpdateRequest): Promise<Team> {
-        const response = await this.teamsUpdateRaw(requestParameters);
+    async teamsUpdate(requestParameters: TeamsUpdateRequest, initOverrides?: RequestInit): Promise<Team> {
+        const response = await this.teamsUpdateRaw(requestParameters, initOverrides);
         return await response.value();
     }
 

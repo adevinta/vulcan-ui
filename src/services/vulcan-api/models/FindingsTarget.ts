@@ -86,4 +86,3 @@ export function FindingsTargetToJSON(value?: FindingsTarget | null): any {
     };
 }
 
-

@@ -18,7 +18,7 @@ import {
     StatsFromJSON,
     StatsFromJSONTyped,
     StatsToJSON,
-} from './';
+} from './Stats';
 
 /**
  * Fixed issues stats (default view)
@@ -60,5 +60,4 @@ export function StatsfixedToJSON(value?: Statsfixed | null): any {
         'fixed_issues': StatsToJSON(value.fixedIssues),
     };
 }
-
 

@@ -86,4 +86,3 @@ export function GroupToJSON(value?: Group | null): any {
     };
 }
 
-

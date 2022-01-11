@@ -62,4 +62,3 @@ export function GroupPayloadToJSON(value?: GroupPayload | null): any {
     };
 }
 
-

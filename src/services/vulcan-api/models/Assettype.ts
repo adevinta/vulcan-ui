@@ -62,4 +62,3 @@ export function AssettypeToJSON(value?: Assettype | null): any {
     };
 }
 
-

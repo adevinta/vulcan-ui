@@ -15,6 +15,9 @@
 
 import * as runtime from '../runtime';
 import {
+    CurrentExposure,
+    CurrentExposureFromJSON,
+    CurrentExposureToJSON,
     Exposure,
     ExposureFromJSON,
     ExposureToJSON,
@@ -34,6 +37,12 @@ import {
 
 export interface StatsCoverageRequest {
     teamId: string;
+}
+
+export interface StatsCurrentExposureRequest {
+    teamId: string;
+    maxScore?: number;
+    minScore?: number;
 }
 
 export interface StatsExposureRequest {
@@ -76,7 +85,7 @@ export class StatsApi extends runtime.BaseAPI {
      * Get asset coverage for a team.
      * coverage stats
      */
-    async statsCoverageRaw(requestParameters: StatsCoverageRequest): Promise<runtime.ApiResponse<Statscoverage>> {
+    async statsCoverageRaw(requestParameters: StatsCoverageRequest, initOverrides?: RequestInit): Promise<runtime.ApiResponse<Statscoverage>> {
         if (requestParameters.teamId === null || requestParameters.teamId === undefined) {
             throw new runtime.RequiredError('teamId','Required parameter requestParameters.teamId was null or undefined when calling statsCoverage.');
         }
@@ -94,7 +103,7 @@ export class StatsApi extends runtime.BaseAPI {
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
-        });
+        }, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => StatscoverageFromJSON(jsonValue));
     }
@@ -103,16 +112,60 @@ export class StatsApi extends runtime.BaseAPI {
      * Get asset coverage for a team.
      * coverage stats
      */
-    async statsCoverage(requestParameters: StatsCoverageRequest): Promise<Statscoverage> {
-        const response = await this.statsCoverageRaw(requestParameters);
+    async statsCoverage(requestParameters: StatsCoverageRequest, initOverrides?: RequestInit): Promise<Statscoverage> {
+        const response = await this.statsCoverageRaw(requestParameters, initOverrides);
         return await response.value();
     }
 
     /**
-     * Get exposure statistics for a team.
+     * Get current exposure statistics for a team. This metric takes into account only the exposure for open vulnerabilities since the last time they were detected.
+     * current exposure stats
+     */
+    async statsCurrentExposureRaw(requestParameters: StatsCurrentExposureRequest, initOverrides?: RequestInit): Promise<runtime.ApiResponse<CurrentExposure>> {
+        if (requestParameters.teamId === null || requestParameters.teamId === undefined) {
+            throw new runtime.RequiredError('teamId','Required parameter requestParameters.teamId was null or undefined when calling statsCurrentExposure.');
+        }
+
+        const queryParameters: any = {};
+
+        if (requestParameters.maxScore !== undefined) {
+            queryParameters['maxScore'] = requestParameters.maxScore;
+        }
+
+        if (requestParameters.minScore !== undefined) {
+            queryParameters['minScore'] = requestParameters.minScore;
+        }
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["authorization"] = this.configuration.apiKey("authorization"); // Bearer authentication
+        }
+
+        const response = await this.request({
+            path: `/teams/{team_id}/stats/exposure/current`.replace(`{${"team_id"}}`, encodeURIComponent(String(requestParameters.teamId))),
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => CurrentExposureFromJSON(jsonValue));
+    }
+
+    /**
+     * Get current exposure statistics for a team. This metric takes into account only the exposure for open vulnerabilities since the last time they were detected.
+     * current exposure stats
+     */
+    async statsCurrentExposure(requestParameters: StatsCurrentExposureRequest, initOverrides?: RequestInit): Promise<CurrentExposure> {
+        const response = await this.statsCurrentExposureRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Get exposure statistics for a team. This metric takes into account the exposure across all lifecycle of vulnerabilities.
      * exposure stats
      */
-    async statsExposureRaw(requestParameters: StatsExposureRequest): Promise<runtime.ApiResponse<Exposure>> {
+    async statsExposureRaw(requestParameters: StatsExposureRequest, initOverrides?: RequestInit): Promise<runtime.ApiResponse<Exposure>> {
         if (requestParameters.teamId === null || requestParameters.teamId === undefined) {
             throw new runtime.RequiredError('teamId','Required parameter requestParameters.teamId was null or undefined when calling statsExposure.');
         }
@@ -142,17 +195,17 @@ export class StatsApi extends runtime.BaseAPI {
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
-        });
+        }, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => ExposureFromJSON(jsonValue));
     }
 
     /**
-     * Get exposure statistics for a team.
+     * Get exposure statistics for a team. This metric takes into account the exposure across all lifecycle of vulnerabilities.
      * exposure stats
      */
-    async statsExposure(requestParameters: StatsExposureRequest): Promise<Exposure> {
-        const response = await this.statsExposureRaw(requestParameters);
+    async statsExposure(requestParameters: StatsExposureRequest, initOverrides?: RequestInit): Promise<Exposure> {
+        const response = await this.statsExposureRaw(requestParameters, initOverrides);
         return await response.value();
     }
 
@@ -160,7 +213,7 @@ export class StatsApi extends runtime.BaseAPI {
      * Get fixed issues statistics for a team.
      * fixed stats
      */
-    async statsFixedRaw(requestParameters: StatsFixedRequest): Promise<runtime.ApiResponse<Statsfixed>> {
+    async statsFixedRaw(requestParameters: StatsFixedRequest, initOverrides?: RequestInit): Promise<runtime.ApiResponse<Statsfixed>> {
         if (requestParameters.teamId === null || requestParameters.teamId === undefined) {
             throw new runtime.RequiredError('teamId','Required parameter requestParameters.teamId was null or undefined when calling statsFixed.');
         }
@@ -198,7 +251,7 @@ export class StatsApi extends runtime.BaseAPI {
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
-        });
+        }, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => StatsfixedFromJSON(jsonValue));
     }
@@ -207,8 +260,8 @@ export class StatsApi extends runtime.BaseAPI {
      * Get fixed issues statistics for a team.
      * fixed stats
      */
-    async statsFixed(requestParameters: StatsFixedRequest): Promise<Statsfixed> {
-        const response = await this.statsFixedRaw(requestParameters);
+    async statsFixed(requestParameters: StatsFixedRequest, initOverrides?: RequestInit): Promise<Statsfixed> {
+        const response = await this.statsFixedRaw(requestParameters, initOverrides);
         return await response.value();
     }
 
@@ -216,7 +269,7 @@ export class StatsApi extends runtime.BaseAPI {
      * Get MTR statistics for a team.
      * mttr stats
      */
-    async statsMttrRaw(requestParameters: StatsMttrRequest): Promise<runtime.ApiResponse<Mttr>> {
+    async statsMttrRaw(requestParameters: StatsMttrRequest, initOverrides?: RequestInit): Promise<runtime.ApiResponse<Mttr>> {
         if (requestParameters.teamId === null || requestParameters.teamId === undefined) {
             throw new runtime.RequiredError('teamId','Required parameter requestParameters.teamId was null or undefined when calling statsMttr.');
         }
@@ -242,7 +295,7 @@ export class StatsApi extends runtime.BaseAPI {
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
-        });
+        }, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => MttrFromJSON(jsonValue));
     }
@@ -251,8 +304,8 @@ export class StatsApi extends runtime.BaseAPI {
      * Get MTR statistics for a team.
      * mttr stats
      */
-    async statsMttr(requestParameters: StatsMttrRequest): Promise<Mttr> {
-        const response = await this.statsMttrRaw(requestParameters);
+    async statsMttr(requestParameters: StatsMttrRequest, initOverrides?: RequestInit): Promise<Mttr> {
+        const response = await this.statsMttrRaw(requestParameters, initOverrides);
         return await response.value();
     }
 
@@ -260,7 +313,7 @@ export class StatsApi extends runtime.BaseAPI {
      * Get open issues statistics for a team.
      * open stats
      */
-    async statsOpenRaw(requestParameters: StatsOpenRequest): Promise<runtime.ApiResponse<Statsopen>> {
+    async statsOpenRaw(requestParameters: StatsOpenRequest, initOverrides?: RequestInit): Promise<runtime.ApiResponse<Statsopen>> {
         if (requestParameters.teamId === null || requestParameters.teamId === undefined) {
             throw new runtime.RequiredError('teamId','Required parameter requestParameters.teamId was null or undefined when calling statsOpen.');
         }
@@ -298,7 +351,7 @@ export class StatsApi extends runtime.BaseAPI {
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
-        });
+        }, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => StatsopenFromJSON(jsonValue));
     }
@@ -307,8 +360,8 @@ export class StatsApi extends runtime.BaseAPI {
      * Get open issues statistics for a team.
      * open stats
      */
-    async statsOpen(requestParameters: StatsOpenRequest): Promise<Statsopen> {
-        const response = await this.statsOpenRaw(requestParameters);
+    async statsOpen(requestParameters: StatsOpenRequest, initOverrides?: RequestInit): Promise<Statsopen> {
+        const response = await this.statsOpenRaw(requestParameters, initOverrides);
         return await response.value();
     }
 

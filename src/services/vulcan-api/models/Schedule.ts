@@ -54,4 +54,3 @@ export function ScheduleToJSON(value?: Schedule | null): any {
     };
 }
 
-

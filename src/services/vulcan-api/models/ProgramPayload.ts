@@ -18,7 +18,7 @@ import {
     ProgramPolicyGroupPayloadFromJSON,
     ProgramPolicyGroupPayloadFromJSONTyped,
     ProgramPolicyGroupPayloadToJSON,
-} from './';
+} from './ProgramPolicyGroupPayload';
 
 /**
  * 
@@ -84,5 +84,4 @@ export function ProgramPayloadToJSON(value?: ProgramPayload | null): any {
         'policy_groups': value.policyGroups === undefined ? undefined : ((value.policyGroups as Array<any>).map(ProgramPolicyGroupPayloadToJSON)),
     };
 }
-
 
