@@ -54,4 +54,3 @@ export function AssetAnnotationRequestToJSON(value?: AssetAnnotationRequest | nu
     };
 }
 
-

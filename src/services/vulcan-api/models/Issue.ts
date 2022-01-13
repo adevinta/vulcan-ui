@@ -102,4 +102,3 @@ export function IssueToJSON(value?: Issue | null): any {
     };
 }
 
-

@@ -70,4 +70,3 @@ export function ResourceToJSON(value?: Resource | null): any {
     };
 }
 
-

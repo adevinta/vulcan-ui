@@ -21,34 +21,34 @@ import {
 } from './Statstotal';
 
 /**
- * MTTR stats (default view)
+ * Assets by severity stats (default view)
  * @export
- * @interface Mttr
+ * @interface Statsassets
  */
-export interface Mttr {
+export interface Statsassets {
     /**
      * 
      * @type {Statstotal}
-     * @memberof Mttr
+     * @memberof Statsassets
      */
-    mttr?: Statstotal;
+    assets?: Statstotal;
 }
 
-export function MttrFromJSON(json: any): Mttr {
-    return MttrFromJSONTyped(json, false);
+export function StatsassetsFromJSON(json: any): Statsassets {
+    return StatsassetsFromJSONTyped(json, false);
 }
 
-export function MttrFromJSONTyped(json: any, ignoreDiscriminator: boolean): Mttr {
+export function StatsassetsFromJSONTyped(json: any, ignoreDiscriminator: boolean): Statsassets {
     if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
-        'mttr': !exists(json, 'mttr') ? undefined : StatstotalFromJSON(json['mttr']),
+        'assets': !exists(json, 'assets') ? undefined : StatstotalFromJSON(json['assets']),
     };
 }
 
-export function MttrToJSON(value?: Mttr | null): any {
+export function StatsassetsToJSON(value?: Statsassets | null): any {
     if (value === undefined) {
         return undefined;
     }
@@ -57,7 +57,7 @@ export function MttrToJSON(value?: Mttr | null): any {
     }
     return {
         
-        'mttr': StatstotalToJSON(value.mttr),
+        'assets': StatstotalToJSON(value.assets),
     };
 }
 

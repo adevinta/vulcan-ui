@@ -54,4 +54,3 @@ export function TeamMemberUpdatePayloadToJSON(value?: TeamMemberUpdatePayload | 
     };
 }
 
-

@@ -60,7 +60,7 @@ export class ProgramsApi extends runtime.BaseAPI {
      * Create a new program.
      * create programs
      */
-    async programsCreateRaw(requestParameters: ProgramsCreateRequest): Promise<runtime.ApiResponse<Program>> {
+    async programsCreateRaw(requestParameters: ProgramsCreateRequest, initOverrides?: RequestInit): Promise<runtime.ApiResponse<Program>> {
         if (requestParameters.teamId === null || requestParameters.teamId === undefined) {
             throw new runtime.RequiredError('teamId','Required parameter requestParameters.teamId was null or undefined when calling programsCreate.');
         }
@@ -85,7 +85,7 @@ export class ProgramsApi extends runtime.BaseAPI {
             headers: headerParameters,
             query: queryParameters,
             body: ProgramPayloadToJSON(requestParameters.payload),
-        });
+        }, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => ProgramFromJSON(jsonValue));
     }
@@ -94,8 +94,8 @@ export class ProgramsApi extends runtime.BaseAPI {
      * Create a new program.
      * create programs
      */
-    async programsCreate(requestParameters: ProgramsCreateRequest): Promise<Program> {
-        const response = await this.programsCreateRaw(requestParameters);
+    async programsCreate(requestParameters: ProgramsCreateRequest, initOverrides?: RequestInit): Promise<Program> {
+        const response = await this.programsCreateRaw(requestParameters, initOverrides);
         return await response.value();
     }
 
@@ -103,7 +103,7 @@ export class ProgramsApi extends runtime.BaseAPI {
      * Delete a program.
      * delete programs
      */
-    async programsDeleteRaw(requestParameters: ProgramsDeleteRequest): Promise<runtime.ApiResponse<void>> {
+    async programsDeleteRaw(requestParameters: ProgramsDeleteRequest, initOverrides?: RequestInit): Promise<runtime.ApiResponse<void>> {
         if (requestParameters.programId === null || requestParameters.programId === undefined) {
             throw new runtime.RequiredError('programId','Required parameter requestParameters.programId was null or undefined when calling programsDelete.');
         }
@@ -125,7 +125,7 @@ export class ProgramsApi extends runtime.BaseAPI {
             method: 'DELETE',
             headers: headerParameters,
             query: queryParameters,
-        });
+        }, initOverrides);
 
         return new runtime.VoidApiResponse(response);
     }
@@ -134,15 +134,15 @@ export class ProgramsApi extends runtime.BaseAPI {
      * Delete a program.
      * delete programs
      */
-    async programsDelete(requestParameters: ProgramsDeleteRequest): Promise<void> {
-        await this.programsDeleteRaw(requestParameters);
+    async programsDelete(requestParameters: ProgramsDeleteRequest, initOverrides?: RequestInit): Promise<void> {
+        await this.programsDeleteRaw(requestParameters, initOverrides);
     }
 
     /**
      * List all programs from a team.
      * list programs
      */
-    async programsListRaw(requestParameters: ProgramsListRequest): Promise<runtime.ApiResponse<Array<Program>>> {
+    async programsListRaw(requestParameters: ProgramsListRequest, initOverrides?: RequestInit): Promise<runtime.ApiResponse<Array<Program>>> {
         if (requestParameters.teamId === null || requestParameters.teamId === undefined) {
             throw new runtime.RequiredError('teamId','Required parameter requestParameters.teamId was null or undefined when calling programsList.');
         }
@@ -160,7 +160,7 @@ export class ProgramsApi extends runtime.BaseAPI {
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
-        });
+        }, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => jsonValue.map(ProgramFromJSON));
     }
@@ -169,8 +169,8 @@ export class ProgramsApi extends runtime.BaseAPI {
      * List all programs from a team.
      * list programs
      */
-    async programsList(requestParameters: ProgramsListRequest): Promise<Array<Program>> {
-        const response = await this.programsListRaw(requestParameters);
+    async programsList(requestParameters: ProgramsListRequest, initOverrides?: RequestInit): Promise<Array<Program>> {
+        const response = await this.programsListRaw(requestParameters, initOverrides);
         return await response.value();
     }
 
@@ -178,7 +178,7 @@ export class ProgramsApi extends runtime.BaseAPI {
      * Show information about a program.
      * show programs
      */
-    async programsShowRaw(requestParameters: ProgramsShowRequest): Promise<runtime.ApiResponse<Program>> {
+    async programsShowRaw(requestParameters: ProgramsShowRequest, initOverrides?: RequestInit): Promise<runtime.ApiResponse<Program>> {
         if (requestParameters.programId === null || requestParameters.programId === undefined) {
             throw new runtime.RequiredError('programId','Required parameter requestParameters.programId was null or undefined when calling programsShow.');
         }
@@ -200,7 +200,7 @@ export class ProgramsApi extends runtime.BaseAPI {
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
-        });
+        }, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => ProgramFromJSON(jsonValue));
     }
@@ -209,8 +209,8 @@ export class ProgramsApi extends runtime.BaseAPI {
      * Show information about a program.
      * show programs
      */
-    async programsShow(requestParameters: ProgramsShowRequest): Promise<Program> {
-        const response = await this.programsShowRaw(requestParameters);
+    async programsShow(requestParameters: ProgramsShowRequest, initOverrides?: RequestInit): Promise<Program> {
+        const response = await this.programsShowRaw(requestParameters, initOverrides);
         return await response.value();
     }
 
@@ -218,7 +218,7 @@ export class ProgramsApi extends runtime.BaseAPI {
      * Update information about a program.
      * update programs
      */
-    async programsUpdateRaw(requestParameters: ProgramsUpdateRequest): Promise<runtime.ApiResponse<Program>> {
+    async programsUpdateRaw(requestParameters: ProgramsUpdateRequest, initOverrides?: RequestInit): Promise<runtime.ApiResponse<Program>> {
         if (requestParameters.programId === null || requestParameters.programId === undefined) {
             throw new runtime.RequiredError('programId','Required parameter requestParameters.programId was null or undefined when calling programsUpdate.');
         }
@@ -247,7 +247,7 @@ export class ProgramsApi extends runtime.BaseAPI {
             headers: headerParameters,
             query: queryParameters,
             body: ProgramUpdatePayloadToJSON(requestParameters.payload),
-        });
+        }, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => ProgramFromJSON(jsonValue));
     }
@@ -256,8 +256,8 @@ export class ProgramsApi extends runtime.BaseAPI {
      * Update information about a program.
      * update programs
      */
-    async programsUpdate(requestParameters: ProgramsUpdateRequest): Promise<Program> {
-        const response = await this.programsUpdateRaw(requestParameters);
+    async programsUpdate(requestParameters: ProgramsUpdateRequest, initOverrides?: RequestInit): Promise<Program> {
+        const response = await this.programsUpdateRaw(requestParameters, initOverrides);
         return await response.value();
     }
 

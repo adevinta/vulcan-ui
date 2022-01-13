@@ -54,4 +54,3 @@ export function RecipientToJSON(value?: Recipient | null): any {
     };
 }
 
-

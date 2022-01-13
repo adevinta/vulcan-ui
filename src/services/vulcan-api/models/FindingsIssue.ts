@@ -86,4 +86,3 @@ export function FindingsIssueToJSON(value?: FindingsIssue | null): any {
     };
 }
 
-

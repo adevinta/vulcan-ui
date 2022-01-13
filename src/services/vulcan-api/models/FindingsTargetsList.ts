@@ -18,11 +18,13 @@ import {
     FindingsTargetFromJSON,
     FindingsTargetFromJSONTyped,
     FindingsTargetToJSON,
+} from './FindingsTarget';
+import {
     Pagination,
     PaginationFromJSON,
     PaginationFromJSONTyped,
     PaginationToJSON,
-} from './';
+} from './Pagination';
 
 /**
  * Findings by Target list (default view)
@@ -72,5 +74,4 @@ export function FindingsTargetsListToJSON(value?: FindingsTargetsList | null): a
         'targets': value.targets === undefined ? undefined : ((value.targets as Array<any>).map(FindingsTargetToJSON)),
     };
 }
-
 

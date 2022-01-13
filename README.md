@@ -35,14 +35,17 @@ While the serve command is executing it will regenerate the ui every time you mo
 ## Updating the TypeScript vulcan-api library
 
 The vulcan-api library used by the Vue.js and TypeScript pages is generated from
-the vulcan-api swagger file. The update it execute:
-``` docker run --rm -it -v ${PWD}:/local -v ${PWD}/../vulcan-api/docs:/src openapitools/openapi-generator-cli generate -i /src/swagger.json -g typescript-fetch -o /local/src/services/vulcan-api  ```
+the vulcan-api swagger file.
+To update it execute:
+
+```sh
+docker run --rm -it -v ${PWD}:/local -v ${PWD}/../vulcan-api/docs:/src openapitools/openapi-generator-cli generate -i /src/swagger.json -g typescript-fetch -o /local/src/services/vulcan-api
+```
 
 Note:
 The command supposes the swagger file is in ```../vulcan-api/docs``` and is executed at the root of the vulcan-ui repository.
 
-
-# Run using Docker
+## Run using Docker
 
  Those are the variables you have to use:
 

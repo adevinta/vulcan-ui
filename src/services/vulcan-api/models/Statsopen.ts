@@ -18,7 +18,7 @@ import {
     StatsFromJSON,
     StatsFromJSONTyped,
     StatsToJSON,
-} from './';
+} from './Stats';
 
 /**
  * Open issues stats (default view)
@@ -60,5 +60,4 @@ export function StatsopenToJSON(value?: Statsopen | null): any {
         'open_issues': StatsToJSON(value.openIssues),
     };
 }
-
 

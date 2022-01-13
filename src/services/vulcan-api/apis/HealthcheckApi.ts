@@ -29,7 +29,7 @@ export class HealthcheckApi extends runtime.BaseAPI {
      * A simple HTTP healthcheck.
      * show healthcheck
      */
-    async healthcheckShowRaw(): Promise<runtime.ApiResponse<Healthcheck>> {
+    async healthcheckShowRaw(initOverrides?: RequestInit): Promise<runtime.ApiResponse<Healthcheck>> {
         const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
@@ -39,7 +39,7 @@ export class HealthcheckApi extends runtime.BaseAPI {
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
-        });
+        }, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => HealthcheckFromJSON(jsonValue));
     }
@@ -48,8 +48,8 @@ export class HealthcheckApi extends runtime.BaseAPI {
      * A simple HTTP healthcheck.
      * show healthcheck
      */
-    async healthcheckShow(): Promise<Healthcheck> {
-        const response = await this.healthcheckShowRaw();
+    async healthcheckShow(initOverrides?: RequestInit): Promise<Healthcheck> {
+        const response = await this.healthcheckShowRaw(initOverrides);
         return await response.value();
     }
 

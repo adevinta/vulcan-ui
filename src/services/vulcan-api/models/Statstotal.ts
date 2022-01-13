@@ -94,4 +94,3 @@ export function StatstotalToJSON(value?: Statstotal | null): any {
     };
 }
 
-

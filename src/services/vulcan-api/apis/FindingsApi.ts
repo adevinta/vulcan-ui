@@ -150,7 +150,7 @@ export class FindingsApi extends runtime.BaseAPI {
      * Find a finding.
      * Find finding findings
      */
-    async findingsFindFindingRaw(requestParameters: FindingsFindFindingRequest): Promise<runtime.ApiResponse<Finding>> {
+    async findingsFindFindingRaw(requestParameters: FindingsFindFindingRequest, initOverrides?: RequestInit): Promise<runtime.ApiResponse<Finding>> {
         if (requestParameters.findingId === null || requestParameters.findingId === undefined) {
             throw new runtime.RequiredError('findingId','Required parameter requestParameters.findingId was null or undefined when calling findingsFindFinding.');
         }
@@ -172,7 +172,7 @@ export class FindingsApi extends runtime.BaseAPI {
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
-        });
+        }, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => FindingFromJSON(jsonValue));
     }
@@ -181,8 +181,8 @@ export class FindingsApi extends runtime.BaseAPI {
      * Find a finding.
      * Find finding findings
      */
-    async findingsFindFinding(requestParameters: FindingsFindFindingRequest): Promise<Finding> {
-        const response = await this.findingsFindFindingRaw(requestParameters);
+    async findingsFindFinding(requestParameters: FindingsFindFindingRequest, initOverrides?: RequestInit): Promise<Finding> {
+        const response = await this.findingsFindFindingRaw(requestParameters, initOverrides);
         return await response.value();
     }
 
@@ -190,7 +190,7 @@ export class FindingsApi extends runtime.BaseAPI {
      * Find all findings from a team and issue.
      * Find findings from a Issue findings
      */
-    async findingsFindFindingsFromAIssueRaw(requestParameters: FindingsFindFindingsFromAIssueRequest): Promise<runtime.ApiResponse<FindingsList>> {
+    async findingsFindFindingsFromAIssueRaw(requestParameters: FindingsFindFindingsFromAIssueRequest, initOverrides?: RequestInit): Promise<runtime.ApiResponse<FindingsList>> {
         if (requestParameters.issueId === null || requestParameters.issueId === undefined) {
             throw new runtime.RequiredError('issueId','Required parameter requestParameters.issueId was null or undefined when calling findingsFindFindingsFromAIssue.');
         }
@@ -256,7 +256,7 @@ export class FindingsApi extends runtime.BaseAPI {
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
-        });
+        }, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => FindingsListFromJSON(jsonValue));
     }
@@ -265,8 +265,8 @@ export class FindingsApi extends runtime.BaseAPI {
      * Find all findings from a team and issue.
      * Find findings from a Issue findings
      */
-    async findingsFindFindingsFromAIssue(requestParameters: FindingsFindFindingsFromAIssueRequest): Promise<FindingsList> {
-        const response = await this.findingsFindFindingsFromAIssueRaw(requestParameters);
+    async findingsFindFindingsFromAIssue(requestParameters: FindingsFindFindingsFromAIssueRequest, initOverrides?: RequestInit): Promise<FindingsList> {
+        const response = await this.findingsFindFindingsFromAIssueRaw(requestParameters, initOverrides);
         return await response.value();
     }
 
@@ -274,7 +274,7 @@ export class FindingsApi extends runtime.BaseAPI {
      * Find all findings from a team and target.
      * Find findings from a Target findings
      */
-    async findingsFindFindingsFromATargetRaw(requestParameters: FindingsFindFindingsFromATargetRequest): Promise<runtime.ApiResponse<FindingsList>> {
+    async findingsFindFindingsFromATargetRaw(requestParameters: FindingsFindFindingsFromATargetRequest, initOverrides?: RequestInit): Promise<runtime.ApiResponse<FindingsList>> {
         if (requestParameters.targetId === null || requestParameters.targetId === undefined) {
             throw new runtime.RequiredError('targetId','Required parameter requestParameters.targetId was null or undefined when calling findingsFindFindingsFromATarget.');
         }
@@ -340,7 +340,7 @@ export class FindingsApi extends runtime.BaseAPI {
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
-        });
+        }, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => FindingsListFromJSON(jsonValue));
     }
@@ -349,8 +349,8 @@ export class FindingsApi extends runtime.BaseAPI {
      * Find all findings from a team and target.
      * Find findings from a Target findings
      */
-    async findingsFindFindingsFromATarget(requestParameters: FindingsFindFindingsFromATargetRequest): Promise<FindingsList> {
-        const response = await this.findingsFindFindingsFromATargetRaw(requestParameters);
+    async findingsFindFindingsFromATarget(requestParameters: FindingsFindFindingsFromATargetRequest, initOverrides?: RequestInit): Promise<FindingsList> {
+        const response = await this.findingsFindFindingsFromATargetRaw(requestParameters, initOverrides);
         return await response.value();
     }
 
@@ -358,7 +358,7 @@ export class FindingsApi extends runtime.BaseAPI {
      * List Finding Overwrites.
      * List Finding Overwrites findings
      */
-    async findingsListFindingOverwritesRaw(requestParameters: FindingsListFindingOverwritesRequest): Promise<runtime.ApiResponse<Array<FindingOverwrite>>> {
+    async findingsListFindingOverwritesRaw(requestParameters: FindingsListFindingOverwritesRequest, initOverrides?: RequestInit): Promise<runtime.ApiResponse<Array<FindingOverwrite>>> {
         if (requestParameters.findingId === null || requestParameters.findingId === undefined) {
             throw new runtime.RequiredError('findingId','Required parameter requestParameters.findingId was null or undefined when calling findingsListFindingOverwrites.');
         }
@@ -380,7 +380,7 @@ export class FindingsApi extends runtime.BaseAPI {
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
-        });
+        }, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => jsonValue.map(FindingOverwriteFromJSON));
     }
@@ -389,8 +389,8 @@ export class FindingsApi extends runtime.BaseAPI {
      * List Finding Overwrites.
      * List Finding Overwrites findings
      */
-    async findingsListFindingOverwrites(requestParameters: FindingsListFindingOverwritesRequest): Promise<Array<FindingOverwrite>> {
-        const response = await this.findingsListFindingOverwritesRaw(requestParameters);
+    async findingsListFindingOverwrites(requestParameters: FindingsListFindingOverwritesRequest, initOverrides?: RequestInit): Promise<Array<FindingOverwrite>> {
+        const response = await this.findingsListFindingOverwritesRaw(requestParameters, initOverrides);
         return await response.value();
     }
 
@@ -398,7 +398,7 @@ export class FindingsApi extends runtime.BaseAPI {
      * List all findings from a team.
      * list findings findings
      */
-    async findingsListFindingsRaw(requestParameters: FindingsListFindingsRequest): Promise<runtime.ApiResponse<FindingsList>> {
+    async findingsListFindingsRaw(requestParameters: FindingsListFindingsRequest, initOverrides?: RequestInit): Promise<runtime.ApiResponse<FindingsList>> {
         if (requestParameters.teamId === null || requestParameters.teamId === undefined) {
             throw new runtime.RequiredError('teamId','Required parameter requestParameters.teamId was null or undefined when calling findingsListFindings.');
         }
@@ -472,7 +472,7 @@ export class FindingsApi extends runtime.BaseAPI {
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
-        });
+        }, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => FindingsListFromJSON(jsonValue));
     }
@@ -481,8 +481,8 @@ export class FindingsApi extends runtime.BaseAPI {
      * List all findings from a team.
      * list findings findings
      */
-    async findingsListFindings(requestParameters: FindingsListFindingsRequest): Promise<FindingsList> {
-        const response = await this.findingsListFindingsRaw(requestParameters);
+    async findingsListFindings(requestParameters: FindingsListFindingsRequest, initOverrides?: RequestInit): Promise<FindingsList> {
+        const response = await this.findingsListFindingsRaw(requestParameters, initOverrides);
         return await response.value();
     }
 
@@ -490,7 +490,7 @@ export class FindingsApi extends runtime.BaseAPI {
      * List number of findings and max score per issue.
      * list findings issues findings
      */
-    async findingsListFindingsIssuesRaw(requestParameters: FindingsListFindingsIssuesRequest): Promise<runtime.ApiResponse<FindingsIssuesList>> {
+    async findingsListFindingsIssuesRaw(requestParameters: FindingsListFindingsIssuesRequest, initOverrides?: RequestInit): Promise<runtime.ApiResponse<FindingsIssuesList>> {
         if (requestParameters.teamId === null || requestParameters.teamId === undefined) {
             throw new runtime.RequiredError('teamId','Required parameter requestParameters.teamId was null or undefined when calling findingsListFindingsIssues.');
         }
@@ -548,7 +548,7 @@ export class FindingsApi extends runtime.BaseAPI {
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
-        });
+        }, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => FindingsIssuesListFromJSON(jsonValue));
     }
@@ -557,8 +557,8 @@ export class FindingsApi extends runtime.BaseAPI {
      * List number of findings and max score per issue.
      * list findings issues findings
      */
-    async findingsListFindingsIssues(requestParameters: FindingsListFindingsIssuesRequest): Promise<FindingsIssuesList> {
-        const response = await this.findingsListFindingsIssuesRaw(requestParameters);
+    async findingsListFindingsIssues(requestParameters: FindingsListFindingsIssuesRequest, initOverrides?: RequestInit): Promise<FindingsIssuesList> {
+        const response = await this.findingsListFindingsIssuesRaw(requestParameters, initOverrides);
         return await response.value();
     }
 
@@ -566,7 +566,7 @@ export class FindingsApi extends runtime.BaseAPI {
      * List all findings labels.
      * List findings labels findings
      */
-    async findingsListFindingsLabelsRaw(requestParameters: FindingsListFindingsLabelsRequest): Promise<runtime.ApiResponse<FindingsLabels>> {
+    async findingsListFindingsLabelsRaw(requestParameters: FindingsListFindingsLabelsRequest, initOverrides?: RequestInit): Promise<runtime.ApiResponse<FindingsLabels>> {
         if (requestParameters.teamId === null || requestParameters.teamId === undefined) {
             throw new runtime.RequiredError('teamId','Required parameter requestParameters.teamId was null or undefined when calling findingsListFindingsLabels.');
         }
@@ -604,7 +604,7 @@ export class FindingsApi extends runtime.BaseAPI {
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
-        });
+        }, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => FindingsLabelsFromJSON(jsonValue));
     }
@@ -613,8 +613,8 @@ export class FindingsApi extends runtime.BaseAPI {
      * List all findings labels.
      * List findings labels findings
      */
-    async findingsListFindingsLabels(requestParameters: FindingsListFindingsLabelsRequest): Promise<FindingsLabels> {
-        const response = await this.findingsListFindingsLabelsRaw(requestParameters);
+    async findingsListFindingsLabels(requestParameters: FindingsListFindingsLabelsRequest, initOverrides?: RequestInit): Promise<FindingsLabels> {
+        const response = await this.findingsListFindingsLabelsRaw(requestParameters, initOverrides);
         return await response.value();
     }
 
@@ -622,7 +622,7 @@ export class FindingsApi extends runtime.BaseAPI {
      * List number of findings and max score per target.
      * list findings targets findings
      */
-    async findingsListFindingsTargetsRaw(requestParameters: FindingsListFindingsTargetsRequest): Promise<runtime.ApiResponse<FindingsTargetsList>> {
+    async findingsListFindingsTargetsRaw(requestParameters: FindingsListFindingsTargetsRequest, initOverrides?: RequestInit): Promise<runtime.ApiResponse<FindingsTargetsList>> {
         if (requestParameters.teamId === null || requestParameters.teamId === undefined) {
             throw new runtime.RequiredError('teamId','Required parameter requestParameters.teamId was null or undefined when calling findingsListFindingsTargets.');
         }
@@ -680,7 +680,7 @@ export class FindingsApi extends runtime.BaseAPI {
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
-        });
+        }, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => FindingsTargetsListFromJSON(jsonValue));
     }
@@ -689,8 +689,8 @@ export class FindingsApi extends runtime.BaseAPI {
      * List number of findings and max score per target.
      * list findings targets findings
      */
-    async findingsListFindingsTargets(requestParameters: FindingsListFindingsTargetsRequest): Promise<FindingsTargetsList> {
-        const response = await this.findingsListFindingsTargetsRaw(requestParameters);
+    async findingsListFindingsTargets(requestParameters: FindingsListFindingsTargetsRequest, initOverrides?: RequestInit): Promise<FindingsTargetsList> {
+        const response = await this.findingsListFindingsTargetsRaw(requestParameters, initOverrides);
         return await response.value();
     }
 
@@ -698,7 +698,7 @@ export class FindingsApi extends runtime.BaseAPI {
      * Overwrite data for a specific finding.
      * Submit a Finding Overwrite findings
      */
-    async findingsSubmitAFindingOverwriteRaw(requestParameters: FindingsSubmitAFindingOverwriteRequest): Promise<runtime.ApiResponse<FindingsList>> {
+    async findingsSubmitAFindingOverwriteRaw(requestParameters: FindingsSubmitAFindingOverwriteRequest, initOverrides?: RequestInit): Promise<runtime.ApiResponse<FindingsList>> {
         if (requestParameters.findingId === null || requestParameters.findingId === undefined) {
             throw new runtime.RequiredError('findingId','Required parameter requestParameters.findingId was null or undefined when calling findingsSubmitAFindingOverwrite.');
         }
@@ -727,7 +727,7 @@ export class FindingsApi extends runtime.BaseAPI {
             headers: headerParameters,
             query: queryParameters,
             body: FindingOverwritePayloadToJSON(requestParameters.payload),
-        });
+        }, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => FindingsListFromJSON(jsonValue));
     }
@@ -736,8 +736,8 @@ export class FindingsApi extends runtime.BaseAPI {
      * Overwrite data for a specific finding.
      * Submit a Finding Overwrite findings
      */
-    async findingsSubmitAFindingOverwrite(requestParameters: FindingsSubmitAFindingOverwriteRequest): Promise<FindingsList> {
-        const response = await this.findingsSubmitAFindingOverwriteRaw(requestParameters);
+    async findingsSubmitAFindingOverwrite(requestParameters: FindingsSubmitAFindingOverwriteRequest, initOverrides?: RequestInit): Promise<FindingsList> {
+        const response = await this.findingsSubmitAFindingOverwriteRaw(requestParameters, initOverrides);
         return await response.value();
     }
 

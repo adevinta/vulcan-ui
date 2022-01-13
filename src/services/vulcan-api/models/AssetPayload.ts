@@ -102,4 +102,3 @@ export function AssetPayloadToJSON(value?: AssetPayload | null): any {
     };
 }
 
-

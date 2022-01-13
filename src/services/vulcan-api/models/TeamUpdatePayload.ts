@@ -70,4 +70,3 @@ export function TeamUpdatePayloadToJSON(value?: TeamUpdatePayload | null): any {
     };
 }
 
-

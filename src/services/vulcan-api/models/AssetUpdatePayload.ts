@@ -102,4 +102,3 @@ export function AssetUpdatePayloadToJSON(value?: AssetUpdatePayload | null): any
     };
 }
 
-

@@ -94,4 +94,3 @@ export function ReportToJSON(value?: Report | null): any {
     };
 }
 
-
