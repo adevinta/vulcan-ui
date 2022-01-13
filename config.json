@@ -1,5 +1,6 @@
 {
   "api_url": "$API_URL",
   "ask_credentials": false,
-  "static_labels": ["issue", "potential", "compliance", "informational"]
+  "static_labels": ["issue", "potential", "compliance", "informational"],
+  "teams_crud": $TEAMS_CRUD
 }

@@ -15,8 +15,8 @@ $(document).ready(async () => {
     init();
     // Load config.
     try {
-
         config = await common.config()
+        setupFeatures(config);
     } catch (err) {
         handleError(err);
         return;
@@ -26,6 +26,13 @@ $(document).ready(async () => {
     loadData(client);
 })
 
+function setupFeatures(config) {
+    if (config.teams_crud === true) {
+        $('.createTeamLink').show();
+        $('.editTeamLink').show();
+    }
+}
+
 function init() {
     rootElement = $(document.body);
     // Attach events.
@@ -34,6 +41,12 @@ function init() {
     });
     $('.editAssetsLink').on('click', function () {
         window.open(`assets/edit-assets.html?team_id=${selectedTeam}`);
+    })
+    $('.createTeamLink').on('click', function () {
+        window.open(`teams/teams.html`);
+    })
+    $('.editTeamLink').on('click', function () {
+        window.open(`teams/teams.html?team_id=${selectedTeam}`);
     })
     $('.manageMembersLink').on('click', function () {
         window.open(`manage-members.html?team_id=${selectedTeam}`);
