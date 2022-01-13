@@ -44,7 +44,6 @@
 
 <script lang="ts">
 import { Component, Prop, Vue, Watch } from "vue-property-decorator";
-import VueRouter, { RouteConfig } from "vue-router";
 import loadConfig, { Config } from "../../common/config";
 import tokenProvider from "../../common/token";
 import {

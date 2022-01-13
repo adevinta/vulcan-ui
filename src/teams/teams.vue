@@ -33,14 +33,6 @@ import { Component, Prop, Vue, Watch } from "vue-property-decorator";
 import Home from "./home/home.vue";
 import tokenProvider from "../common/token";
 import loadConfig, { Config } from "../common/config";
-import {
-  Configuration as ApiConf,
-  ConfigurationParameters
-} from "../services/vulcan-api";
-import {
-  UserApi
-} from "../services/vulcan-api/apis";
-import VueRouter, { RouteConfig } from "vue-router";
 
 @Component({
   name: "Teams",

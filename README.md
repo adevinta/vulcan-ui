@@ -56,6 +56,7 @@ The command supposes the swagger file is in ```../vulcan-api/docs``` and is exec
 |UI_DOCS_AUDITROLE_LINK|Link to doc regarding audit role to scan AWS accounts|Defaults to UI root page|
 |UI_CONTACT_EMAIL|Vulcan administrators contact email||
 |UI_CONTACT_SLACK|Vulcan administrators contact slack channel||
+|TEAMS_CRUD|Feature flag to activate the teams crud|default to true|
 
 ```bash
 docker build . -t vui
