@@ -118,7 +118,7 @@ Copyright 2021 Adevinta
 
             <tr v-for="resource in propsFindingDetail.row.resources" v-bind:key="resource.name">
               <td class="has-text-weight-bold">{{ resource.name }}</td>
-              <td style="width:100%; word-break: break-word;">
+              <td style="width:100%; word-break: normal; overflow-wrap: anywhere;">
                 <table class="table is-striped">
                   <thead>
                     <th v-for="header in resource.attributes">{{ header }}</th>
