@@ -125,7 +125,8 @@ Copyright 2021 Adevinta
                   </thead>
                   <tr v-for="(row) in resource.resources">
                     <td v-for="header in resource.attributes">
-                      <VueShowdown :markdown="row[header]" :extensions="['htmlSanitize','noBlockquote']" />
+                        <div v-if="markdownAllowed(header)"><VueShowdown :markdown="row[header]" :extensions="['htmlSanitize','noBlockquote']" /></div>
+                        <div v-else>{{ row[header] }}</div>
                     </td>
                   </tr>
                 </table>
@@ -196,6 +197,18 @@ export default class FindingDetails extends Vue {
 
   private buildTargetViewLink(identifier: string): string {
     return "/report/report.html?team_id=" + this.teamId + "&identifiers=" + identifier;
+  }
+
+  private markdownAllowed(headerLabel: string): boolean {
+    if (headerLabel === undefined) {
+      return false;
+    }
+    let markdownAllowedArr = [
+      "CWEs",
+      "References",
+      "Vulnerabilities"
+    ];
+    return (markdownAllowedArr.indexOf(headerLabel) > -1);
   }
 
 }
