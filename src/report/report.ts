@@ -58,6 +58,15 @@ VueShowdown.showdown.extension('htmlSanitize', () => [
   },
 ]);
 
+VueShowdown.showdown.extension('restrictedHTMLSanitize', () => [
+  {
+    type: 'output',
+    filter: function (text, converter, options) {
+      return DOMPurify.sanitize(text, {ALLOWED_TAGS: ['a', 'b', 'br', 'li', 'p', 'li', 'ul']});
+    }
+  },
+]);
+
 // Prevent strings such as "> 2 years" from being interpreted as a quotation block.
 VueShowdown.showdown.extension('noBlockquote', () => [
   {

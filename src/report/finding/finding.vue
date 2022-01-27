@@ -118,14 +118,15 @@ Copyright 2021 Adevinta
 
             <tr v-for="resource in propsFindingDetail.row.resources" v-bind:key="resource.name">
               <td class="has-text-weight-bold">{{ resource.name }}</td>
-              <td style="width:100%">
+              <td style="width:100%; word-break: normal; overflow-wrap: anywhere;">
                 <table class="table is-striped">
                   <thead>
                     <th v-for="header in resource.attributes">{{ header }}</th>
                   </thead>
                   <tr v-for="(row) in resource.resources">
                     <td v-for="header in resource.attributes">
-                      <VueShowdown :markdown="row[header]" :extensions="['htmlSanitize','noBlockquote']" />
+                        <div v-if="markdownAllowed(header)"><VueShowdown :markdown="row[header]" :extensions="['restrictedHTMLSanitize','noBlockquote']" /></div>
+                        <div v-else>{{ row[header] }}</div>
                     </td>
                   </tr>
                 </table>
@@ -196,6 +197,23 @@ export default class FindingDetails extends Vue {
 
   private buildTargetViewLink(identifier: string): string {
     return "/report/report.html?team_id=" + this.teamId + "&identifiers=" + identifier;
+  }
+
+  // TODO: PTVUL-2489
+  // Unify resources table columns which allows markdown/html.
+  // We should review the checks and define a column header name convention
+  // or limit the resources table columns that accept markdown/html.
+  private markdownAllowed(headerLabel: string): boolean {
+    if (headerLabel === undefined) {
+      return false;
+    }
+    let markdownAllowedArr = [
+      "CWEs",             // vulcan-burp
+      "References",       // vulcan-github-alerts
+      "Vulnerabilities",  // vulcan-trivy
+      "Link",             // vulcan-vulners
+    ];
+    return (markdownAllowedArr.indexOf(headerLabel) > -1);
   }
 
 }
