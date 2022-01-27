@@ -125,7 +125,7 @@ Copyright 2021 Adevinta
                   </thead>
                   <tr v-for="(row) in resource.resources">
                     <td v-for="header in resource.attributes">
-                        <div v-if="markdownAllowed(header)"><VueShowdown :markdown="row[header]" :extensions="['htmlSanitize','noBlockquote']" /></div>
+                        <div v-if="markdownAllowed(header)"><VueShowdown :markdown="row[header]" :extensions="['restrictedHTMLSanitize','noBlockquote']" /></div>
                         <div v-else>{{ row[header] }}</div>
                     </td>
                   </tr>
@@ -199,14 +199,19 @@ export default class FindingDetails extends Vue {
     return "/report/report.html?team_id=" + this.teamId + "&identifiers=" + identifier;
   }
 
+  // TODO: PTVUL-2489
+  // Unify resources table columns which allows markdown/html.
+  // We should review the checks and define a column header name convention
+  // or limit the resources table columns that accept markdown/html.
   private markdownAllowed(headerLabel: string): boolean {
     if (headerLabel === undefined) {
       return false;
     }
     let markdownAllowedArr = [
-      "CWEs",
-      "References",
-      "Vulnerabilities"
+      "CWEs",             // vulcan-burp
+      "References",       // vulcan-github-alerts
+      "Vulnerabilities",  // vulcan-trivy
+      "Link",             // vulcan-vulners
     ];
     return (markdownAllowedArr.indexOf(headerLabel) > -1);
   }
