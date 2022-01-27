@@ -2,5 +2,6 @@
   "api_url": "$API_URL",
   "ask_credentials": false,
   "static_labels": ["issue", "potential", "compliance", "informational"],
-  "teams_crud": $TEAMS_CRUD
+  "teams_crud": $TEAMS_CRUD,
+  "dashboard_link": "$UI_DASHBOARD_LINK"
 }
