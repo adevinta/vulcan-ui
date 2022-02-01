@@ -77,7 +77,7 @@ function init() {
 
 function onSelectedTeamChanged() {
     selectedTeam = $("#teamsList").val();
-    selectedTeamTag = $("#teamsList option:selected").attr("tag");
+    selectedTeamTag = $("#teamsList option:selected").attr("data-tag");
 }
 
 async function loadData(client, config) {
@@ -114,7 +114,7 @@ async function loadData(client, config) {
 function showTeams(teams) {
     teams = teams.sort((t1, t2) => t1.name.localeCompare(t2.name))
     teams.forEach(team => {
-        $('#teamsList').append(`<option value="${team.id}" tag="${team.tag}"> 
+        $('#teamsList').append(`<option value="${team.id}" data-tag="${team.tag}"> 
                                        ${team.name} 
                                   </option>`);
     });
