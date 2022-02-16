@@ -132,7 +132,7 @@ function hideLoading() {
 }
 
 async function config() {
-  let resp = await fetch("./config.json")
+  let resp = await fetch("./config.json?q=" + new Date().getTime()); // Avoid caching conflict
   if (!resp.ok) {
     throw `Error getting config file ${resp.status} ${resp.statusText}`
   }
