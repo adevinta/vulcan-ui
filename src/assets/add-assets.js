@@ -159,6 +159,10 @@ function parseMultiStatusResponse(assets) {
                     <span>${koAssets[i].identifier}</span>
                 </td>
                 <td>
+                    <span><strong>Type: </strong></span>
+                    <span>${koAssets[i].type.name}</span>
+                </td>
+                <td>
                     <span><strong>Error: </strong></span>
                     <span>${koAssets[i].status.error}</span>
                 </td>
