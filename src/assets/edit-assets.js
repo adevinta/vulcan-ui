@@ -472,7 +472,10 @@ function handleGroups(assets){
         if (assets[i].scannable) {
             assets[i].scannableIcon = "<i class=\"fa fa-check-circle\"></i>";
         }
-        if (assets[i].groups.filter(group => group.name === 'security-team-discovered-assets').length > 0) {
+        if (assets[i].groups.filter(group =>
+                group.name === 'security-team-discovered-assets' ||
+                group.name === 'cp-discovered-assets'
+            ).length > 0) {
             assets[i].autoDiscoveredIcon = "<i class=\"fa fa-check-circle\"></i>";
         }
 
