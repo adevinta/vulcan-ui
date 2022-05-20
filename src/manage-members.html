@@ -14,7 +14,7 @@ Copyright 2021 Adevinta
   <link rel="stylesheet" href="../node_modules/jquery-datatables-checkboxes/css/dataTables.checkboxes.css">
   <link rel="stylesheet" href='./style.css'>
 
-  <script src="./manage-members.js"></script>
+  <script type="module" src="./manage-members.js"></script>
 </head>
 
 <body>
@@ -57,7 +57,7 @@ Copyright 2021 Adevinta
   </article>
 
 
-<div id="addDialog" class="modal">
+  <div id="addDialog" class="modal">
     <div class="modal-background"></div>
     <div class="modal-card">
       <header class="modal-card-head">
@@ -67,11 +67,11 @@ Copyright 2021 Adevinta
       </header>
       <section id="addDialogMessage" class="modal-card-body">
         <div class="field">
-            <p class="control has-icons-left has-icons-right">
-              <input id="email" class="input" type="email" placeholder="user email">
-              <span class="icon is-small is-left">
-                <i class="fa fa-envelope"></i>
-            </p>
+          <p class="control has-icons-left has-icons-right">
+            <input id="email" class="input" type="email" placeholder="user email">
+            <span class="icon is-small is-left">
+              <i class="fa fa-envelope"></i>
+          </p>
         </div>
         <div class="field">
           <div class="select">
@@ -79,7 +79,7 @@ Copyright 2021 Adevinta
               <option value="none">Select role</option>
               <option value="member">member</option>
               <option value="owner">owner</option>
-          </select>
+            </select>
           </div>
         </div>
         <div id="addMemberError" class="notification is-danger" style="display:none">
@@ -95,7 +95,7 @@ Copyright 2021 Adevinta
 
   <BR />
   <div id="main" style="display:none">
-  
+
     <div class="columns">
       <div class="column has-text-centered">
         <h1 id="team" class="title">

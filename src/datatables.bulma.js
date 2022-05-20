@@ -174,8 +174,8 @@
 
                         settings.oApi._fnBindAction(
                             node, {
-                                action: button
-                            }, clickHandler
+                            action: button
+                        }, clickHandler
                         );
 
                         counter++;
@@ -194,7 +194,7 @@
             // accessibility. So we want to restore focus once the draw has
             // completed
             activeEl = $(host).find(document.activeElement).data('dt-idx');
-        } catch (e) {}
+        } catch (e) { }
 
         let navButtons = [];
         let midElementIndex = buttons.length > 3 ? 2 : 1;

@@ -1,0 +1,18 @@
+{
+    "extends": "@parcel/config-default",
+    "transformers": {
+        "...": [
+            "@parcel/transformer-raw"
+        ],
+        "blob-url:*": [
+            "...",
+            "@parcel/transformer-inline"
+        ]
+    },
+    "optimizers": {
+        "blob-url:*": [
+            "...",
+            "@parcel/optimizer-blob-url"
+        ]
+    }
+}

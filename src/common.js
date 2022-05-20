@@ -1,8 +1,7 @@
 /*
 Copyright 2021 Adevinta
 */
-
-import images from "./images/*.*";
+import images from "url:./images/*.png";
 
 
 

@@ -10,21 +10,22 @@ Copyright 2021 Adevinta
   <link rel="stylesheet" href="./_datatables.scss">
   <link rel="stylesheet" href="../node_modules/jquery-datatables-checkboxes/css/dataTables.checkboxes.css">
   <link rel="stylesheet" href='./style.css'>
-  <script src="./scans.js"></script>
+  <script type="module" src="./scans.js">
+  </script>
 </head>
 
 <body>
 
-<BR/>
-<div id="main">
-<div class="columns">
+  <BR />
+  <div id="main">
+    <div class="columns">
       <div class="column has-text-centered">
         <h1 id="team" class="title">
         </h1>
       </div>
-</div>
+    </div>
 
-<div class="container">
+    <div class="container">
       <div class="card">
         <header class="card-header">
           <p class="card-header-title is-size-5">Last Scans</p>
@@ -33,23 +34,23 @@ Copyright 2021 Adevinta
           <table id="scansTable" class="table"></table>
         </div>
       </div>
-  </div>
-   <article style="display:none">
-    <div id="search" class="field has-addons">
-      <div class="control has-icons-left">
-        <input id="filter-query" class="input" type="text" placeholder="Filter scans">
-        <span class="icon is-small is-left">
-          <i class="fa fa-filter"></i>
-        </span>
-      </div>
-      <div id="searchReset" class="control">
-        <a class="button is-primary clear-filter">
-          <span class="icon">
-            <i class="fa fa-times"></i>
-          </span>
-        </a>
-      </div>
     </div>
-  </article>
+    <article style="display:none">
+      <div id="search" class="field has-addons">
+        <div class="control has-icons-left">
+          <input id="filter-query" class="input" type="text" placeholder="Filter scans">
+          <span class="icon is-small is-left">
+            <i class="fa fa-filter"></i>
+          </span>
+        </div>
+        <div id="searchReset" class="control">
+          <a class="button is-primary clear-filter">
+            <span class="icon">
+              <i class="fa fa-times"></i>
+            </span>
+          </a>
+        </div>
+      </div>
+    </article>
 
 </body>

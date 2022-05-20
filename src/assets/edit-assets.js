@@ -2,6 +2,8 @@
 Copyright 2021 Adevinta
 */
 
+import 'regenerator-runtime/runtime'
+
 import * as api from '../vulcan-api'
 import * as common from './common'
 import "../import-jquery"
@@ -55,22 +57,22 @@ async function onEnableWebScanningClick() {
     let team_id = common.teamID();
     let ids = []
     $.each(rows_selected, function (index, id) {
-         ids.push(id)
+        ids.push(id)
     });
     const assets = getSelectedAssetsInfo(currentAssets, ids);
     let results = {
-         updated: [],
-         notUpdated: []
+        updated: [],
+        notUpdated: []
     }
     $("#main").css("display", "none");
     common.showLoading();
     let webScanningGroupId = await getWebScanningGroupId(team_id)
-    if (webScanningGroupId===''){
+    if (webScanningGroupId === '') {
         const groupPayload = {
             name: "web-scanning"
         }
         const webScanningGroup = await createGroup(team_id, groupPayload)
-        if (webScanningGroup===''){
+        if (webScanningGroup === '') {
             common.hideLoading();
             loadData(client, config);
             let error = err;
@@ -102,17 +104,17 @@ async function onDisableWebScanningClick() {
     let team_id = common.teamID();
     let ids = []
     $.each(rows_selected, function (index, id) {
-         ids.push(id)
+        ids.push(id)
     });
     const assets = getSelectedAssetsInfo(currentAssets, ids);
     let results = {
-         updated: [],
-         notUpdated: []
+        updated: [],
+        notUpdated: []
     }
     $("#main").css("display", "none");
     common.showLoading();
     const webScanningGroupId = await getWebScanningGroupId(team_id)
-    if (webScanningGroupId===''){
+    if (webScanningGroupId === '') {
         common.hideLoading();
         loadData(client, config);
         handleError("WebScanning group does not exists. You need to create a group called 'web-scanning' first")
@@ -139,19 +141,19 @@ async function onUpdateScannableClick(enable) {
         operationStr = "disable"
     }
 
-    ok = await common.askConfirm(`Do you want to `+ operationStr +` scanning for the ${rows_selected.length} selected assets?`);
+    ok = await common.askConfirm(`Do you want to ` + operationStr + ` scanning for the ${rows_selected.length} selected assets?`);
     if (!ok) {
         return;
     }
     let team_id = common.teamID();
     let ids = []
     $.each(rows_selected, function (index, id) {
-         ids.push(id)
+        ids.push(id)
     });
     const assets = getSelectedAssetsInfo(currentAssets, ids);
     let results = {
-         updated: [],
-         notUpdated: []
+        updated: [],
+        notUpdated: []
     }
     $("#main").css("display", "none");
     common.showLoading();
@@ -233,7 +235,7 @@ async function getWebScanningGroupId(team) {
     try {
         const groups = await client.groups(team);
         for (var i = 0; i < groups.length; i++) {
-            if (groups[i].name==="web-scanning") {
+            if (groups[i].name === "web-scanning") {
                 return groups[i].id;
             }
         }
@@ -251,7 +253,7 @@ async function enableWebScanning(team, group, index, assets, results) {
     let asset = assets[index];
     let error;
     try {
-        if (asset.type.name==="WebAddress") {
+        if (asset.type.name === "WebAddress") {
             await client.addAssetToGroup(team, group, asset.id)
         } else {
             error = "Invalid asset type for web scanning.";
@@ -302,7 +304,7 @@ async function updateScannable(team, enable, index, assets, results) {
     }
     let asset = {}
     asset.id = assets[index].id;
-    asset.scannable=enable;
+    asset.scannable = enable;
     let error;
     try {
         await client.updateAsset(team, asset)
@@ -326,7 +328,7 @@ async function updateScannable(team, enable, index, assets, results) {
 async function createGroup(team, groupPayload) {
     try {
         const result = await client.createGroup(team, groupPayload)
-        console.log("createGroup: "+result)
+        console.log("createGroup: " + result)
         return result
     } catch (err) {
         let error = err;
@@ -346,7 +348,7 @@ async function showReport(report, mode) {
         closeClick.resolve();
     });
 
-    if (mode==="update") {
+    if (mode === "update") {
         $("#results").html('');
         let line = $(`<p>${report.updated.length} assets were updated successfully</p>`);
         $("#results").append(line);
@@ -370,7 +372,7 @@ async function showReport(report, mode) {
             line = $(`<dt>${item.asset.identifier}</dt> <dd>${item.reason}</dd>`);
             $('#results').append(line);
         });
-        }
+    }
 
     $("#report").addClass("is-active");
     await closeClick;
@@ -436,7 +438,7 @@ async function buildNotOwnerMessage(teamID, userID) {
     </div>
     <div>
      <code>
-     ${client.updateMemberRequest(teamID,userID).url} \\
+     ${client.updateMemberRequest(teamID, userID).url} \\
      </code>
     </div>
     <div>
@@ -455,12 +457,12 @@ async function showAssets(id) {
     showTable(assets);
 }
 
-function handleGroups(assets){
+function handleGroups(assets) {
     for (var i = 0; i < assets.length; i++) {
         assets[i].webScanningIcon = "";
         assets[i].scannableIcon = "";
         assets[i].autoDiscoveredIcon = "";
-        
+
         // Build belonging display icons for
         // Auto Discovered, Web Scanning and Scannable groups
         if (assets[i].groups == null) {
@@ -473,9 +475,9 @@ function handleGroups(assets){
             assets[i].scannableIcon = "<i class=\"fa fa-check-circle\"></i>";
         }
         if (assets[i].groups.filter(group =>
-                group.name === 'security-team-discovered-assets' ||
-                group.name === 'cp-discovered-assets'
-            ).length > 0) {
+            group.name === 'security-team-discovered-assets' ||
+            group.name === 'cp-discovered-assets'
+        ).length > 0) {
             assets[i].autoDiscoveredIcon = "<i class=\"fa fa-check-circle\"></i>";
         }
 
@@ -496,7 +498,7 @@ function showTable(data) {
         infoCallback: function (settings, start, end, max, total, pre) {
             var api = this.api();
             var pageInfo = api.page.info();
-            return `Showing ${parseInt(start,10)} to ${parseInt(end,10)} of ${parseInt(max,10)}`;
+            return `Showing ${parseInt(start, 10)} to ${parseInt(end, 10)} of ${parseInt(max, 10)}`;
         },
         language: {
             lengthMenu: 'Show <select>' +
@@ -512,32 +514,32 @@ function showTable(data) {
         },
         iDisplayLength: 20,
         columns: [{
-                title: "select",
-                data: "id"
-            },
-            {
-                title: "Identifier",
-                data: "identifier"
-            },
-            {
-                title: "Type",
-                data: "type.name"
-            },
-            {
-                title: "Auto Discovered",
-                data: "autoDiscoveredIcon",
-                className: "dt-center"
-            },
-            {
-                title: "Web Scanning",
-                data: "webScanningIcon",
-                className: "dt-center"
-            },
-            {
-                title: "Scannable",
-                data: "scannableIcon",
-                className: "dt-center"
-            }
+            title: "select",
+            data: "id"
+        },
+        {
+            title: "Identifier",
+            data: "identifier"
+        },
+        {
+            title: "Type",
+            data: "type.name"
+        },
+        {
+            title: "Auto Discovered",
+            data: "autoDiscoveredIcon",
+            className: "dt-center"
+        },
+        {
+            title: "Web Scanning",
+            data: "webScanningIcon",
+            className: "dt-center"
+        },
+        {
+            title: "Scannable",
+            data: "scannableIcon",
+            className: "dt-center"
+        }
         ],
         'columnDefs': [{
             'targets': 0,
