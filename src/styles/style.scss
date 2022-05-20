@@ -3,14 +3,15 @@ Copyright 2021 Adevinta
 */
 
 // Import Bulma's core
-@import "~bulma/sass/utilities/_all";
+// @use "~bulma/sass/utilities/_all";
+@import "../../node_modules/bulma/sass/utilities/_all.sass";
+
 // Set your colors
 $primary: #00d1b2;
 $primary-invert: findColorInvert($primary);
 $twitter: #4099FF;
 $twitter-invert: findColorInvert($twitter);
 $table-row-hover-background-color: #E3F2F1;
-
 // Setup $colors to use as bulma classes (e.g. 'is-twitter')
 $colors: ("white": ($white, $black),
     "black": ($black, $white),
