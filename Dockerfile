@@ -1,6 +1,6 @@
 # Copyright 2021 Adevinta
 
-FROM node:9-slim as builder
+FROM node:18-slim as builder
 
 WORKDIR /app
 
