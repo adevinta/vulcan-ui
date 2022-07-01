@@ -57,8 +57,13 @@ export function severityStyle(score: number) {
   }
   
   export function urlDomain(url) {
-    const url = new URL(url);
-    return url.hostname;
+    try {
+      return (new URL(url)).hostname;
+    }
+    catch {
+      return ""
+    }
+
   }
 
   export class propsFindingDetailTemplate {
