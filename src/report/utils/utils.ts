@@ -58,11 +58,10 @@ export function severityStyle(score: number) {
   
   export function urlDomain(url) {
     try {
-      const url = new URL(url);
-      return url.hostname;
+      return (new URL(url)).hostname;
     }
     catch {
-      return ""
+      return url
     }
 
   }
