@@ -61,7 +61,7 @@ export function severityStyle(score: number) {
       return (new URL(url)).hostname;
     }
     catch {
-      return url
+      return ""
     }
 
   }
