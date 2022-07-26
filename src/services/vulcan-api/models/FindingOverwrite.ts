@@ -60,7 +60,7 @@ export interface FindingOverwrite {
      * @type {string}
      * @memberof FindingOverwrite
      */
-    team_id?: string;
+    teamId?: string;
     /**
      * User who requested the finding overwrite
      * @type {string}
@@ -85,7 +85,7 @@ export function FindingOverwriteFromJSONTyped(json: any, ignoreDiscriminator: bo
         'notes': !exists(json, 'notes') ? undefined : json['notes'],
         'status': !exists(json, 'status') ? undefined : json['status'],
         'statusPrevious': !exists(json, 'status_previous') ? undefined : json['status_previous'],
-        'team_id': !exists(json, 'team_id') ? undefined : json['team_id'],
+        'teamId': !exists(json, 'team_id') ? undefined : json['team_id'],
         'user': !exists(json, 'user') ? undefined : json['user'],
     };
 }
@@ -105,7 +105,7 @@ export function FindingOverwriteToJSON(value?: FindingOverwrite | null): any {
         'notes': value.notes,
         'status': value.status,
         'status_previous': value.statusPrevious,
-        'team_id': value.team_id,
+        'team_id': value.teamId,
         'user': value.user,
     };
 }
