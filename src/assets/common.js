@@ -109,25 +109,9 @@ function baseQueryParams() {
 
 function showLogin(cfg) {
     hideLoading();
-    let team = teamID();
-    let scan = scanID();
-    if (!scan || !team) {
-        $("#sessionExpiredBody").html(`Your session expired or you don't have permission for this team.
-        </BR>
-        Can not generate a login link this time because the current
-        url does not contain required information.
-        </BR>
-        You can login in vulcan again by clicking in the full report link present in a vulcan report
-        email.
-        `)
-    } else {
-        let url = cfg.api_url;
-        url = url + "report"
-        url = url + `?team_id=${team}&scan_id=${scan}`
-        $("#linkRelogin").attr("href", url)
-    }
-    $("#main").remove();
-    $("#sessionExpired").css("display", "")
+    let url = cfg.api_url;
+    url = url + `login?redirect_to=${window.location}`
+    window.location.href = url;
 }
 
 function teamID() {
