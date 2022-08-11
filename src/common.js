@@ -36,18 +36,6 @@ const errorComponent = $(`
       </article>
 `)
 
-const sessionExpiredComponent = $(`
-<article id="sessionExpired" class="message is-danger" style="display: none">
-    <div class="message-header has-text-centered">
-      <p>Session expired</p>
-    </div>
-    <div id="sessionExpiredBody" class="message-body has-text-centered">
-      Your session expired or you don't have permission for this team.
-      <BR>
-      <a id="linkRelogin" href="" target="_self">Log in to vulcan</a>
-    </div>
-  </article>`)
-
 const warningDialogComponent = $(`<article id="warningDialog" class="message is-warning" style="display: none">
       <div class="message-header">
         <p>Read only access</p>
@@ -150,18 +138,11 @@ function verifyConfig(cfg) {
   }
 }
 
-let sessionExpiredAdded = false
-
 function showSessionExpired(elem, cfg) {
-  if (!sessionExpiredAdded) {
-    elem.prepend(sessionExpiredComponent)
-    sessionExpiredAdded = true
-  }
   hideLoading();
   let url = cfg.api_url;
   url = url + `login?redirect_to=${window.location}`
-  $("#linkRelogin").attr("href", url)
-  $("#sessionExpired").css("display", "")
+  window.location.href = url;
 }
 
 function showTeam(elem, name) {
