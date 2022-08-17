@@ -45,15 +45,13 @@ export default class Session extends Vue {
     // If user has already been redirected and session is still
     // invalid, redirect user to main page. Otherwise redirect
     // user to requested page.
-    var query: string = window.location.search;
-    if (query.length) query = query.substring(1);
-    var isRedirect: boolean = this.isRedirect(query);
     var redirectTo: string = window.location.toString().split("#")[0];
-
     if (!this.isDecoded(redirectTo)) redirectTo = decodeURIComponent(redirectTo);
-    if (isRedirect) redirectTo = "/";
-    else redirectTo = redirectTo + "&redirect=true";
-    
+
+    var query: string = window.location.search;
+    if (this.isRedirect(query)) redirectTo = "/";
+    else redirectTo += query.length ? "&redirect=true" : "?redirect=true";
+
     return `${this.apiUrl}/login?redirect_to=${encodeURIComponent(redirectTo)}`;
   }
 

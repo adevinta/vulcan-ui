@@ -144,14 +144,12 @@ function showSessionExpired(elem, cfg) {
   // If user has already been redirected and session is still
   // invalid, redirect user to main page. Otherwise redirect
   // user to requested page.
-  let query = window.location.search;
-  if (query.length) query = query.substring(1);
-  let isredirect = isRedirect(query);
   let redirectTo = window.location.toString().split("#")[0];
-
   if (!isDecoded(redirectTo)) redirectTo = decodeURIComponent(redirectTo);
-  if (isredirect) redirectTo = "/";
-  else redirectTo = redirectTo + "&redirect=true";
+
+  let query = window.location.search;
+  if (isRedirect(query)) redirectTo = "/";
+  else redirectTo += query.length ? "&redirect=true" : "?redirect=true";
 
   window.location.href = cfg.api_url + `login?redirect_to=${encodeURIComponent(redirectTo)}`;
 }
