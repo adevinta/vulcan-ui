@@ -144,7 +144,8 @@ function showSessionExpired(elem, cfg) {
   // If user has already been redirected and session is still
   // invalid, redirect user to main page. Otherwise redirect
   // user to requested page.
-  let query = window.location.search.substring(1);
+  let query = window.location.search;
+  if (query.length) query = query.substring(1);
   let isredirect = isRedirect(query);
   let redirectTo = window.location.toString().split("#")[0];
 
