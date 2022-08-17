@@ -140,9 +140,35 @@ function verifyConfig(cfg) {
 
 function showSessionExpired(elem, cfg) {
   hideLoading();
-  let url = cfg.api_url;
-  url = url + `login?redirect_to=${window.location}`
-  window.location.href = url;
+
+  // If user has already been redirected and session is still
+  // invalid, redirect user to main page. Otherwise redirect
+  // user to requested page.
+  let query = window.location.search.substring(1);
+  let isredirect = isRedirect(query);
+  let redirectTo = window.location.toString().split("#")[0];
+
+  if (!isDecoded(redirectTo)) redirectTo = decodeURIComponent(redirectTo);
+  if (isredirect) redirectTo = "/";
+  else redirectTo = redirectTo + "&redirect=true";
+
+  window.location.href = cfg.api_url + `login?redirect_to=${encodeURIComponent(redirectTo)}`;
+}
+
+function isRedirect(query) {
+  let vars = query.split('&');
+  for (let i = 0; i < vars.length; i++) {
+    let kv = vars[i].split('=');
+    if (decodeURIComponent(kv[0]) == "redirect" && decodeURIComponent(kv[1]) == "true") {
+      return true;
+    }
+  }
+  return false;
+}
+
+function isDecoded(uri) {
+  uri = uri || '';
+  return uri === decodeURIComponent(uri);
 }
 
 function showTeam(elem, name) {
