@@ -4,15 +4,6 @@ Copyright 2021 Adevinta
 
 <template>
   <div>
-    <article class="message is-danger" :style="errorStyle()">
-      <div class="message-header has-text-centered">
-        <p>Session expired</p>
-      </div>
-      <div id="sessionExpiredBody" class="message-body has-text-centered">
-        <br />Your session expired or you don't have permission for this team.
-        <a target="_self" :href="addr()">Log in to vulcan</a>
-      </div>
-    </article>
     <div :style="contentStyle()">
       <slot></slot>
     </div>
@@ -20,7 +11,7 @@ Copyright 2021 Adevinta
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from "vue-property-decorator";
+import { Component, Prop, Vue, Watch } from "vue-property-decorator";
 
 @Component({
   name: "Session"
@@ -33,29 +24,46 @@ export default class Session extends Vue {
   @Prop({ required: true, default: "" })
   apiUrl!: string;
 
-  //Private methods.
-  private isVisible(): boolean {
-    return this.show;
-  }
-
-  private errorStyle(): any {
-    const display = this.isVisible() ? "" : "none";
-    const s: any = { display: display };
-    return s;
-  }
-
   private contentStyle(): any {
     const display = !this.show ? "" : "none";
     const s: any = { display: display };
     return s;
   }
 
-  private addr(): string {
-    var redirectTo: string = window.location.toString();
-    if (this.isDecoded(redirectTo)) {
-      redirectTo = encodeURIComponent(window.location.toString());
+  @Watch('show')
+  async onShowChange(value: boolean, oldValue: boolean) {
+    try {
+      if (value == true) {
+        window.location.href = this.addr();
+      }
+    } catch (err) {
+      this.$emit('handleerror', err);
     }
-    return `${this.apiUrl}/login?redirect_to=${redirectTo}`;
+  }
+
+  private addr(): string {
+    // If user has already been redirected and session is still
+    // invalid, redirect user to main page. Otherwise redirect
+    // user to requested page.
+    var redirectTo: string = window.location.toString().split("#")[0];
+    if (!this.isDecoded(redirectTo)) redirectTo = decodeURIComponent(redirectTo);
+
+    var query: string = window.location.search;
+    if (this.isRedirect(query)) redirectTo = "/";
+    else redirectTo += query.length ? "&redirect=true" : "?redirect=true";
+
+    return `${this.apiUrl}/login?redirect_to=${encodeURIComponent(redirectTo)}`;
+  }
+
+  private isRedirect(query: string): boolean {
+    var vars: string[] = query.split('&');
+    for (let i = 0; i < vars.length; i++) {
+      var kv: string[] = vars[i].split('=');
+      if (decodeURIComponent(kv[0]) == "redirect" && decodeURIComponent(kv[1]) == "true") {
+        return true;
+      }
+    }
+    return false;
   }
 
   private isDecoded(uri: string): boolean {

@@ -109,25 +109,34 @@ function baseQueryParams() {
 
 function showLogin(cfg) {
     hideLoading();
-    let team = teamID();
-    let scan = scanID();
-    if (!scan || !team) {
-        $("#sessionExpiredBody").html(`Your session expired or you don't have permission for this team.
-        </BR>
-        Can not generate a login link this time because the current
-        url does not contain required information.
-        </BR>
-        You can login in vulcan again by clicking in the full report link present in a vulcan report
-        email.
-        `)
-    } else {
-        let url = cfg.api_url;
-        url = url + "report"
-        url = url + `?team_id=${team}&scan_id=${scan}`
-        $("#linkRelogin").attr("href", url)
+
+    // If user has already been redirected and session is still
+    // invalid, redirect user to main page. Otherwise redirect
+    // user to requested page.
+    let redirectTo = window.location.toString().split("#")[0];
+    if (!isDecoded(redirectTo)) redirectTo = decodeURIComponent(redirectTo);
+
+    let query = window.location.search;
+    if (isRedirect(query)) redirectTo = "/";
+    else redirectTo += query.length ? "&redirect=true" : "?redirect=true";
+
+    window.location.href = cfg.api_url + `login?redirect_to=${encodeURIComponent(redirectTo)}`;
+}
+
+function isRedirect(query) {
+    let vars = query.split('&');
+    for (let i = 0; i < vars.length; i++) {
+        let kv = vars[i].split('=');
+        if (decodeURIComponent(kv[0]) == "redirect" && decodeURIComponent(kv[1]) == "true") {
+            return true;
+        }
     }
-    $("#main").remove();
-    $("#sessionExpired").css("display", "")
+    return false;
+}
+
+function isDecoded(uri) {
+    uri = uri || '';
+    return uri === decodeURIComponent(uri);
 }
 
 function teamID() {

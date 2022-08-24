@@ -36,18 +36,6 @@ const errorComponent = $(`
       </article>
 `)
 
-const sessionExpiredComponent = $(`
-<article id="sessionExpired" class="message is-danger" style="display: none">
-    <div class="message-header has-text-centered">
-      <p>Session expired</p>
-    </div>
-    <div id="sessionExpiredBody" class="message-body has-text-centered">
-      Your session expired or you don't have permission for this team.
-      <BR>
-      <a id="linkRelogin" href="" target="_self">Log in to vulcan</a>
-    </div>
-  </article>`)
-
 const warningDialogComponent = $(`<article id="warningDialog" class="message is-warning" style="display: none">
       <div class="message-header">
         <p>Read only access</p>
@@ -150,18 +138,36 @@ function verifyConfig(cfg) {
   }
 }
 
-let sessionExpiredAdded = false
-
 function showSessionExpired(elem, cfg) {
-  if (!sessionExpiredAdded) {
-    elem.prepend(sessionExpiredComponent)
-    sessionExpiredAdded = true
-  }
   hideLoading();
-  let url = cfg.api_url;
-  url = url + `login?redirect_to=${window.location}`
-  $("#linkRelogin").attr("href", url)
-  $("#sessionExpired").css("display", "")
+
+  // If user has already been redirected and session is still
+  // invalid, redirect user to main page. Otherwise redirect
+  // user to requested page.
+  let redirectTo = window.location.toString().split("#")[0];
+  if (!isDecoded(redirectTo)) redirectTo = decodeURIComponent(redirectTo);
+
+  let query = window.location.search;
+  if (isRedirect(query)) redirectTo = "/";
+  else redirectTo += query.length ? "&redirect=true" : "?redirect=true";
+
+  window.location.href = cfg.api_url + `login?redirect_to=${encodeURIComponent(redirectTo)}`;
+}
+
+function isRedirect(query) {
+  let vars = query.split('&');
+  for (let i = 0; i < vars.length; i++) {
+    let kv = vars[i].split('=');
+    if (decodeURIComponent(kv[0]) == "redirect" && decodeURIComponent(kv[1]) == "true") {
+      return true;
+    }
+  }
+  return false;
+}
+
+function isDecoded(uri) {
+  uri = uri || '';
+  return uri === decodeURIComponent(uri);
 }
 
 function showTeam(elem, name) {
