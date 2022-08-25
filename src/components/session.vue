@@ -49,6 +49,7 @@ export default class Session extends Vue {
     if (!this.isDecoded(redirectTo)) redirectTo = decodeURIComponent(redirectTo);
 
     var query: string = window.location.search;
+    query = query.length ? query.substring(1) : query; // Remove leading '?'
     if (this.isRedirect(query)) redirectTo = "/?forbidden=true";
     else redirectTo += query.length ? "&redirect=true" : "?redirect=true";
 

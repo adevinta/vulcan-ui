@@ -17,7 +17,9 @@ $(document).ready(async () => {
 
     // If user is redirected from an invalid session
     // due to forbidden resource access, show error
-    if (isForbidden(window.location.search)) {
+    let query = window.location.search;
+    query = query.length ? query.substring(1) : query; // Remove leading '?'
+    if (isForbidden(query)) {
         common.showError(rootElement, "You don't have permission for the requested resource");
     }
 
