@@ -117,7 +117,7 @@ function showLogin(cfg) {
     if (!isDecoded(redirectTo)) redirectTo = decodeURIComponent(redirectTo);
 
     let query = window.location.search;
-    if (isRedirect(query)) redirectTo = "/";
+    if (isRedirect(query)) redirectTo = "/?forbidden=true";
     else redirectTo += query.length ? "&redirect=true" : "?redirect=true";
 
     window.location.href = cfg.api_url + `login?redirect_to=${encodeURIComponent(redirectTo)}`;

@@ -14,6 +14,13 @@ let selectedTeamTag;
 
 $(document).ready(async () => {
     init();
+
+    // If user is redirected from an invalid session
+    // due to forbidden resource access, show error
+    if (isForbidden(window.location.search)) {
+        common.showError(rootElement, "You don't have permission for the requested resource");
+    }
+
     // Load config.
     try {
         config = await common.config()
@@ -140,3 +147,14 @@ function handleError(err, cb) {
     common.showError(rootElement, err, cb);
     return
 }
+
+function isForbidden(query) {
+    let vars = query.split('&');
+    for (let i = 0; i < vars.length; i++) {
+      let kv = vars[i].split('=');
+      if (decodeURIComponent(kv[0]) == "forbidden" && decodeURIComponent(kv[1]) == "true") {
+        return true;
+      }
+    }
+    return false;
+  }
