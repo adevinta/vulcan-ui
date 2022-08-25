@@ -117,7 +117,6 @@ function showLogin(cfg) {
     if (!isDecoded(redirectTo)) redirectTo = decodeURIComponent(redirectTo);
 
     let query = window.location.search;
-    query = query.length ? query.substring(1) : query; // Remove leading '?'
     if (isRedirect(query)) redirectTo = "/?forbidden=true";
     else redirectTo += query.length ? "&redirect=true" : "?redirect=true";
 
@@ -125,6 +124,7 @@ function showLogin(cfg) {
 }
 
 function isRedirect(query) {
+    query = query.length ? query.substring(1) : query; // Remove leading '?'
     let vars = query.split('&');
     for (let i = 0; i < vars.length; i++) {
         let kv = vars[i].split('=');

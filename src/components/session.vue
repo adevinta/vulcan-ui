@@ -49,7 +49,6 @@ export default class Session extends Vue {
     if (!this.isDecoded(redirectTo)) redirectTo = decodeURIComponent(redirectTo);
 
     var query: string = window.location.search;
-    query = query.length ? query.substring(1) : query; // Remove leading '?'
     if (this.isRedirect(query)) redirectTo = "/?forbidden=true";
     else redirectTo += query.length ? "&redirect=true" : "?redirect=true";
 
@@ -57,6 +56,7 @@ export default class Session extends Vue {
   }
 
   private isRedirect(query: string): boolean {
+    query = query.length ? query.substring(1) : query; // Remove leading '?'
     var vars: string[] = query.split('&');
     for (let i = 0; i < vars.length; i++) {
       var kv: string[] = vars[i].split('=');

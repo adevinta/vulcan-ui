@@ -17,9 +17,7 @@ $(document).ready(async () => {
 
     // If user is redirected from an invalid session
     // due to forbidden resource access, show error
-    let query = window.location.search;
-    query = query.length ? query.substring(1) : query; // Remove leading '?'
-    if (isForbidden(query)) {
+    if (isForbidden(window.location.search)) {
         common.showError(rootElement, "You don't have permission for the requested resource");
     }
 
@@ -151,6 +149,7 @@ function handleError(err, cb) {
 }
 
 function isForbidden(query) {
+    query = query.length ? query.substring(1) : query; // Remove leading '?'
     let vars = query.split('&');
     for (let i = 0; i < vars.length; i++) {
       let kv = vars[i].split('=');
