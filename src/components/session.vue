@@ -49,13 +49,14 @@ export default class Session extends Vue {
     if (!this.isDecoded(redirectTo)) redirectTo = decodeURIComponent(redirectTo);
 
     var query: string = window.location.search;
-    if (this.isRedirect(query)) redirectTo = "/";
+    if (this.isRedirect(query)) redirectTo = "/?forbidden=true";
     else redirectTo += query.length ? "&redirect=true" : "?redirect=true";
 
     return `${this.apiUrl}/login?redirect_to=${encodeURIComponent(redirectTo)}`;
   }
 
   private isRedirect(query: string): boolean {
+    query = query.length ? query.substring(1) : query; // Remove leading '?'
     var vars: string[] = query.split('&');
     for (let i = 0; i < vars.length; i++) {
       var kv: string[] = vars[i].split('=');
