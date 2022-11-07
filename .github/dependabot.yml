@@ -1,0 +1,13 @@
+version: 2
+updates:
+- package-ecosystem: npm
+  directory: "/"
+  schedule:
+    interval: daily
+  open-pull-requests-limit: 10
+  allow:
+  - dependency-name: "*adevinta*"
+- package-ecosystem: "docker"
+  directory: "/"
+  schedule:
+    interval: "weekly"
