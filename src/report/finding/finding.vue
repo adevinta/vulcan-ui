@@ -133,6 +133,23 @@ Copyright 2021 Adevinta
                 </table>
               </td>
             </tr>
+            <tr>
+              <td class="has-text-weight-bold">Ticket</td>
+              <td v-if="!propsFindingDetail.row.urlTracker" style="width:100%">
+                <b-button type="is-info" @click="createTicket()">
+                    <span>Create Ticket</span>
+                </b-button>
+              </td>
+              <td v-else="" style="width:100%">
+                  <a target="_blank" rel="noopener noreferrer" :href="propsFindingDetail.row.urlTracker" class="button"
+                  >
+                    <span>{{ urlDomain(propsFindingDetail.row.urlTracker) }}</span>
+                    <span class="icon is-small">
+                      <i class="fa fa-external-link"></i>
+                    </span>
+                  </a>
+              </td>
+            </tr>
           </table>
         </div>
       </div>
@@ -143,7 +160,8 @@ Copyright 2021 Adevinta
 <script lang="ts">
 import { Component, Prop, Vue } from "vue-property-decorator";
 import FindingOverwriteForm from "../findingOverwriteForm/findingOverwriteForm.vue";
-import { severityStyle, severityText, statusClass, urlDomain } from "../utils/utils";
+import CreateTicketForm from "../createTicketForm/createTicketForm.vue";
+import { severityStyle, severityText, statusClass, urlDomain, propsFindingDetailTemplate } from "../utils/utils";
 import { ModalProgrammatic as Modal } from 'buefy';
 import { BModalComponent } from "buefy/types/components";
 
@@ -151,15 +169,16 @@ import { BModalComponent } from "buefy/types/components";
   name: "FindingDetails",
   components: {
       FindingOverwriteForm,
+      CreateTicketForm
   }
 })
 export default class FindingDetails extends Vue {
   @Prop({ required: true, default: "" })
-  propsFindingDetail!: string;
+  propsFindingDetail!: propsFindingDetailTemplate;
 
   @Prop({ required: true, default: "" })
   private findingId?: string;
- 
+
   @Prop({ required: true, default: "" })
   private teamId?: string;
 
@@ -180,13 +199,40 @@ export default class FindingDetails extends Vue {
             trapFocus: true,
             props: {
                 findingId: this.findingId,
-                teamId: this.teamId,
+                teamId: this.teamId
             },
             events: {
                 'handleerror': (err: Error) =>{
                     this.$emit('handleerror', err);
                 },
                 'update': () => {
+                    this.$emit('update', this.propsFindingDetail);
+                },
+                'close': () => {
+                    this.statusModal.close();
+                }
+            },
+        });
+  }
+
+  private createTicket() {
+
+    this.statusModal = this.$buefy.modal.open({
+            parent: this,
+            component: CreateTicketForm,
+            hasModalCard: true,
+            fullScreen: false,
+            trapFocus: true,
+            props: {
+                findingId: this.findingId,
+                teamId: this.teamId,
+                issue: this.propsFindingDetail.row.issue
+            },
+            events: {
+                'handleerror': (err: Error) =>{
+                    this.$emit('handleerror', err);
+                },
+                'create': () => {
                     this.$emit('update', this.propsFindingDetail);
                 },
                 'close': () => {

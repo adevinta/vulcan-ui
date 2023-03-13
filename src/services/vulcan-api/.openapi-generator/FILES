@@ -41,6 +41,8 @@ models/Exposure.ts
 models/Finding.ts
 models/FindingOverwrite.ts
 models/FindingOverwritePayload.ts
+models/FindingTicketCreationPayload.ts
+models/FindingTicketcreation.ts
 models/FindingsIssue.ts
 models/FindingsIssuesList.ts
 models/FindingsLabels.ts

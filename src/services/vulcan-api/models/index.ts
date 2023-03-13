@@ -19,6 +19,8 @@ export * from './Exposure';
 export * from './Finding';
 export * from './FindingOverwrite';
 export * from './FindingOverwritePayload';
+export * from './FindingTicketCreationPayload';
+export * from './FindingTicketcreation';
 export * from './FindingsIssue';
 export * from './FindingsIssuesList';
 export * from './FindingsLabels';
