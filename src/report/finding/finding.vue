@@ -133,17 +133,17 @@ Copyright 2021 Adevinta
                 </table>
               </td>
             </tr>
-            <tr>
+            <tr v-if="teamOnBoardedVT">
               <td class="has-text-weight-bold">Ticket</td>
               <td v-if="!propsFindingDetail.row.urlTracker" style="width:100%">
                 <b-button type="is-info" @click="createTicket()">
                     <span>Create Ticket</span>
                 </b-button>
               </td>
-              <td v-else="" style="width:100%">
+              <td v-else style="width:100%">
                   <a target="_blank" rel="noopener noreferrer" :href="propsFindingDetail.row.urlTracker" class="button"
                   >
-                    <span>{{ urlDomain(propsFindingDetail.row.urlTracker) }}</span>
+                    <span>{{ ticketId(propsFindingDetail.row.urlTracker) }}</span>
                     <span class="icon is-small">
                       <i class="fa fa-external-link"></i>
                     </span>
@@ -181,6 +181,9 @@ export default class FindingDetails extends Vue {
 
   @Prop({ required: true, default: "" })
   private teamId?: string;
+
+  @Prop({ required: true, default: false })
+  private teamOnBoardedVT?: boolean;
 
   private isComponentModalActive: boolean = true;
   private severityStyle = severityStyle
@@ -226,7 +229,7 @@ export default class FindingDetails extends Vue {
             props: {
                 findingId: this.findingId,
                 teamId: this.teamId,
-                issue: this.propsFindingDetail.row.issue
+                finding: this.propsFindingDetail.row
             },
             events: {
                 'handleerror': (err: Error) =>{
@@ -245,6 +248,11 @@ export default class FindingDetails extends Vue {
   private buildTargetViewLink(identifier: string): string {
     return "/report/report.html?team_id=" + this.teamId + "&identifiers=" + identifier;
   }
+
+  private ticketId(urlTracker: string): string {
+    const splitUrl = urlTracker.split("/")
+    return splitUrl[splitUrl.length - 1];
+}
 
   // TODO: PTVUL-2489
   // Unify resources table columns which allows markdown/html.
