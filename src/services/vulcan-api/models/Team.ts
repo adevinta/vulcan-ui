@@ -32,12 +32,6 @@ export interface Team {
      */
     id?: string;
     /**
-     * Is Onboarded in Vulcan Tracker
-     * @type {boolean}
-     * @memberof Team
-     */
-    isOnboardedVulcanTracker?: boolean;
-    /**
      * Name
      * @type {string}
      * @memberof Team
@@ -49,6 +43,12 @@ export interface Team {
      * @memberof Team
      */
     tag?: string;
+    /**
+     * If the team is Onboarded in Vulcan Tracker
+     * @type {boolean}
+     * @memberof Team
+     */
+    usingTracker?: boolean;
 }
 
 /**
@@ -72,9 +72,9 @@ export function TeamFromJSONTyped(json: any, ignoreDiscriminator: boolean): Team
         
         'description': !exists(json, 'description') ? undefined : json['description'],
         'id': !exists(json, 'id') ? undefined : json['id'],
-        'isOnboardedVulcanTracker': !exists(json, 'is_onboarded_vulcan_tracker') ? undefined : json['is_onboarded_vulcan_tracker'],
         'name': !exists(json, 'name') ? undefined : json['name'],
         'tag': !exists(json, 'tag') ? undefined : json['tag'],
+        'usingTracker': !exists(json, 'using_tracker') ? undefined : json['using_tracker'],
     };
 }
 
@@ -89,9 +89,9 @@ export function TeamToJSON(value?: Team | null): any {
         
         'description': value.description,
         'id': value.id,
-        'is_onboarded_vulcan_tracker': value.isOnboardedVulcanTracker,
         'name': value.name,
         'tag': value.tag,
+        'using_tracker': value.usingTracker,
     };
 }
 

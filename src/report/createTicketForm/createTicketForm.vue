@@ -42,7 +42,7 @@ import tokenProvider from "../../common/token";
 import ErrorDialog from "../../components/error.vue";
 import {Configuration as ApiConf, ConfigurationParameters, Issue} from "../../services/vulcan-api";
 import {FindingsApi, FindingsSubmitAFindingTicketCreationRequest} from "../../services/vulcan-api/apis";
-import {FindingTicketcreation, Finding} from "../../services/vulcan-api/models";
+import {FindingTicket, Finding} from "../../services/vulcan-api/models";
 
 @Component({
     name: "CreateTicketForm",
@@ -103,7 +103,7 @@ export default class FindingTicketCreationForm extends Vue {
                     description: this.description,
                 }
             };
-            const finding: FindingTicketcreation = await this.findingsApi.findingsSubmitAFindingTicketCreation(req);
+            const finding: FindingTicket = await this.findingsApi.findingsSubmitAFindingTicketCreation(req);
             this.$emit('create');
             this.$emit('close');
         } catch (err) {

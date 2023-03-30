@@ -18,8 +18,8 @@ import type {
   Finding,
   FindingOverwrite,
   FindingOverwritePayload,
-  FindingTicketCreationPayload,
-  FindingTicketcreation,
+  FindingTicket,
+  FindingTicketPayload,
   FindingsIssuesList,
   FindingsLabels,
   FindingsList,
@@ -32,10 +32,10 @@ import {
     FindingOverwriteToJSON,
     FindingOverwritePayloadFromJSON,
     FindingOverwritePayloadToJSON,
-    FindingTicketCreationPayloadFromJSON,
-    FindingTicketCreationPayloadToJSON,
-    FindingTicketcreationFromJSON,
-    FindingTicketcreationToJSON,
+    FindingTicketFromJSON,
+    FindingTicketToJSON,
+    FindingTicketPayloadFromJSON,
+    FindingTicketPayloadToJSON,
     FindingsIssuesListFromJSON,
     FindingsIssuesListToJSON,
     FindingsLabelsFromJSON,
@@ -152,7 +152,7 @@ export interface FindingsSubmitAFindingOverwriteRequest {
 export interface FindingsSubmitAFindingTicketCreationRequest {
     findingId: string;
     teamId: string;
-    payload: FindingTicketCreationPayload;
+    payload: FindingTicketPayload;
 }
 
 /**
@@ -759,7 +759,7 @@ export class FindingsApi extends runtime.BaseAPI {
      * Create a ticket associated with the finding in a ticket tracker tool.
      * Submit a Finding Ticket Creation findings
      */
-    async findingsSubmitAFindingTicketCreationRaw(requestParameters: FindingsSubmitAFindingTicketCreationRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<FindingTicketcreation>> {
+    async findingsSubmitAFindingTicketCreationRaw(requestParameters: FindingsSubmitAFindingTicketCreationRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<FindingTicket>> {
         if (requestParameters.findingId === null || requestParameters.findingId === undefined) {
             throw new runtime.RequiredError('findingId','Required parameter requestParameters.findingId was null or undefined when calling findingsSubmitAFindingTicketCreation.');
         }
@@ -783,21 +783,21 @@ export class FindingsApi extends runtime.BaseAPI {
         }
 
         const response = await this.request({
-            path: `/teams/{team_id}/findings/{finding_id}/ticketcreation`.replace(`{${"finding_id"}}`, encodeURIComponent(String(requestParameters.findingId))).replace(`{${"team_id"}}`, encodeURIComponent(String(requestParameters.teamId))),
+            path: `/teams/{team_id}/findings/{finding_id}/ticket`.replace(`{${"finding_id"}}`, encodeURIComponent(String(requestParameters.findingId))).replace(`{${"team_id"}}`, encodeURIComponent(String(requestParameters.teamId))),
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
-            body: FindingTicketCreationPayloadToJSON(requestParameters.payload),
+            body: FindingTicketPayloadToJSON(requestParameters.payload),
         }, initOverrides);
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => FindingTicketcreationFromJSON(jsonValue));
+        return new runtime.JSONApiResponse(response, (jsonValue) => FindingTicketFromJSON(jsonValue));
     }
 
     /**
      * Create a ticket associated with the finding in a ticket tracker tool.
      * Submit a Finding Ticket Creation findings
      */
-    async findingsSubmitAFindingTicketCreation(requestParameters: FindingsSubmitAFindingTicketCreationRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<FindingTicketcreation> {
+    async findingsSubmitAFindingTicketCreation(requestParameters: FindingsSubmitAFindingTicketCreationRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<FindingTicket> {
         const response = await this.findingsSubmitAFindingTicketCreationRaw(requestParameters, initOverrides);
         return await response.value();
     }
