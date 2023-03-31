@@ -63,7 +63,7 @@ export default class FindingView extends Vue {
   private teamOnBoardedVT: boolean = false;
   private findingId: string = "";
   private findingsApi!: FindingsApi;
-  private teamsApi: TeamsApi;
+  private teamsApi?: TeamsApi
 
   private propsFindingDetail: propsFindingDetailTemplate = {
       row: {
