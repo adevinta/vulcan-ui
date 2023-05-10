@@ -5,6 +5,7 @@ Copyright 2021 Adevinta
 import * as api from '../vulcan-api'
 import * as common from './common'
 import "./import-jquery"
+import {validateAsset} from "./common";
 
 var client;
 var config;
@@ -64,6 +65,10 @@ async function addAssets(client, config, assets, id) {
 
     var assetArray = [];
     for (var i = 0; i < assets.length; i++) {
+        if (!validateAsset(assets[i])){
+            common.showError(`The identifier of the asset ${assets[i]} doesn't have a valid format.`);
+            return;
+        }
         let asset = {
             identifier: assets[i]
         }

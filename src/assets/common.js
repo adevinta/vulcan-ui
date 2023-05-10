@@ -152,6 +152,14 @@ function scanID() {
     return scanID;
 }
 
+function validateAsset(asset){
+    if (asset.startsWith("arn:")){
+        const arnRegex =/^(arn:(?:aws|aws-cn|aws-us-gov):([\w-]+):([a-z]+-[a-z]+-\d)?:(\d{0,12}):([\w-]*)(\/?[\w-]*)(\/.*)?.*)$/
+        return arnRegex.test(asset);
+    }
+    return true
+}
+
 export {
     config,
     showError,
@@ -163,5 +171,6 @@ export {
     hideLoading,
     showTeam,
     askConfirm,
-    baseQueryParams
+    baseQueryParams,
+    validateAsset
 }
