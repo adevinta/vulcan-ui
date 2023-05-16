@@ -163,9 +163,9 @@ Copyright 2021 Adevinta
                 <!-- Labels Picker -->
                 <div>
                   <section>
-                    <b-field>
+                    <b-field grouped group-multiline>
                       <b-checkbox-button type="is-info" v-model="selLabels" v-for="label in allLabels" :key="label"
-                          :native-value="label"
+                          :native-value="label" class="is-marginless"
                       >
                         <b-icon v-if="label == 'issue'" icon="bug"></b-icon>
                         <b-icon v-if="label == 'potential'" pack="mdi" icon="alert-circle-outline"></b-icon>
