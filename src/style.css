@@ -83,3 +83,7 @@ Copyright 2021 Adevinta
 .is-live-report-status-false-default {
     color: hsl(0, 0%, 29%);
 }
+
+.is-long-line {
+    overflow-wrap: anywhere;
+}

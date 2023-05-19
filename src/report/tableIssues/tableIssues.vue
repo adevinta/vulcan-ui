@@ -160,6 +160,7 @@ Copyright 2021 Adevinta
                         <b-table-column
                           field="affectedResource"
                           label="Resource"
+                          class="is-long-line"
                         >{{ propsX.row.affectedResource }}</b-table-column>
 
                         <!-- Direct Link -->
