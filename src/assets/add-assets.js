@@ -65,12 +65,16 @@ async function addAssets(client, config, assets, id) {
 
     var assetArray = [];
     for (var i = 0; i < assets.length; i++) {
-        if (!validateAsset(assets[i])){
-            common.showError(`The identifier of the asset ${assets[i]} doesn't have a valid format.`);
+        let kv = assets[i].split(',');
+        if (!validateAsset(kv[0])){
+            common.showError(`The identifier of the asset ${kv[i]} doesn't have a valid format.`);
             return;
         }
         let asset = {
-            identifier: assets[i]
+            identifier: kv[0]
+        }
+        if (kv.length==2) {
+            asset.type=kv[1]
         }
         assetArray.push(asset);
     }
