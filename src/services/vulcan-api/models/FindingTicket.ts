@@ -14,43 +14,43 @@
 
 import { exists, mapValues } from '../runtime';
 /**
- * 
+ * Finding Ticket (default view)
  * @export
- * @interface PolicyUpdatePayload
+ * @interface FindingTicket
  */
-export interface PolicyUpdatePayload {
+export interface FindingTicket {
     /**
-     * name
+     * Link to the ticket
      * @type {string}
-     * @memberof PolicyUpdatePayload
+     * @memberof FindingTicket
      */
-    name?: string;
+    urlTracker?: string;
 }
 
 /**
- * Check if a given object implements the PolicyUpdatePayload interface.
+ * Check if a given object implements the FindingTicket interface.
  */
-export function instanceOfPolicyUpdatePayload(value: object): boolean {
+export function instanceOfFindingTicket(value: object): boolean {
     let isInstance = true;
 
     return isInstance;
 }
 
-export function PolicyUpdatePayloadFromJSON(json: any): PolicyUpdatePayload {
-    return PolicyUpdatePayloadFromJSONTyped(json, false);
+export function FindingTicketFromJSON(json: any): FindingTicket {
+    return FindingTicketFromJSONTyped(json, false);
 }
 
-export function PolicyUpdatePayloadFromJSONTyped(json: any, ignoreDiscriminator: boolean): PolicyUpdatePayload {
+export function FindingTicketFromJSONTyped(json: any, ignoreDiscriminator: boolean): FindingTicket {
     if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
-        'name': !exists(json, 'name') ? undefined : json['name'],
+        'urlTracker': !exists(json, 'url_tracker') ? undefined : json['url_tracker'],
     };
 }
 
-export function PolicyUpdatePayloadToJSON(value?: PolicyUpdatePayload | null): any {
+export function FindingTicketToJSON(value?: FindingTicket | null): any {
     if (value === undefined) {
         return undefined;
     }
@@ -59,7 +59,7 @@ export function PolicyUpdatePayloadToJSON(value?: PolicyUpdatePayload | null): a
     }
     return {
         
-        'name': value.name,
+        'url_tracker': value.urlTracker,
     };
 }
 

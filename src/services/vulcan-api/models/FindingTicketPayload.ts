@@ -16,55 +16,49 @@ import { exists, mapValues } from '../runtime';
 /**
  * 
  * @export
- * @interface TeamUpdatePayload
+ * @interface FindingTicketPayload
  */
-export interface TeamUpdatePayload {
+export interface FindingTicketPayload {
     /**
-     * description
+     * Description
      * @type {string}
-     * @memberof TeamUpdatePayload
+     * @memberof FindingTicketPayload
      */
     description?: string;
     /**
-     * name
+     * Summary
      * @type {string}
-     * @memberof TeamUpdatePayload
+     * @memberof FindingTicketPayload
      */
-    name?: string;
-    /**
-     * tag
-     * @type {string}
-     * @memberof TeamUpdatePayload
-     */
-    tag?: string;
+    summary: string;
 }
 
 /**
- * Check if a given object implements the TeamUpdatePayload interface.
+ * Check if a given object implements the FindingTicketPayload interface.
  */
-export function instanceOfTeamUpdatePayload(value: object): boolean {
+export function instanceOfFindingTicketPayload(value: object): boolean {
     let isInstance = true;
+    isInstance = isInstance && "summary" in value;
 
     return isInstance;
 }
 
-export function TeamUpdatePayloadFromJSON(json: any): TeamUpdatePayload {
-    return TeamUpdatePayloadFromJSONTyped(json, false);
+export function FindingTicketPayloadFromJSON(json: any): FindingTicketPayload {
+    return FindingTicketPayloadFromJSONTyped(json, false);
 }
 
-export function TeamUpdatePayloadFromJSONTyped(json: any, ignoreDiscriminator: boolean): TeamUpdatePayload {
+export function FindingTicketPayloadFromJSONTyped(json: any, ignoreDiscriminator: boolean): FindingTicketPayload {
     if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
         'description': !exists(json, 'description') ? undefined : json['description'],
-        'name': !exists(json, 'name') ? undefined : json['name'],
-        'tag': !exists(json, 'tag') ? undefined : json['tag'],
+        'summary': json['summary'],
     };
 }
 
-export function TeamUpdatePayloadToJSON(value?: TeamUpdatePayload | null): any {
+export function FindingTicketPayloadToJSON(value?: FindingTicketPayload | null): any {
     if (value === undefined) {
         return undefined;
     }
@@ -74,8 +68,7 @@ export function TeamUpdatePayloadToJSON(value?: TeamUpdatePayload | null): any {
     return {
         
         'description': value.description,
-        'name': value.name,
-        'tag': value.tag,
+        'summary': value.summary,
     };
 }
 

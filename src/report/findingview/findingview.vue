@@ -13,6 +13,7 @@
                         v-on:handleerror="handleError"
                         v-on:update="update"
                         :teamId="teamId"
+                        :teamOnBoardedVT="teamOnBoardedVT"
                         :findingId="propsFindingDetail.row.id"
                         :propsFindingDetail="propsFindingDetail">
                     </FindingDetails>
@@ -34,12 +35,13 @@ import { Component, Prop, Vue, Watch } from "vue-property-decorator";
   import teamID from "../../common/team";
 import { propsFindingDetailTemplate } from "../utils/utils";
 import {
-   Configuration as ApiConf,
-   ConfigurationParameters,
+    Configuration as ApiConf,
+    ConfigurationParameters, TeamsApi,
 } from "../../services/vulcan-api";
 import {
    FindingsApi,
    FindingsFindFindingRequest,
+   TeamsShowRequest,
 } from "../../services/vulcan-api/apis";
 import {
   Finding,
@@ -58,8 +60,10 @@ import {
 export default class FindingView extends Vue {
   private apiUrl: string = "";
   private teamId: string = "";
+  private teamOnBoardedVT: boolean = false;
   private findingId: string = "";
   private findingsApi!: FindingsApi;
+  private teamsApi?: TeamsApi
 
   private propsFindingDetail: propsFindingDetailTemplate = {
       row: {
@@ -91,10 +95,17 @@ export default class FindingView extends Vue {
 
       // Build the api clients.
       const apiConfg = new ApiConf(c);
+      this.teamsApi = new TeamsApi(apiConfg);
       this.findingsApi = new FindingsApi(apiConfg);
 
       // Load team.
       this.teamId = teamID();
+
+      await this.loadTeam(
+            this.teamId,
+            this.teamsApi
+      );
+
       this.findingId = this.$route.params.id;
 
       await this.loadFinding(
@@ -119,7 +130,18 @@ export default class FindingView extends Vue {
     this.propsFindingDetail.row = finding
   }
 
-  private handleError(err: any) {
+  private async loadTeam(teamId: string, api: TeamsApi) {
+    const req: TeamsShowRequest = {
+        teamId: teamId
+    };
+
+    const teamInfo = await api.teamsShow(req);
+
+    this.teamOnBoardedVT = teamInfo.usingTracker || false
+  }
+
+
+    private handleError(err: any) {
       this.$emit('handleerror', err);
   }
 

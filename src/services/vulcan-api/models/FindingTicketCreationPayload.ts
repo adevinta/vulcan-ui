@@ -16,55 +16,49 @@ import { exists, mapValues } from '../runtime';
 /**
  * 
  * @export
- * @interface TeamUpdatePayload
+ * @interface FindingTicketCreationPayload
  */
-export interface TeamUpdatePayload {
+export interface FindingTicketCreationPayload {
     /**
-     * description
+     * Description
      * @type {string}
-     * @memberof TeamUpdatePayload
+     * @memberof FindingTicketCreationPayload
      */
     description?: string;
     /**
-     * name
+     * Summary
      * @type {string}
-     * @memberof TeamUpdatePayload
+     * @memberof FindingTicketCreationPayload
      */
-    name?: string;
-    /**
-     * tag
-     * @type {string}
-     * @memberof TeamUpdatePayload
-     */
-    tag?: string;
+    summary: string;
 }
 
 /**
- * Check if a given object implements the TeamUpdatePayload interface.
+ * Check if a given object implements the FindingTicketCreationPayload interface.
  */
-export function instanceOfTeamUpdatePayload(value: object): boolean {
+export function instanceOfFindingTicketCreationPayload(value: object): boolean {
     let isInstance = true;
+    isInstance = isInstance && "summary" in value;
 
     return isInstance;
 }
 
-export function TeamUpdatePayloadFromJSON(json: any): TeamUpdatePayload {
-    return TeamUpdatePayloadFromJSONTyped(json, false);
+export function FindingTicketCreationPayloadFromJSON(json: any): FindingTicketCreationPayload {
+    return FindingTicketCreationPayloadFromJSONTyped(json, false);
 }
 
-export function TeamUpdatePayloadFromJSONTyped(json: any, ignoreDiscriminator: boolean): TeamUpdatePayload {
+export function FindingTicketCreationPayloadFromJSONTyped(json: any, ignoreDiscriminator: boolean): FindingTicketCreationPayload {
     if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
         'description': !exists(json, 'description') ? undefined : json['description'],
-        'name': !exists(json, 'name') ? undefined : json['name'],
-        'tag': !exists(json, 'tag') ? undefined : json['tag'],
+        'summary': json['summary'],
     };
 }
 
-export function TeamUpdatePayloadToJSON(value?: TeamUpdatePayload | null): any {
+export function FindingTicketCreationPayloadToJSON(value?: FindingTicketCreationPayload | null): any {
     if (value === undefined) {
         return undefined;
     }
@@ -74,8 +68,7 @@ export function TeamUpdatePayloadToJSON(value?: TeamUpdatePayload | null): any {
     return {
         
         'description': value.description,
-        'name': value.name,
-        'tag': value.tag,
+        'summary': value.summary,
     };
 }
 

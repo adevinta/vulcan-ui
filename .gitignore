@@ -21,3 +21,8 @@ yarn-debug.log*
 yarn-error.log*
 
 *.swp
+.nvmrc
+.python-version
+.history
+.vscode
+.idea
