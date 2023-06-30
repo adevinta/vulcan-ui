@@ -27,7 +27,7 @@ Copyright 2023 Adevinta
                     </b-input>
                 </b-field>
                 <div class="has-text-right">
-                    <b-button icon-left="save" type="is-info" native-type="submit">Create</b-button>
+                    <b-button :loading="isLoading" icon-left="save" type="is-info" native-type="submit">Create</b-button>
                 </div>
             </form>
         </section>
@@ -65,6 +65,7 @@ export default class FindingTicketCreationForm extends Vue {
 
     private showError: boolean = false;
     private errorMessage: string = "";
+    private isLoading: boolean = true;
 
     async mounted() {
         try {
@@ -78,7 +79,7 @@ export default class FindingTicketCreationForm extends Vue {
             // Build the api clients.
             const apiConfg = new ApiConf(c);
             this.findingsApi = new FindingsApi(apiConfg);
-
+            this.isLoading = false;
 
         } catch (err) {
             this.handleError(err);
@@ -94,6 +95,7 @@ export default class FindingTicketCreationForm extends Vue {
     }
 
     async createTicket() {
+        this.isLoading = true;
         try {
             const req: FindingsSubmitAFindingTicketCreationRequest = {
                 findingId: this.findingId,
@@ -105,8 +107,10 @@ export default class FindingTicketCreationForm extends Vue {
             };
             const finding: FindingTicket = await this.findingsApi.findingsSubmitAFindingTicketCreation(req);
             this.$emit('create');
+            this.isLoading = false;
             this.$emit('close');
         } catch (err) {
+            this.isLoading = false;
             this.handleError(err);
         }
     }
