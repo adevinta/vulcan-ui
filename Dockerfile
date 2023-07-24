@@ -13,7 +13,7 @@ ADD . .
 
 RUN npm run-script build
 
-FROM nginxinc/nginx-unprivileged:1.24-alpine-slim
+FROM nginxinc/nginx-unprivileged:1.25-alpine-slim
 
 ARG BUILD_RFC3339="1970-01-01T00:00:00Z"
 ARG COMMIT="local"
