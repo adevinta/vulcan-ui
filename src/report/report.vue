@@ -185,6 +185,25 @@ export default class LiveReport extends Vue {
       }
       return;
     }
+
+    // Using err instance of ResponseError doesn't work.
+    if (typeof err.response !== 'undefined') {
+      var re = err.response;
+      switch (re.status) {
+        case 401:
+          var redirectTo: string = window.location.toString().split("#")[0];
+          window.location.href = `${this.apiUrl}/login?redirect_to=${encodeURIComponent(redirectTo)}`
+          break;
+        default:
+          console.log(`${re.status} ": " ${re.statusText}`);
+          this.errorMessage = `unexpected error calling vulcan api, status code: ${
+            re.status
+          }`;
+          this.showError = true;
+          break;
+      }
+      return;
+    }
     if (err instanceof Error) {
       console.log(`error: " ${err.message}`);
       this.errorMessage = `unexpected error: ${err.message}`;
