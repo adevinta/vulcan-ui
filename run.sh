@@ -9,8 +9,8 @@ export UI_DOCS_DISCOVERY_LINK="${UI_DOCS_DISCOVERY_LINK:-/}"
 export UI_DOCS_AUDITROLE_LINK="${UI_DOCS_AUDITROLE_LINK:-/}"
 export UI_CONTACT_EMAIL="${UI_CONTACT_EMAIL:-}"
 export UI_CONTACT_SLACK="${UI_CONTACT_SLACK:-/}"
-export UI_DASHBOARD_LINK=${UI_DASHBOARD_LINK:-/}
-export TEAMS_CRUD=${TEAMS_CRUD:-true}
+export UI_DASHBOARD_LINK="${UI_DASHBOARD_LINK:-/}"
+export TEAMS_CRUD="${TEAMS_CRUD:-true}"
 
 # Apply env variables
 envsubst < config.json > /usr/share/nginx/html/config.json
