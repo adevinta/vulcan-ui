@@ -1,12 +1,15 @@
 # Copyright 2021 Adevinta
 
-FROM node:9-slim as builder
+FROM node:20-slim as builder
+
+RUN apt install --update python3
+ENV PYTHON=/usr/bin/python3
 
 WORKDIR /app
 
 COPY package*.json ./
 
-RUN npm install
+RUN npm install --python=python3
 
 COPY . .
 
