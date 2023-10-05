@@ -394,9 +394,12 @@ export default class Home extends Vue {
     } catch (err) {
       this.$emit('handleerror', err);
     } finally {
-      this.$emit('toggleUserListTeams', true);
       this.loading = false;
     }
+  }
+
+  async activated() {
+    this.$emit('toggleUserListTeams', true);
   }
 
   private async loadLabels(findingsApi: FindingsApi) {
