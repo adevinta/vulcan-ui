@@ -188,10 +188,10 @@ export default class LiveReport extends Vue {
 
     // Using err instance of ResponseError doesn't work.
     if (typeof err.response !== 'undefined') {
-      var re = err.response;
+      const re = err.response;
       switch (re.status) {
         case 401:
-          var redirectTo: string = window.location.toString().split("#")[0];
+          const redirectTo: string = window.location.toString().split("#")[0];
           window.location.href = `${this.apiUrl}/login?redirect_to=${encodeURIComponent(redirectTo)}`
           break;
         default:
