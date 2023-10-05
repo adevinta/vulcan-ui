@@ -31,7 +31,7 @@
     "font-awesome": "^4.7.0",
     "jquery": "^3.5.1",
     "jquery-datatables-checkboxes": "^1.2.12",
-    "vue": "^2.6.12",
+    "vue": "^2.7.14",
     "vue-class-component": "^7.2.6",
     "vue-hot-reload-api": "^2.3.4",
     "vue-json-viewer": "^2.2.19",
@@ -53,7 +53,7 @@
     "sass": "^1.26.11",
     "transform-runtime": "0.0.0",
     "typescript": "^3.9.7",
-    "vue-template-compiler": "^2.6.11"
+    "vue-template-compiler": "^2.7.14"
   },
   "browserslist": [
     "last 2 versions"
