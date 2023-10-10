@@ -4,3 +4,5 @@ Dockerfile
 *.md
 _*
 Dockerfile*
+node_modules
+dist

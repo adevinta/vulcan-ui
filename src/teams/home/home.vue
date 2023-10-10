@@ -19,6 +19,9 @@
                 <b-field label="Tag">
                   <b-input v-model="tag"></b-input>
                 </b-field>
+                <b-field label="Recipients">
+                  <b-input v-model="recipients"></b-input>
+                </b-field>
                 <div class="buttons is-right">
                   <b-button type="is-primary" native-type="submit">Save</b-button>
                 </div>
@@ -46,6 +49,8 @@
 import { Component, Prop, Vue, Watch } from "vue-property-decorator";
 import loadConfig, { Config } from "../../common/config";
 import tokenProvider from "../../common/token";
+import * as api from '../../vulcan-api';
+
 import {
   Configuration as ApiConf,
   ConfigurationParameters
@@ -74,6 +79,7 @@ export default class Home extends Vue {
   private name: string = "";
   private description: string = "";
   private tag: string = "";
+  private recipients: string = "";
 
   private showError: boolean = false;
   private errorMessage: string = "";
@@ -87,9 +93,10 @@ export default class Home extends Vue {
         apiKey: tProvider,
         basePath: conf.apiUrl
       };
-
       // Build the api clients.
       const apiConfg = new ApiConf(c);
+      this.client = new api.vulcanAPI(conf.apiUrl + "/", () => api.token(conf.askCredentials));
+
       this.teamsApi = new TeamsApi(apiConfg);
 
       var qparams = new URL(document.location.toString()).searchParams;
@@ -104,6 +111,9 @@ export default class Home extends Vue {
         this.name = team.name;
         this.description = team.description;
         this.tag = team.tag;
+
+        const rec =await( await this.client.recipients(this.teamId) );
+        this.recipients = rec.map( v => v.email ).join(" ");
       }
       console.log(this.teamId);
     } catch (err) {
@@ -147,6 +157,8 @@ export default class Home extends Vue {
         this.name = team.name;
         this.tag = team.tag;
       }
+      const rec = this.recipients.split(/[ ,]+/).filter((e) => e.trim().length > 0);
+      this.client.updateRecipients(this.teamId, rec);
       Dialog.alert({
         title: "Success",
         message: msg,
