@@ -413,9 +413,14 @@ class vulcanAPI {
         }
         // example response
         /*
-        {
-            "emails": [ "user@example.com", "user2@example.com"]
-        }
+        [
+            {
+                "email": "user@example.com"
+            },
+            {
+                "email": "user2@example.com"
+            }
+        ]
         */
         return await resp.json();
     }
