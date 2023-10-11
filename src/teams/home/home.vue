@@ -158,7 +158,8 @@ export default class Home extends Vue {
         this.tag = team.tag;
       }
       const rec = this.recipients.split(/[ ,]+/).filter((e) => e.trim().length > 0);
-      this.client.updateRecipients(this.teamId, rec);
+      const ur =  await (await this.client.updateRecipients(this.teamId, rec) );
+      this.recipients = ur.map( v => v.email ).join(" ");
       Dialog.alert({
         title: "Success",
         message: msg,
