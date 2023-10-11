@@ -20,7 +20,7 @@
                   <b-input v-model="tag"></b-input>
                 </b-field>
                 <b-field label="Recipients">
-                  <b-input v-model="recipients"></b-input>
+                  <b-input v-model="recipients" type="textarea" rows="5" placeholder="emails to receive notifications"></b-input>
                 </b-field>
                 <div class="buttons is-right">
                   <b-button type="is-primary" native-type="submit">Save</b-button>
@@ -113,7 +113,7 @@ export default class Home extends Vue {
         this.tag = team.tag;
 
         const rec =await( await this.client.recipients(this.teamId) );
-        this.recipients = rec.map( v => v.email ).join(" ");
+        this.recipients = rec.map( v => v.email ).join("\n");
       }
       console.log(this.teamId);
     } catch (err) {
@@ -157,9 +157,9 @@ export default class Home extends Vue {
         this.name = team.name;
         this.tag = team.tag;
       }
-      const rec = this.recipients.split(/[ ,]+/).filter((e) => e.trim().length > 0);
+      const rec = this.recipients.split(/[ ,\n]+/).filter((e) => e.trim().length > 0);
       const ur =  await (await this.client.updateRecipients(this.teamId, rec) );
-      this.recipients = ur.map( v => v.email ).join(" ");
+      this.recipients = ur.map( v => v.email ).join("\n");
       Dialog.alert({
         title: "Success",
         message: msg,
