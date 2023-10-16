@@ -20,7 +20,7 @@
                   <b-input v-model="tag"></b-input>
                 </b-field>
                 <b-field label="Recipients">
-                  <b-input v-model="recipients" type="textarea" rows="5" placeholder="emails to receive notifications"></b-input>
+                  <b-input v-model="recipients" type="textarea" rows="5" placeholder="list of emails to receive notifications (one per line)"></b-input>
                 </b-field>
                 <div class="buttons is-right">
                   <b-button type="is-primary" native-type="submit">Save</b-button>
@@ -49,7 +49,7 @@
 import { Component, Prop, Vue, Watch } from "vue-property-decorator";
 import loadConfig, { Config } from "../../common/config";
 import tokenProvider from "../../common/token";
-import * as api from '../../vulcan-api';
+
 
 import {
   Configuration as ApiConf,
@@ -60,7 +60,10 @@ import {
   TeamsCreateRequest,
   TeamsShowRequest,
   TeamsUpdateRequest,
-  TeamsDeleteRequest
+  TeamsDeleteRequest,
+  RecipientsApi,
+  RecipientsListRequest,
+  RecipientsUpdateRequest
 } from "../../services/vulcan-api/apis";
 import ErrorDialog from "../../components/error.vue";
 import router from "../router";
@@ -74,6 +77,7 @@ import { DialogProgrammatic as Dialog } from "buefy";
 })
 export default class Home extends Vue {
   private teamsApi!: TeamsApi;
+  private recipientsApi!: RecipientsApi
 
   private teamId: string = "";
   private name: string = "";
@@ -95,8 +99,8 @@ export default class Home extends Vue {
       };
       // Build the api clients.
       const apiConfg = new ApiConf(c);
-      this.client = new api.vulcanAPI(conf.apiUrl + "/", () => api.token(conf.askCredentials));
-
+      // this.client = new api.vulcanAPI(conf.apiUrl + "/", () => api.token(conf.askCredentials));
+      this.recipientsApi = new RecipientsApi(apiConfg)
       this.teamsApi = new TeamsApi(apiConfg);
 
       var qparams = new URL(document.location.toString()).searchParams;
@@ -112,8 +116,8 @@ export default class Home extends Vue {
         this.description = team.description;
         this.tag = team.tag;
 
-        const rec =await( await this.client.recipients(this.teamId) );
-        this.recipients = rec.map( v => v.email ).join("\n");
+        const recipients =  await this.recipientsApi.recipientsList({teamId: this.teamId})
+        this.recipients = recipients.map( v => v.email ).join("\n");
       }
       console.log(this.teamId);
     } catch (err) {
@@ -157,9 +161,17 @@ export default class Home extends Vue {
         this.name = team.name;
         this.tag = team.tag;
       }
-      const rec = this.recipients.split(/[ ,\n]+/).filter((e) => e.trim().length > 0);
-      const ur =  await (await this.client.updateRecipients(this.teamId, rec) );
-      this.recipients = ur.map( v => v.email ).join("\n");
+
+      let rec = this.recipients.split(/[ ,\n]+/).filter((e) => e.trim().length > 0);
+
+      const updatedRecipients =  await this.recipientsApi.recipientsUpdate({
+        teamId: this.teamId,
+        payload: {
+          emails: rec,
+        }
+      }) ;
+      this.recipients = updatedRecipients.map( v => v.email ).join("\n");
+
       Dialog.alert({
         title: "Success",
         message: msg,
