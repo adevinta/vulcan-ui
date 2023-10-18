@@ -157,13 +157,6 @@ class vulcanAPI {
         return req;
     }
 
-    teamUpdateRecipientsRequest(teamID) {
-        let req = this.teamRequest(teamID);
-        req.url = req.url + `/recipients`;
-        req.method = 'PUT';
-        return req;
-    }
-
     profileRequest() {
         let req = this.baseRequest();
         req.method = "GET";
@@ -189,13 +182,6 @@ class vulcanAPI {
         let req = this.teamRequest(teamID);
         req.method = "PUT";
         req.url = req.url + `/members/${userID}`;
-        return req;
-    }
-
-    teamRecipientsRequest(teamID) {
-        let req = this.teamRequest(teamID);
-        req.method = "GET";
-        req.url = req.url + `/recipients`;
         return req;
     }
 
@@ -391,36 +377,6 @@ class vulcanAPI {
             "role": "owner",
             "is_default": false
         }]
-        */
-        return await resp.json();
-    }
-
-    async updateRecipients(teamID, emails) {
-        var req = this.teamUpdateRecipientsRequest(teamID)
-        req.body = JSON.stringify({ "emails": emails });
-        const resp = await fetch(req.url, req)
-        if (!resp.ok) {
-            throw handleAjaxError(resp.status, resp.statusText);
-        }
-        return await resp.json();
-    }
-
-    async recipients(teamID) {
-        var req = this.teamRecipientsRequest(teamID);
-        const resp = await fetch(req.url, req)
-        if (!resp.ok) {
-            throw handleAjaxError(resp.status, resp.statusText);
-        }
-        // example response
-        /*
-        [
-            {
-                "email": "user@example.com"
-            },
-            {
-                "email": "user2@example.com"
-            }
-        ]
         */
         return await resp.json();
     }
