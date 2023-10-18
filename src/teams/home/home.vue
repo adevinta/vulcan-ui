@@ -20,7 +20,7 @@
                   <b-input v-model="tag"></b-input>
                 </b-field>
                 <b-field label="Recipients">
-                  <b-input v-model="recipients" type="textarea" rows="5" placeholder="emails to receive notifications"></b-input>
+                  <b-input v-model="recipients" type="textarea" rows="5" placeholder="list of emails to receive notifications (one per line)"></b-input>
                 </b-field>
                 <div class="buttons is-right">
                   <b-button type="is-primary" native-type="submit">Save</b-button>
@@ -151,13 +151,16 @@ export default class Home extends Vue {
             tag: this.tag
           }
         };
-
+        const rec = this.recipients.split(/\n+/).filter((e) => e.trim().length > 0);
+        const wrong = rec.filter((mail) => ! /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(mail))
+        if (wrong.length>0) {
+          throw new Error(`Invalid recipient(s): [${wrong.map((s) => (`"${s}"`)).join(",")}]`);
+        }
         const team = await this.teamsApi.teamsUpdate(req);
         this.description = team.description;
         this.name = team.name;
         this.tag = team.tag;
       }
-      const rec = this.recipients.split(/[ ,\n]+/).filter((e) => e.trim().length > 0);
       const ur =  await (await this.client.updateRecipients(this.teamId, rec) );
       this.recipients = ur.map( v => v.email ).join("\n");
       Dialog.alert({
