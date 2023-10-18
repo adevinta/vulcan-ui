@@ -155,15 +155,16 @@ export default class Home extends Vue {
             tag: this.tag
           }
         };
-
+        const rec = this.recipients.split(/\n+/).filter((e) => e.trim().length > 0);
+        const wrong = rec.filter((mail) => ! /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(mail))
+        if (wrong.length>0) {
+          throw new Error(`Invalid recipient(s): [${wrong.map((s) => (`"${s}"`)).join(",")}]`);
+        }
         const team = await this.teamsApi.teamsUpdate(req);
         this.description = team.description;
         this.name = team.name;
         this.tag = team.tag;
       }
-
-      let rec = this.recipients.split(/[ ,\n]+/).filter((e) => e.trim().length > 0);
-
       const updatedRecipients =  await this.recipientsApi.recipientsUpdate({
         teamId: this.teamId,
         payload: {
