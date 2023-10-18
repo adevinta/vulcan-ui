@@ -99,7 +99,6 @@ export default class Home extends Vue {
       };
       // Build the api clients.
       const apiConfg = new ApiConf(c);
-      // this.client = new api.vulcanAPI(conf.apiUrl + "/", () => api.token(conf.askCredentials));
       this.recipientsApi = new RecipientsApi(apiConfg)
       this.teamsApi = new TeamsApi(apiConfg);
 
