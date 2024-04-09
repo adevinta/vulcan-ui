@@ -159,10 +159,7 @@ export default class FindingTicketCreationForm extends Vue {
   }
 
   private ErrorToJSON(value?: any | null): any {
-    if (value === undefined) {
-      return undefined;
-    }
-    if (value === null) {
+    if (!value) {
       return null;
     }
     const obj = JSON.parse(value);
@@ -175,15 +172,18 @@ export default class FindingTicketCreationForm extends Vue {
   }
 
   private ManageError(code: number, data: any): string {
+    const defaultMessage = 'There has been a problem creating the ticket. Please, retry later.'
     let message: string;
     switch (code) {
       case 403:
       case 401:
       case 404:
-        message = 'There has been a problem creating the ticket. Please, retry later.';
+      case 500:
+        message = defaultMessage;
         break;
       default:
-        message = this.ErrorToJSON(data.error).message;
+        const jsonError = this.ErrorToJSON(data.error);
+        message = (jsonError && jsonError.message) ? jsonError.message : defaultMessage;
         break;
     }
     return message;
