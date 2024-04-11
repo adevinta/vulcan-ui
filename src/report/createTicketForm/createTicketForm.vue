@@ -68,6 +68,8 @@ export default class FindingTicketCreationForm extends Vue {
   private showError: boolean = false;
   private errorMessage: string = "";
   private isLoading: boolean = true;
+  private summary: string = "";
+  private description: string = "";
 
   async mounted() {
     try {
@@ -83,28 +85,29 @@ export default class FindingTicketCreationForm extends Vue {
       this.findingsApi = new FindingsApi(apiConfg);
       this.isLoading = false;
 
+      this.summary = this.buildCreateTicketSummary(this.finding);
+      this.description = this.buildCreateTicketDescription(this.finding);
+
     } catch (err) {
       this.handleError(err);
     }
   }
 
-  get summary() {
-    return (this.finding.issue && this.finding.issue.summary) ? this.finding.issue.summary : "";
-  }
-
-  get description() {
-    return this.buildCreateTicketDescription(this.finding);
-  }
-
   async createTicket() {
     this.isLoading = true;
     try {
+      if (this.summary.length>255) {
+        throw new Error('The summary is too long.');
+      }
+      if (this.description.length>30000) {
+        throw new Error('The description is too long.');
+      }
       const req: FindingsSubmitAFindingTicketCreationRequest = {
         findingId: this.findingId,
         teamId: this.teamId,
         payload: {
           summary: this.summary,
-          description: this.description,
+          description: this.description
         }
       };
       const finding: FindingTicket = await this.findingsApi.findingsSubmitAFindingTicketCreation(req);
@@ -115,6 +118,32 @@ export default class FindingTicketCreationForm extends Vue {
       this.isLoading = false;
       this.handleError(err);
     }
+  }
+
+  private buildCreateTicketSummary(finding: Finding): string {
+    let asset: string | undefined = finding.target?.identifier;
+    // Remove the trailing / for URLs.
+    if (asset?.endsWith('/')){
+      asset = asset.slice(0, -1);
+    }
+    // Keep the last part for git repositories URLs, file paths, images, etc.
+    asset = asset.split('/').pop()
+    if (asset.endsWith('git')) {
+      asset = asset.slice(0, -4);
+    }
+    // Keep the last part for git repositories urls, file paths, images, etc.
+    let resource = finding.affectedResource
+    if (resource && !resource.startsWith('GO')) {
+      resource = resource.split('/').pop()
+    }
+    const issue = (finding.issue && finding.issue.summary) ? finding.issue.summary : ""
+    const assetAndResource = ' / ' + asset + ' / ' + resource;
+    let summary = issue + assetAndResource;
+
+    if (summary.length > 255) {
+      summary = issue.substring(0, (255 - assetAndResource).length) + assetAndResource;
+    }
+    return summary
   }
 
   private buildCreateTicketDescription(finding: Finding): string {
@@ -155,13 +184,18 @@ export default class FindingTicketCreationForm extends Vue {
     }
     if (err instanceof Error) {
       console.log(`error: " ${err.message}`);
-      const re = err as ResponseError;
-      re.response.json().then(data => {
-        const message = this.ManageError(data.code, data.error);
-        this.errorMessage = `unexpected error: ${message}`;
-        this.showError = true;
-      });
-      return;
+
+      if (err.response) {
+        const re = err as ResponseError;
+        re.response.json().then(data => {
+          const message = this.ManageError(data.code, data.error);
+          this.errorMessage = `unexpected error: ${message}`;
+          this.showError = true;
+        });
+        return;
+      }
+      this.errorMessage = `unexpected error: ${err.message}`;
+      this.showError = true;
     }
     console.log(`unexpected error: " ${JSON.stringify(err)}`);
     this.showError = true;
