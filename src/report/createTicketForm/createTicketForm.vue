@@ -119,22 +119,24 @@ export default class FindingTicketCreationForm extends Vue {
 
   private buildCreateTicketDescription(finding: Finding): string {
 
-    let description: string = `* Vulcan URL: ${window.location.href}\n`;
+    let description: string = `* Vulcan URL: [Finding|${window.location.href}]\n`;
 
     if (finding.issue) {
-      description += `* Description: ${finding.issue.description ?? ""}\n`;
+      if (finding.issue.description) {
+        description += `* Description: ${finding.issue.description ?? ""}\n`;
+      }
       if (finding.issue.cweId) {
         description += `* CWE: ${finding.issue.cweId}\n`;
       }
     }
     if (finding.score) {
-      description += `* Severity: ${severityText(finding.score)}\n`;
+      description += `* Severity: ${severityText(finding.score).toUpperCase()}\n`;
     }
     if (finding.affectedResource) {
       description += `* Affected Resource: ${finding.affectedResource}\n`;
     }
     if (finding.details) {
-      description += `* Details: \n{noformat}${finding.details}\n{noformat}\n`;
+      description += `* Details: \n{noformat}\n${finding.details}\n{noformat}\n`;
     }
     if (finding.impactDetails) {
       description += `* Impact Details: ${finding.impactDetails}\n`;
