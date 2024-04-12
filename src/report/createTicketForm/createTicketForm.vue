@@ -21,7 +21,7 @@ Copyright 2023 Adevinta
           <b-input
               maxlength="30000"
               type="textarea"
-              rows="5"
+              rows="10"
               required
               v-model="description">
           </b-input>
@@ -44,6 +44,7 @@ import ErrorDialog from "../../components/error.vue";
 import {Configuration as ApiConf, ConfigurationParameters, ResponseError} from "../../services/vulcan-api";
 import {FindingsApi, FindingsSubmitAFindingTicketCreationRequest} from "../../services/vulcan-api/apis";
 import {Finding, FindingTicket} from "../../services/vulcan-api/models";
+import {severityText} from "../utils/utils";
 
 @Component({
   name: "CreateTicketForm",
@@ -118,20 +119,28 @@ export default class FindingTicketCreationForm extends Vue {
 
   private buildCreateTicketDescription(finding: Finding): string {
 
-    let description: string = "";
+    let description: string = `* Vulcan URL: [Finding|${window.location.href}]\n`;
 
     if (finding.issue) {
-      description += `Description: ${finding.issue.description ?? ""}\n`;
-      description += `CWE: ${finding.issue.cweId ?? ""}\n`;
+      if (finding.issue.description) {
+        description += `* Description: ${finding.issue.description ?? ""}\n`;
+      }
+      if (finding.issue.cweId) {
+        description += `* CWE: ${finding.issue.cweId}\n`;
+      }
     }
-    description += `Affected Resource: ${finding.affectedResource ?? ""}\n`;
-    description += `Current Exposure: ${finding.currentExposure ?? ""}\n`;
-    description += `Details: ${finding.details ?? ""}\n`;
-    description += `Impact Details: ${finding.impactDetails ?? ""}\n`;
-    description += `Status: ${finding.status ?? ""}\n`;
-
-    description += `Vulcan URL: ${window.location.href}\n`;
-
+    if (finding.score) {
+      description += `* Severity: ${severityText(finding.score).toUpperCase()}\n`;
+    }
+    if (finding.affectedResource) {
+      description += `* Affected Resource: ${finding.affectedResource}\n`;
+    }
+    if (finding.details) {
+      description += `* Details: \n{noformat}\n${finding.details}\n{noformat}\n`;
+    }
+    if (finding.impactDetails) {
+      description += `* Impact Details: ${finding.impactDetails}\n`;
+    }
     return description;
   }
 
