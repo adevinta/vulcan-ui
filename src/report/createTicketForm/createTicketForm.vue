@@ -121,29 +121,11 @@ export default class FindingTicketCreationForm extends Vue {
   }
 
   private buildCreateTicketSummary(finding: Finding): string {
-    let asset: string | undefined = finding.target?.identifier;
-    // Remove the trailing / for URLs.
-    if (asset?.endsWith('/')){
-      asset = asset.slice(0, -1);
-    }
-    // Keep the last part for git repositories URLs, file paths, images, etc.
-    asset = asset.split('/').pop()
-    if (asset.endsWith('git')) {
-      asset = asset.slice(0, -4);
-    }
-    // Keep the last part for git repositories urls, file paths, images, etc.
-    let resource = finding.affectedResource
-    if (resource && !resource.startsWith('GO')) {
-      resource = resource.split('/').pop()
-    }
-    const issue = (finding.issue && finding.issue.summary) ? finding.issue.summary : ""
-    const assetAndResource = ' / ' + asset + ' / ' + resource;
-    let summary = issue + assetAndResource;
+    const issue = (finding.issue && finding.issue.summary) ? finding.issue.summary : "";
+    const asset: string | undefined = finding.target?.identifier;
+    const resource = finding.affectedResource;
 
-    if (summary.length > 255) {
-      summary = issue.substring(0, (255 - assetAndResource).length) + assetAndResource;
-    }
-    return summary
+    return issue + ' | ' + asset + ' | ' + resource;
   }
 
   private buildCreateTicketDescription(finding: Finding): string {
