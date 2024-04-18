@@ -16,7 +16,6 @@ export * from './ProgramsApi';
 export * from './RecipientsApi';
 export * from './ReportApi';
 export * from './ScanApi';
-export * from './ScanReportApi';
 export * from './ScheduleApi';
 export * from './StatsApi';
 export * from './TeamMembersApi';

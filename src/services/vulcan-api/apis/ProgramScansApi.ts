@@ -16,11 +16,11 @@
 import * as runtime from '../runtime';
 import type {
   Scan,
-} from '../models';
+} from '../models/index';
 import {
     ScanFromJSON,
     ScanToJSON,
-} from '../models';
+} from '../models/index';
 
 export interface ProgramScansListRequest {
     programId: string;
@@ -37,12 +37,18 @@ export class ProgramScansApi extends runtime.BaseAPI {
      * list program-scans
      */
     async programScansListRaw(requestParameters: ProgramScansListRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<Scan>>> {
-        if (requestParameters.programId === null || requestParameters.programId === undefined) {
-            throw new runtime.RequiredError('programId','Required parameter requestParameters.programId was null or undefined when calling programScansList.');
+        if (requestParameters['programId'] == null) {
+            throw new runtime.RequiredError(
+                'programId',
+                'Required parameter "programId" was null or undefined when calling programScansList().'
+            );
         }
 
-        if (requestParameters.teamId === null || requestParameters.teamId === undefined) {
-            throw new runtime.RequiredError('teamId','Required parameter requestParameters.teamId was null or undefined when calling programScansList.');
+        if (requestParameters['teamId'] == null) {
+            throw new runtime.RequiredError(
+                'teamId',
+                'Required parameter "teamId" was null or undefined when calling programScansList().'
+            );
         }
 
         const queryParameters: any = {};
@@ -50,11 +56,11 @@ export class ProgramScansApi extends runtime.BaseAPI {
         const headerParameters: runtime.HTTPHeaders = {};
 
         if (this.configuration && this.configuration.apiKey) {
-            headerParameters["authorization"] = this.configuration.apiKey("authorization"); // Bearer authentication
+            headerParameters["authorization"] = await this.configuration.apiKey("authorization"); // Bearer authentication
         }
 
         const response = await this.request({
-            path: `/teams/{team_id}/programs/{program_id}/scans`.replace(`{${"program_id"}}`, encodeURIComponent(String(requestParameters.programId))).replace(`{${"team_id"}}`, encodeURIComponent(String(requestParameters.teamId))),
+            path: `/teams/{team_id}/programs/{program_id}/scans`.replace(`{${"program_id"}}`, encodeURIComponent(String(requestParameters['programId']))).replace(`{${"team_id"}}`, encodeURIComponent(String(requestParameters['teamId']))),
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,

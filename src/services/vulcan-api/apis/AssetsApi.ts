@@ -22,7 +22,7 @@ import type {
   DiscoveredAssetsPayload,
   Job,
   Listassetentry,
-} from '../models';
+} from '../models/index';
 import {
     AssetFromJSON,
     AssetToJSON,
@@ -38,7 +38,7 @@ import {
     JobToJSON,
     ListassetentryFromJSON,
     ListassetentryToJSON,
-} from '../models';
+} from '../models/index';
 
 export interface AssetsCreateRequest {
     teamId: string;
@@ -86,12 +86,18 @@ export class AssetsApi extends runtime.BaseAPI {
      * create assets
      */
     async assetsCreateRaw(requestParameters: AssetsCreateRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<Asset>>> {
-        if (requestParameters.teamId === null || requestParameters.teamId === undefined) {
-            throw new runtime.RequiredError('teamId','Required parameter requestParameters.teamId was null or undefined when calling assetsCreate.');
+        if (requestParameters['teamId'] == null) {
+            throw new runtime.RequiredError(
+                'teamId',
+                'Required parameter "teamId" was null or undefined when calling assetsCreate().'
+            );
         }
 
-        if (requestParameters.payload === null || requestParameters.payload === undefined) {
-            throw new runtime.RequiredError('payload','Required parameter requestParameters.payload was null or undefined when calling assetsCreate.');
+        if (requestParameters['payload'] == null) {
+            throw new runtime.RequiredError(
+                'payload',
+                'Required parameter "payload" was null or undefined when calling assetsCreate().'
+            );
         }
 
         const queryParameters: any = {};
@@ -101,15 +107,15 @@ export class AssetsApi extends runtime.BaseAPI {
         headerParameters['Content-Type'] = 'application/json';
 
         if (this.configuration && this.configuration.apiKey) {
-            headerParameters["authorization"] = this.configuration.apiKey("authorization"); // Bearer authentication
+            headerParameters["authorization"] = await this.configuration.apiKey("authorization"); // Bearer authentication
         }
 
         const response = await this.request({
-            path: `/teams/{team_id}/assets`.replace(`{${"team_id"}}`, encodeURIComponent(String(requestParameters.teamId))),
+            path: `/teams/{team_id}/assets`.replace(`{${"team_id"}}`, encodeURIComponent(String(requestParameters['teamId']))),
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
-            body: CreateAssetPayloadToJSON(requestParameters.payload),
+            body: CreateAssetPayloadToJSON(requestParameters['payload']),
         }, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => jsonValue.map(AssetFromJSON));
@@ -129,12 +135,18 @@ export class AssetsApi extends runtime.BaseAPI {
      * createMultiStatus assets
      */
     async assetsCreateMultiStatusRaw(requestParameters: AssetsCreateMultiStatusRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<Assetresponse>>> {
-        if (requestParameters.teamId === null || requestParameters.teamId === undefined) {
-            throw new runtime.RequiredError('teamId','Required parameter requestParameters.teamId was null or undefined when calling assetsCreateMultiStatus.');
+        if (requestParameters['teamId'] == null) {
+            throw new runtime.RequiredError(
+                'teamId',
+                'Required parameter "teamId" was null or undefined when calling assetsCreateMultiStatus().'
+            );
         }
 
-        if (requestParameters.payload === null || requestParameters.payload === undefined) {
-            throw new runtime.RequiredError('payload','Required parameter requestParameters.payload was null or undefined when calling assetsCreateMultiStatus.');
+        if (requestParameters['payload'] == null) {
+            throw new runtime.RequiredError(
+                'payload',
+                'Required parameter "payload" was null or undefined when calling assetsCreateMultiStatus().'
+            );
         }
 
         const queryParameters: any = {};
@@ -144,15 +156,15 @@ export class AssetsApi extends runtime.BaseAPI {
         headerParameters['Content-Type'] = 'application/json';
 
         if (this.configuration && this.configuration.apiKey) {
-            headerParameters["authorization"] = this.configuration.apiKey("authorization"); // Bearer authentication
+            headerParameters["authorization"] = await this.configuration.apiKey("authorization"); // Bearer authentication
         }
 
         const response = await this.request({
-            path: `/teams/{team_id}/assets/multistatus`.replace(`{${"team_id"}}`, encodeURIComponent(String(requestParameters.teamId))),
+            path: `/teams/{team_id}/assets/multistatus`.replace(`{${"team_id"}}`, encodeURIComponent(String(requestParameters['teamId']))),
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
-            body: CreateAssetPayloadToJSON(requestParameters.payload),
+            body: CreateAssetPayloadToJSON(requestParameters['payload']),
         }, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => jsonValue.map(AssetresponseFromJSON));
@@ -172,12 +184,18 @@ export class AssetsApi extends runtime.BaseAPI {
      * delete assets
      */
     async assetsDeleteRaw(requestParameters: AssetsDeleteRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
-        if (requestParameters.assetId === null || requestParameters.assetId === undefined) {
-            throw new runtime.RequiredError('assetId','Required parameter requestParameters.assetId was null or undefined when calling assetsDelete.');
+        if (requestParameters['assetId'] == null) {
+            throw new runtime.RequiredError(
+                'assetId',
+                'Required parameter "assetId" was null or undefined when calling assetsDelete().'
+            );
         }
 
-        if (requestParameters.teamId === null || requestParameters.teamId === undefined) {
-            throw new runtime.RequiredError('teamId','Required parameter requestParameters.teamId was null or undefined when calling assetsDelete.');
+        if (requestParameters['teamId'] == null) {
+            throw new runtime.RequiredError(
+                'teamId',
+                'Required parameter "teamId" was null or undefined when calling assetsDelete().'
+            );
         }
 
         const queryParameters: any = {};
@@ -185,11 +203,11 @@ export class AssetsApi extends runtime.BaseAPI {
         const headerParameters: runtime.HTTPHeaders = {};
 
         if (this.configuration && this.configuration.apiKey) {
-            headerParameters["authorization"] = this.configuration.apiKey("authorization"); // Bearer authentication
+            headerParameters["authorization"] = await this.configuration.apiKey("authorization"); // Bearer authentication
         }
 
         const response = await this.request({
-            path: `/teams/{team_id}/assets/{asset_id}`.replace(`{${"asset_id"}}`, encodeURIComponent(String(requestParameters.assetId))).replace(`{${"team_id"}}`, encodeURIComponent(String(requestParameters.teamId))),
+            path: `/teams/{team_id}/assets/{asset_id}`.replace(`{${"asset_id"}}`, encodeURIComponent(String(requestParameters['assetId']))).replace(`{${"team_id"}}`, encodeURIComponent(String(requestParameters['teamId']))),
             method: 'DELETE',
             headers: headerParameters,
             query: queryParameters,
@@ -211,12 +229,18 @@ export class AssetsApi extends runtime.BaseAPI {
      * discover assets
      */
     async assetsDiscoverRaw(requestParameters: AssetsDiscoverRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Job>> {
-        if (requestParameters.teamId === null || requestParameters.teamId === undefined) {
-            throw new runtime.RequiredError('teamId','Required parameter requestParameters.teamId was null or undefined when calling assetsDiscover.');
+        if (requestParameters['teamId'] == null) {
+            throw new runtime.RequiredError(
+                'teamId',
+                'Required parameter "teamId" was null or undefined when calling assetsDiscover().'
+            );
         }
 
-        if (requestParameters.payload === null || requestParameters.payload === undefined) {
-            throw new runtime.RequiredError('payload','Required parameter requestParameters.payload was null or undefined when calling assetsDiscover.');
+        if (requestParameters['payload'] == null) {
+            throw new runtime.RequiredError(
+                'payload',
+                'Required parameter "payload" was null or undefined when calling assetsDiscover().'
+            );
         }
 
         const queryParameters: any = {};
@@ -226,15 +250,15 @@ export class AssetsApi extends runtime.BaseAPI {
         headerParameters['Content-Type'] = 'application/json';
 
         if (this.configuration && this.configuration.apiKey) {
-            headerParameters["authorization"] = this.configuration.apiKey("authorization"); // Bearer authentication
+            headerParameters["authorization"] = await this.configuration.apiKey("authorization"); // Bearer authentication
         }
 
         const response = await this.request({
-            path: `/teams/{team_id}/assets/discovery`.replace(`{${"team_id"}}`, encodeURIComponent(String(requestParameters.teamId))),
+            path: `/teams/{team_id}/assets/discovery`.replace(`{${"team_id"}}`, encodeURIComponent(String(requestParameters['teamId']))),
             method: 'PUT',
             headers: headerParameters,
             query: queryParameters,
-            body: DiscoveredAssetsPayloadToJSON(requestParameters.payload),
+            body: DiscoveredAssetsPayloadToJSON(requestParameters['payload']),
         }, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => JobFromJSON(jsonValue));
@@ -254,24 +278,27 @@ export class AssetsApi extends runtime.BaseAPI {
      * list assets
      */
     async assetsListRaw(requestParameters: AssetsListRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<Listassetentry>>> {
-        if (requestParameters.teamId === null || requestParameters.teamId === undefined) {
-            throw new runtime.RequiredError('teamId','Required parameter requestParameters.teamId was null or undefined when calling assetsList.');
+        if (requestParameters['teamId'] == null) {
+            throw new runtime.RequiredError(
+                'teamId',
+                'Required parameter "teamId" was null or undefined when calling assetsList().'
+            );
         }
 
         const queryParameters: any = {};
 
-        if (requestParameters.identifier !== undefined) {
-            queryParameters['identifier'] = requestParameters.identifier;
+        if (requestParameters['identifier'] != null) {
+            queryParameters['identifier'] = requestParameters['identifier'];
         }
 
         const headerParameters: runtime.HTTPHeaders = {};
 
         if (this.configuration && this.configuration.apiKey) {
-            headerParameters["authorization"] = this.configuration.apiKey("authorization"); // Bearer authentication
+            headerParameters["authorization"] = await this.configuration.apiKey("authorization"); // Bearer authentication
         }
 
         const response = await this.request({
-            path: `/teams/{team_id}/assets`.replace(`{${"team_id"}}`, encodeURIComponent(String(requestParameters.teamId))),
+            path: `/teams/{team_id}/assets`.replace(`{${"team_id"}}`, encodeURIComponent(String(requestParameters['teamId']))),
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
@@ -294,12 +321,18 @@ export class AssetsApi extends runtime.BaseAPI {
      * show assets
      */
     async assetsShowRaw(requestParameters: AssetsShowRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Asset>> {
-        if (requestParameters.assetId === null || requestParameters.assetId === undefined) {
-            throw new runtime.RequiredError('assetId','Required parameter requestParameters.assetId was null or undefined when calling assetsShow.');
+        if (requestParameters['assetId'] == null) {
+            throw new runtime.RequiredError(
+                'assetId',
+                'Required parameter "assetId" was null or undefined when calling assetsShow().'
+            );
         }
 
-        if (requestParameters.teamId === null || requestParameters.teamId === undefined) {
-            throw new runtime.RequiredError('teamId','Required parameter requestParameters.teamId was null or undefined when calling assetsShow.');
+        if (requestParameters['teamId'] == null) {
+            throw new runtime.RequiredError(
+                'teamId',
+                'Required parameter "teamId" was null or undefined when calling assetsShow().'
+            );
         }
 
         const queryParameters: any = {};
@@ -307,11 +340,11 @@ export class AssetsApi extends runtime.BaseAPI {
         const headerParameters: runtime.HTTPHeaders = {};
 
         if (this.configuration && this.configuration.apiKey) {
-            headerParameters["authorization"] = this.configuration.apiKey("authorization"); // Bearer authentication
+            headerParameters["authorization"] = await this.configuration.apiKey("authorization"); // Bearer authentication
         }
 
         const response = await this.request({
-            path: `/teams/{team_id}/assets/{asset_id}`.replace(`{${"asset_id"}}`, encodeURIComponent(String(requestParameters.assetId))).replace(`{${"team_id"}}`, encodeURIComponent(String(requestParameters.teamId))),
+            path: `/teams/{team_id}/assets/{asset_id}`.replace(`{${"asset_id"}}`, encodeURIComponent(String(requestParameters['assetId']))).replace(`{${"team_id"}}`, encodeURIComponent(String(requestParameters['teamId']))),
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
@@ -334,16 +367,25 @@ export class AssetsApi extends runtime.BaseAPI {
      * update assets
      */
     async assetsUpdateRaw(requestParameters: AssetsUpdateRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Asset>> {
-        if (requestParameters.assetId === null || requestParameters.assetId === undefined) {
-            throw new runtime.RequiredError('assetId','Required parameter requestParameters.assetId was null or undefined when calling assetsUpdate.');
+        if (requestParameters['assetId'] == null) {
+            throw new runtime.RequiredError(
+                'assetId',
+                'Required parameter "assetId" was null or undefined when calling assetsUpdate().'
+            );
         }
 
-        if (requestParameters.teamId === null || requestParameters.teamId === undefined) {
-            throw new runtime.RequiredError('teamId','Required parameter requestParameters.teamId was null or undefined when calling assetsUpdate.');
+        if (requestParameters['teamId'] == null) {
+            throw new runtime.RequiredError(
+                'teamId',
+                'Required parameter "teamId" was null or undefined when calling assetsUpdate().'
+            );
         }
 
-        if (requestParameters.payload === null || requestParameters.payload === undefined) {
-            throw new runtime.RequiredError('payload','Required parameter requestParameters.payload was null or undefined when calling assetsUpdate.');
+        if (requestParameters['payload'] == null) {
+            throw new runtime.RequiredError(
+                'payload',
+                'Required parameter "payload" was null or undefined when calling assetsUpdate().'
+            );
         }
 
         const queryParameters: any = {};
@@ -353,15 +395,15 @@ export class AssetsApi extends runtime.BaseAPI {
         headerParameters['Content-Type'] = 'application/json';
 
         if (this.configuration && this.configuration.apiKey) {
-            headerParameters["authorization"] = this.configuration.apiKey("authorization"); // Bearer authentication
+            headerParameters["authorization"] = await this.configuration.apiKey("authorization"); // Bearer authentication
         }
 
         const response = await this.request({
-            path: `/teams/{team_id}/assets/{asset_id}`.replace(`{${"asset_id"}}`, encodeURIComponent(String(requestParameters.assetId))).replace(`{${"team_id"}}`, encodeURIComponent(String(requestParameters.teamId))),
+            path: `/teams/{team_id}/assets/{asset_id}`.replace(`{${"asset_id"}}`, encodeURIComponent(String(requestParameters['assetId']))).replace(`{${"team_id"}}`, encodeURIComponent(String(requestParameters['teamId']))),
             method: 'PATCH',
             headers: headerParameters,
             query: queryParameters,
-            body: AssetUpdatePayloadToJSON(requestParameters.payload),
+            body: AssetUpdatePayloadToJSON(requestParameters['payload']),
         }, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => AssetFromJSON(jsonValue));

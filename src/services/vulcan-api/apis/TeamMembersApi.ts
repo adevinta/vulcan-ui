@@ -18,7 +18,7 @@ import type {
   TeamMemberPayload,
   TeamMemberUpdatePayload,
   Teammember,
-} from '../models';
+} from '../models/index';
 import {
     TeamMemberPayloadFromJSON,
     TeamMemberPayloadToJSON,
@@ -26,7 +26,7 @@ import {
     TeamMemberUpdatePayloadToJSON,
     TeammemberFromJSON,
     TeammemberToJSON,
-} from '../models';
+} from '../models/index';
 
 export interface TeamMembersCreateRequest {
     teamId: string;
@@ -63,12 +63,18 @@ export class TeamMembersApi extends runtime.BaseAPI {
      * create team-members
      */
     async teamMembersCreateRaw(requestParameters: TeamMembersCreateRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Teammember>> {
-        if (requestParameters.teamId === null || requestParameters.teamId === undefined) {
-            throw new runtime.RequiredError('teamId','Required parameter requestParameters.teamId was null or undefined when calling teamMembersCreate.');
+        if (requestParameters['teamId'] == null) {
+            throw new runtime.RequiredError(
+                'teamId',
+                'Required parameter "teamId" was null or undefined when calling teamMembersCreate().'
+            );
         }
 
-        if (requestParameters.payload === null || requestParameters.payload === undefined) {
-            throw new runtime.RequiredError('payload','Required parameter requestParameters.payload was null or undefined when calling teamMembersCreate.');
+        if (requestParameters['payload'] == null) {
+            throw new runtime.RequiredError(
+                'payload',
+                'Required parameter "payload" was null or undefined when calling teamMembersCreate().'
+            );
         }
 
         const queryParameters: any = {};
@@ -78,15 +84,15 @@ export class TeamMembersApi extends runtime.BaseAPI {
         headerParameters['Content-Type'] = 'application/json';
 
         if (this.configuration && this.configuration.apiKey) {
-            headerParameters["authorization"] = this.configuration.apiKey("authorization"); // Bearer authentication
+            headerParameters["authorization"] = await this.configuration.apiKey("authorization"); // Bearer authentication
         }
 
         const response = await this.request({
-            path: `/teams/{team_id}/members`.replace(`{${"team_id"}}`, encodeURIComponent(String(requestParameters.teamId))),
+            path: `/teams/{team_id}/members`.replace(`{${"team_id"}}`, encodeURIComponent(String(requestParameters['teamId']))),
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
-            body: TeamMemberPayloadToJSON(requestParameters.payload),
+            body: TeamMemberPayloadToJSON(requestParameters['payload']),
         }, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => TeammemberFromJSON(jsonValue));
@@ -106,12 +112,18 @@ export class TeamMembersApi extends runtime.BaseAPI {
      * delete team-members
      */
     async teamMembersDeleteRaw(requestParameters: TeamMembersDeleteRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
-        if (requestParameters.teamId === null || requestParameters.teamId === undefined) {
-            throw new runtime.RequiredError('teamId','Required parameter requestParameters.teamId was null or undefined when calling teamMembersDelete.');
+        if (requestParameters['teamId'] == null) {
+            throw new runtime.RequiredError(
+                'teamId',
+                'Required parameter "teamId" was null or undefined when calling teamMembersDelete().'
+            );
         }
 
-        if (requestParameters.userId === null || requestParameters.userId === undefined) {
-            throw new runtime.RequiredError('userId','Required parameter requestParameters.userId was null or undefined when calling teamMembersDelete.');
+        if (requestParameters['userId'] == null) {
+            throw new runtime.RequiredError(
+                'userId',
+                'Required parameter "userId" was null or undefined when calling teamMembersDelete().'
+            );
         }
 
         const queryParameters: any = {};
@@ -119,11 +131,11 @@ export class TeamMembersApi extends runtime.BaseAPI {
         const headerParameters: runtime.HTTPHeaders = {};
 
         if (this.configuration && this.configuration.apiKey) {
-            headerParameters["authorization"] = this.configuration.apiKey("authorization"); // Bearer authentication
+            headerParameters["authorization"] = await this.configuration.apiKey("authorization"); // Bearer authentication
         }
 
         const response = await this.request({
-            path: `/teams/{team_id}/members/{user_id}`.replace(`{${"team_id"}}`, encodeURIComponent(String(requestParameters.teamId))).replace(`{${"user_id"}}`, encodeURIComponent(String(requestParameters.userId))),
+            path: `/teams/{team_id}/members/{user_id}`.replace(`{${"team_id"}}`, encodeURIComponent(String(requestParameters['teamId']))).replace(`{${"user_id"}}`, encodeURIComponent(String(requestParameters['userId']))),
             method: 'DELETE',
             headers: headerParameters,
             query: queryParameters,
@@ -145,8 +157,11 @@ export class TeamMembersApi extends runtime.BaseAPI {
      * list team-members
      */
     async teamMembersListRaw(requestParameters: TeamMembersListRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<Teammember>>> {
-        if (requestParameters.teamId === null || requestParameters.teamId === undefined) {
-            throw new runtime.RequiredError('teamId','Required parameter requestParameters.teamId was null or undefined when calling teamMembersList.');
+        if (requestParameters['teamId'] == null) {
+            throw new runtime.RequiredError(
+                'teamId',
+                'Required parameter "teamId" was null or undefined when calling teamMembersList().'
+            );
         }
 
         const queryParameters: any = {};
@@ -154,11 +169,11 @@ export class TeamMembersApi extends runtime.BaseAPI {
         const headerParameters: runtime.HTTPHeaders = {};
 
         if (this.configuration && this.configuration.apiKey) {
-            headerParameters["authorization"] = this.configuration.apiKey("authorization"); // Bearer authentication
+            headerParameters["authorization"] = await this.configuration.apiKey("authorization"); // Bearer authentication
         }
 
         const response = await this.request({
-            path: `/teams/{team_id}/members`.replace(`{${"team_id"}}`, encodeURIComponent(String(requestParameters.teamId))),
+            path: `/teams/{team_id}/members`.replace(`{${"team_id"}}`, encodeURIComponent(String(requestParameters['teamId']))),
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
@@ -181,12 +196,18 @@ export class TeamMembersApi extends runtime.BaseAPI {
      * show team-members
      */
     async teamMembersShowRaw(requestParameters: TeamMembersShowRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Teammember>> {
-        if (requestParameters.teamId === null || requestParameters.teamId === undefined) {
-            throw new runtime.RequiredError('teamId','Required parameter requestParameters.teamId was null or undefined when calling teamMembersShow.');
+        if (requestParameters['teamId'] == null) {
+            throw new runtime.RequiredError(
+                'teamId',
+                'Required parameter "teamId" was null or undefined when calling teamMembersShow().'
+            );
         }
 
-        if (requestParameters.userId === null || requestParameters.userId === undefined) {
-            throw new runtime.RequiredError('userId','Required parameter requestParameters.userId was null or undefined when calling teamMembersShow.');
+        if (requestParameters['userId'] == null) {
+            throw new runtime.RequiredError(
+                'userId',
+                'Required parameter "userId" was null or undefined when calling teamMembersShow().'
+            );
         }
 
         const queryParameters: any = {};
@@ -194,11 +215,11 @@ export class TeamMembersApi extends runtime.BaseAPI {
         const headerParameters: runtime.HTTPHeaders = {};
 
         if (this.configuration && this.configuration.apiKey) {
-            headerParameters["authorization"] = this.configuration.apiKey("authorization"); // Bearer authentication
+            headerParameters["authorization"] = await this.configuration.apiKey("authorization"); // Bearer authentication
         }
 
         const response = await this.request({
-            path: `/teams/{team_id}/members/{user_id}`.replace(`{${"team_id"}}`, encodeURIComponent(String(requestParameters.teamId))).replace(`{${"user_id"}}`, encodeURIComponent(String(requestParameters.userId))),
+            path: `/teams/{team_id}/members/{user_id}`.replace(`{${"team_id"}}`, encodeURIComponent(String(requestParameters['teamId']))).replace(`{${"user_id"}}`, encodeURIComponent(String(requestParameters['userId']))),
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
@@ -221,16 +242,25 @@ export class TeamMembersApi extends runtime.BaseAPI {
      * update team-members
      */
     async teamMembersUpdateRaw(requestParameters: TeamMembersUpdateRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Teammember>> {
-        if (requestParameters.teamId === null || requestParameters.teamId === undefined) {
-            throw new runtime.RequiredError('teamId','Required parameter requestParameters.teamId was null or undefined when calling teamMembersUpdate.');
+        if (requestParameters['teamId'] == null) {
+            throw new runtime.RequiredError(
+                'teamId',
+                'Required parameter "teamId" was null or undefined when calling teamMembersUpdate().'
+            );
         }
 
-        if (requestParameters.userId === null || requestParameters.userId === undefined) {
-            throw new runtime.RequiredError('userId','Required parameter requestParameters.userId was null or undefined when calling teamMembersUpdate.');
+        if (requestParameters['userId'] == null) {
+            throw new runtime.RequiredError(
+                'userId',
+                'Required parameter "userId" was null or undefined when calling teamMembersUpdate().'
+            );
         }
 
-        if (requestParameters.payload === null || requestParameters.payload === undefined) {
-            throw new runtime.RequiredError('payload','Required parameter requestParameters.payload was null or undefined when calling teamMembersUpdate.');
+        if (requestParameters['payload'] == null) {
+            throw new runtime.RequiredError(
+                'payload',
+                'Required parameter "payload" was null or undefined when calling teamMembersUpdate().'
+            );
         }
 
         const queryParameters: any = {};
@@ -240,15 +270,15 @@ export class TeamMembersApi extends runtime.BaseAPI {
         headerParameters['Content-Type'] = 'application/json';
 
         if (this.configuration && this.configuration.apiKey) {
-            headerParameters["authorization"] = this.configuration.apiKey("authorization"); // Bearer authentication
+            headerParameters["authorization"] = await this.configuration.apiKey("authorization"); // Bearer authentication
         }
 
         const response = await this.request({
-            path: `/teams/{team_id}/members/{user_id}`.replace(`{${"team_id"}}`, encodeURIComponent(String(requestParameters.teamId))).replace(`{${"user_id"}}`, encodeURIComponent(String(requestParameters.userId))),
+            path: `/teams/{team_id}/members/{user_id}`.replace(`{${"team_id"}}`, encodeURIComponent(String(requestParameters['teamId']))).replace(`{${"user_id"}}`, encodeURIComponent(String(requestParameters['userId']))),
             method: 'PATCH',
             headers: headerParameters,
             query: queryParameters,
-            body: TeamMemberUpdatePayloadToJSON(requestParameters.payload),
+            body: TeamMemberUpdatePayloadToJSON(requestParameters['payload']),
         }, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => TeammemberFromJSON(jsonValue));

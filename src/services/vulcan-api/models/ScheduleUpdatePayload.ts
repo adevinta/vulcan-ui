@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 /**
  * 
  * @export
@@ -31,9 +31,7 @@ export interface ScheduleUpdatePayload {
  * Check if a given object implements the ScheduleUpdatePayload interface.
  */
 export function instanceOfScheduleUpdatePayload(value: object): boolean {
-    let isInstance = true;
-
-    return isInstance;
+    return true;
 }
 
 export function ScheduleUpdatePayloadFromJSON(json: any): ScheduleUpdatePayload {
@@ -41,25 +39,22 @@ export function ScheduleUpdatePayloadFromJSON(json: any): ScheduleUpdatePayload 
 }
 
 export function ScheduleUpdatePayloadFromJSONTyped(json: any, ignoreDiscriminator: boolean): ScheduleUpdatePayload {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
         
-        'cron': !exists(json, 'cron') ? undefined : json['cron'],
+        'cron': json['cron'] == null ? undefined : json['cron'],
     };
 }
 
 export function ScheduleUpdatePayloadToJSON(value?: ScheduleUpdatePayload | null): any {
-    if (value === undefined) {
-        return undefined;
-    }
-    if (value === null) {
-        return null;
+    if (value == null) {
+        return value;
     }
     return {
         
-        'cron': value.cron,
+        'cron': value['cron'],
     };
 }
 

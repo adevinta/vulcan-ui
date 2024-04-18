@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 /**
  * attachment (default view)
  * @export
@@ -43,9 +43,7 @@ export interface Attachment {
  * Check if a given object implements the Attachment interface.
  */
 export function instanceOfAttachment(value: object): boolean {
-    let isInstance = true;
-
-    return isInstance;
+    return true;
 }
 
 export function AttachmentFromJSON(json: any): Attachment {
@@ -53,29 +51,26 @@ export function AttachmentFromJSON(json: any): Attachment {
 }
 
 export function AttachmentFromJSONTyped(json: any, ignoreDiscriminator: boolean): Attachment {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
         
-        'contentType': !exists(json, 'content_type') ? undefined : json['content_type'],
-        'data': !exists(json, 'data') ? undefined : json['data'],
-        'name': !exists(json, 'name') ? undefined : json['name'],
+        'contentType': json['content_type'] == null ? undefined : json['content_type'],
+        'data': json['data'] == null ? undefined : json['data'],
+        'name': json['name'] == null ? undefined : json['name'],
     };
 }
 
 export function AttachmentToJSON(value?: Attachment | null): any {
-    if (value === undefined) {
-        return undefined;
-    }
-    if (value === null) {
-        return null;
+    if (value == null) {
+        return value;
     }
     return {
         
-        'content_type': value.contentType,
-        'data': value.data,
-        'name': value.name,
+        'content_type': value['contentType'],
+        'data': value['data'],
+        'name': value['name'],
     };
 }
 

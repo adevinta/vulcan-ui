@@ -16,11 +16,11 @@
 import * as runtime from '../runtime';
 import type {
   DigestPayload,
-} from '../models';
+} from '../models/index';
 import {
     DigestPayloadFromJSON,
     DigestPayloadToJSON,
-} from '../models';
+} from '../models/index';
 
 export interface ReportSendDigestRequest {
     teamId: string;
@@ -37,12 +37,18 @@ export class ReportApi extends runtime.BaseAPI {
      * send digest report
      */
     async reportSendDigestRaw(requestParameters: ReportSendDigestRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
-        if (requestParameters.teamId === null || requestParameters.teamId === undefined) {
-            throw new runtime.RequiredError('teamId','Required parameter requestParameters.teamId was null or undefined when calling reportSendDigest.');
+        if (requestParameters['teamId'] == null) {
+            throw new runtime.RequiredError(
+                'teamId',
+                'Required parameter "teamId" was null or undefined when calling reportSendDigest().'
+            );
         }
 
-        if (requestParameters.payload === null || requestParameters.payload === undefined) {
-            throw new runtime.RequiredError('payload','Required parameter requestParameters.payload was null or undefined when calling reportSendDigest.');
+        if (requestParameters['payload'] == null) {
+            throw new runtime.RequiredError(
+                'payload',
+                'Required parameter "payload" was null or undefined when calling reportSendDigest().'
+            );
         }
 
         const queryParameters: any = {};
@@ -52,15 +58,15 @@ export class ReportApi extends runtime.BaseAPI {
         headerParameters['Content-Type'] = 'application/json';
 
         if (this.configuration && this.configuration.apiKey) {
-            headerParameters["authorization"] = this.configuration.apiKey("authorization"); // Bearer authentication
+            headerParameters["authorization"] = await this.configuration.apiKey("authorization"); // Bearer authentication
         }
 
         const response = await this.request({
-            path: `/teams/{team_id}/report/digest`.replace(`{${"team_id"}}`, encodeURIComponent(String(requestParameters.teamId))),
+            path: `/teams/{team_id}/report/digest`.replace(`{${"team_id"}}`, encodeURIComponent(String(requestParameters['teamId']))),
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
-            body: DigestPayloadToJSON(requestParameters.payload),
+            body: DigestPayloadToJSON(requestParameters['payload']),
         }, initOverrides);
 
         return new runtime.VoidApiResponse(response);

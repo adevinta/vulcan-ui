@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 import type { Assettype } from './Assettype';
 import {
     AssettypeFromJSON,
@@ -34,10 +34,10 @@ export interface Asset {
     alias?: string;
     /**
      * 
-     * @type {object}
+     * @type {{ [key: string]: any; }}
      * @memberof Asset
      */
-    annotations?: object;
+    annotations?: { [key: string]: any; };
     /**
      * Classified At
      * @type {string}
@@ -92,9 +92,7 @@ export interface Asset {
  * Check if a given object implements the Asset interface.
  */
 export function instanceOfAsset(value: object): boolean {
-    let isInstance = true;
-
-    return isInstance;
+    return true;
 }
 
 export function AssetFromJSON(json: any): Asset {
@@ -102,43 +100,40 @@ export function AssetFromJSON(json: any): Asset {
 }
 
 export function AssetFromJSONTyped(json: any, ignoreDiscriminator: boolean): Asset {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
         
-        'alias': !exists(json, 'alias') ? undefined : json['alias'],
-        'annotations': !exists(json, 'annotations') ? undefined : json['annotations'],
-        'classifiedAt': !exists(json, 'classified_at') ? undefined : json['classified_at'],
-        'environmentalCvss': !exists(json, 'environmental_cvss') ? undefined : json['environmental_cvss'],
-        'id': !exists(json, 'id') ? undefined : json['id'],
-        'identifier': !exists(json, 'identifier') ? undefined : json['identifier'],
-        'options': !exists(json, 'options') ? undefined : json['options'],
-        'rolfp': !exists(json, 'rolfp') ? undefined : json['rolfp'],
-        'scannable': !exists(json, 'scannable') ? undefined : json['scannable'],
-        'type': !exists(json, 'type') ? undefined : AssettypeFromJSON(json['type']),
+        'alias': json['alias'] == null ? undefined : json['alias'],
+        'annotations': json['annotations'] == null ? undefined : json['annotations'],
+        'classifiedAt': json['classified_at'] == null ? undefined : json['classified_at'],
+        'environmentalCvss': json['environmental_cvss'] == null ? undefined : json['environmental_cvss'],
+        'id': json['id'] == null ? undefined : json['id'],
+        'identifier': json['identifier'] == null ? undefined : json['identifier'],
+        'options': json['options'] == null ? undefined : json['options'],
+        'rolfp': json['rolfp'] == null ? undefined : json['rolfp'],
+        'scannable': json['scannable'] == null ? undefined : json['scannable'],
+        'type': json['type'] == null ? undefined : AssettypeFromJSON(json['type']),
     };
 }
 
 export function AssetToJSON(value?: Asset | null): any {
-    if (value === undefined) {
-        return undefined;
-    }
-    if (value === null) {
-        return null;
+    if (value == null) {
+        return value;
     }
     return {
         
-        'alias': value.alias,
-        'annotations': value.annotations,
-        'classified_at': value.classifiedAt,
-        'environmental_cvss': value.environmentalCvss,
-        'id': value.id,
-        'identifier': value.identifier,
-        'options': value.options,
-        'rolfp': value.rolfp,
-        'scannable': value.scannable,
-        'type': AssettypeToJSON(value.type),
+        'alias': value['alias'],
+        'annotations': value['annotations'],
+        'classified_at': value['classifiedAt'],
+        'environmental_cvss': value['environmentalCvss'],
+        'id': value['id'],
+        'identifier': value['identifier'],
+        'options': value['options'],
+        'rolfp': value['rolfp'],
+        'scannable': value['scannable'],
+        'type': AssettypeToJSON(value['type']),
     };
 }
 

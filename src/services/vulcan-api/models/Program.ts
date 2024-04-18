@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 import type { ProgramPolicyGroup } from './ProgramPolicyGroup';
 import {
     ProgramPolicyGroupFromJSON,
@@ -80,9 +80,7 @@ export interface Program {
  * Check if a given object implements the Program interface.
  */
 export function instanceOfProgram(value: object): boolean {
-    let isInstance = true;
-
-    return isInstance;
+    return true;
 }
 
 export function ProgramFromJSON(json: any): Program {
@@ -90,37 +88,34 @@ export function ProgramFromJSON(json: any): Program {
 }
 
 export function ProgramFromJSONTyped(json: any, ignoreDiscriminator: boolean): Program {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
         
-        'autosend': !exists(json, 'autosend') ? undefined : json['autosend'],
-        'disabled': !exists(json, 'disabled') ? undefined : json['disabled'],
-        'global': !exists(json, 'global') ? undefined : json['global'],
-        'id': !exists(json, 'id') ? undefined : json['id'],
-        'name': !exists(json, 'name') ? undefined : json['name'],
-        'policyGroups': !exists(json, 'policy_groups') ? undefined : ((json['policy_groups'] as Array<any>).map(ProgramPolicyGroupFromJSON)),
-        'schedule': !exists(json, 'schedule') ? undefined : ScheduleFromJSON(json['schedule']),
+        'autosend': json['autosend'] == null ? undefined : json['autosend'],
+        'disabled': json['disabled'] == null ? undefined : json['disabled'],
+        'global': json['global'] == null ? undefined : json['global'],
+        'id': json['id'] == null ? undefined : json['id'],
+        'name': json['name'] == null ? undefined : json['name'],
+        'policyGroups': json['policy_groups'] == null ? undefined : ((json['policy_groups'] as Array<any>).map(ProgramPolicyGroupFromJSON)),
+        'schedule': json['schedule'] == null ? undefined : ScheduleFromJSON(json['schedule']),
     };
 }
 
 export function ProgramToJSON(value?: Program | null): any {
-    if (value === undefined) {
-        return undefined;
-    }
-    if (value === null) {
-        return null;
+    if (value == null) {
+        return value;
     }
     return {
         
-        'autosend': value.autosend,
-        'disabled': value.disabled,
-        'global': value.global,
-        'id': value.id,
-        'name': value.name,
-        'policy_groups': value.policyGroups === undefined ? undefined : ((value.policyGroups as Array<any>).map(ProgramPolicyGroupToJSON)),
-        'schedule': ScheduleToJSON(value.schedule),
+        'autosend': value['autosend'],
+        'disabled': value['disabled'],
+        'global': value['global'],
+        'id': value['id'],
+        'name': value['name'],
+        'policy_groups': value['policyGroups'] == null ? undefined : ((value['policyGroups'] as Array<any>).map(ProgramPolicyGroupToJSON)),
+        'schedule': ScheduleToJSON(value['schedule']),
     };
 }
 

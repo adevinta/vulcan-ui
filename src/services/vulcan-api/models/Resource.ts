@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 /**
  * resource (default view)
  * @export
@@ -33,19 +33,17 @@ export interface Resource {
     name?: string;
     /**
      * values for attributes of a resource
-     * @type {Array<object>}
+     * @type {Array<{ [key: string]: any; }>}
      * @memberof Resource
      */
-    resources?: Array<object>;
+    resources?: Array<{ [key: string]: any; }>;
 }
 
 /**
  * Check if a given object implements the Resource interface.
  */
 export function instanceOfResource(value: object): boolean {
-    let isInstance = true;
-
-    return isInstance;
+    return true;
 }
 
 export function ResourceFromJSON(json: any): Resource {
@@ -53,29 +51,26 @@ export function ResourceFromJSON(json: any): Resource {
 }
 
 export function ResourceFromJSONTyped(json: any, ignoreDiscriminator: boolean): Resource {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
         
-        'attributes': !exists(json, 'attributes') ? undefined : json['attributes'],
-        'name': !exists(json, 'name') ? undefined : json['name'],
-        'resources': !exists(json, 'resources') ? undefined : json['resources'],
+        'attributes': json['attributes'] == null ? undefined : json['attributes'],
+        'name': json['name'] == null ? undefined : json['name'],
+        'resources': json['resources'] == null ? undefined : json['resources'],
     };
 }
 
 export function ResourceToJSON(value?: Resource | null): any {
-    if (value === undefined) {
-        return undefined;
-    }
-    if (value === null) {
-        return null;
+    if (value == null) {
+        return value;
     }
     return {
         
-        'attributes': value.attributes,
-        'name': value.name,
-        'resources': value.resources,
+        'attributes': value['attributes'],
+        'name': value['name'],
+        'resources': value['resources'],
     };
 }
 

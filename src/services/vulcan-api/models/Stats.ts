@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 /**
  * Stats by severity (default view)
  * @export
@@ -55,9 +55,7 @@ export interface Stats {
  * Check if a given object implements the Stats interface.
  */
 export function instanceOfStats(value: object): boolean {
-    let isInstance = true;
-
-    return isInstance;
+    return true;
 }
 
 export function StatsFromJSON(json: any): Stats {
@@ -65,33 +63,30 @@ export function StatsFromJSON(json: any): Stats {
 }
 
 export function StatsFromJSONTyped(json: any, ignoreDiscriminator: boolean): Stats {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
         
-        'critical': !exists(json, 'critical') ? undefined : json['critical'],
-        'high': !exists(json, 'high') ? undefined : json['high'],
-        'informational': !exists(json, 'informational') ? undefined : json['informational'],
-        'low': !exists(json, 'low') ? undefined : json['low'],
-        'medium': !exists(json, 'medium') ? undefined : json['medium'],
+        'critical': json['critical'] == null ? undefined : json['critical'],
+        'high': json['high'] == null ? undefined : json['high'],
+        'informational': json['informational'] == null ? undefined : json['informational'],
+        'low': json['low'] == null ? undefined : json['low'],
+        'medium': json['medium'] == null ? undefined : json['medium'],
     };
 }
 
 export function StatsToJSON(value?: Stats | null): any {
-    if (value === undefined) {
-        return undefined;
-    }
-    if (value === null) {
-        return null;
+    if (value == null) {
+        return value;
     }
     return {
         
-        'critical': value.critical,
-        'high': value.high,
-        'informational': value.informational,
-        'low': value.low,
-        'medium': value.medium,
+        'critical': value['critical'],
+        'high': value['high'],
+        'informational': value['informational'],
+        'low': value['low'],
+        'medium': value['medium'],
     };
 }
 

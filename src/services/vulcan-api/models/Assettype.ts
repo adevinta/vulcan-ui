@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 /**
  * Asset Type (default view)
  * @export
@@ -37,9 +37,7 @@ export interface Assettype {
  * Check if a given object implements the Assettype interface.
  */
 export function instanceOfAssettype(value: object): boolean {
-    let isInstance = true;
-
-    return isInstance;
+    return true;
 }
 
 export function AssettypeFromJSON(json: any): Assettype {
@@ -47,27 +45,24 @@ export function AssettypeFromJSON(json: any): Assettype {
 }
 
 export function AssettypeFromJSONTyped(json: any, ignoreDiscriminator: boolean): Assettype {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
         
-        'id': !exists(json, 'id') ? undefined : json['id'],
-        'name': !exists(json, 'name') ? undefined : json['name'],
+        'id': json['id'] == null ? undefined : json['id'],
+        'name': json['name'] == null ? undefined : json['name'],
     };
 }
 
 export function AssettypeToJSON(value?: Assettype | null): any {
-    if (value === undefined) {
-        return undefined;
-    }
-    if (value === null) {
-        return null;
+    if (value == null) {
+        return value;
     }
     return {
         
-        'id': value.id,
-        'name': value.name,
+        'id': value['id'],
+        'name': value['name'],
     };
 }
 

@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 import type { Stats } from './Stats';
 import {
     StatsFromJSON,
@@ -38,9 +38,7 @@ export interface Statsopen {
  * Check if a given object implements the Statsopen interface.
  */
 export function instanceOfStatsopen(value: object): boolean {
-    let isInstance = true;
-
-    return isInstance;
+    return true;
 }
 
 export function StatsopenFromJSON(json: any): Statsopen {
@@ -48,25 +46,22 @@ export function StatsopenFromJSON(json: any): Statsopen {
 }
 
 export function StatsopenFromJSONTyped(json: any, ignoreDiscriminator: boolean): Statsopen {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
         
-        'openIssues': !exists(json, 'open_issues') ? undefined : StatsFromJSON(json['open_issues']),
+        'openIssues': json['open_issues'] == null ? undefined : StatsFromJSON(json['open_issues']),
     };
 }
 
 export function StatsopenToJSON(value?: Statsopen | null): any {
-    if (value === undefined) {
-        return undefined;
-    }
-    if (value === null) {
-        return null;
+    if (value == null) {
+        return value;
     }
     return {
         
-        'open_issues': StatsToJSON(value.openIssues),
+        'open_issues': StatsToJSON(value['openIssues']),
     };
 }
 

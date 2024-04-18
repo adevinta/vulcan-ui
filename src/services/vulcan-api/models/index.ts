@@ -51,8 +51,6 @@ export * from './ProgramPolicyGroupPayload';
 export * from './ProgramUpdatePayload';
 export * from './Recipient';
 export * from './RecipientsPayload';
-export * from './Report';
-export * from './Reportemail';
 export * from './Resource';
 export * from './Scan';
 export * from './ScanPayload';

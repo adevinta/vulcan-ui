@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 /**
  * Pagination info (default view)
  * @export
@@ -49,9 +49,7 @@ export interface Pagination {
  * Check if a given object implements the Pagination interface.
  */
 export function instanceOfPagination(value: object): boolean {
-    let isInstance = true;
-
-    return isInstance;
+    return true;
 }
 
 export function PaginationFromJSON(json: any): Pagination {
@@ -59,31 +57,28 @@ export function PaginationFromJSON(json: any): Pagination {
 }
 
 export function PaginationFromJSONTyped(json: any, ignoreDiscriminator: boolean): Pagination {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
         
-        'limit': !exists(json, 'limit') ? undefined : json['limit'],
-        'more': !exists(json, 'more') ? undefined : json['more'],
-        'offset': !exists(json, 'offset') ? undefined : json['offset'],
-        'total': !exists(json, 'total') ? undefined : json['total'],
+        'limit': json['limit'] == null ? undefined : json['limit'],
+        'more': json['more'] == null ? undefined : json['more'],
+        'offset': json['offset'] == null ? undefined : json['offset'],
+        'total': json['total'] == null ? undefined : json['total'],
     };
 }
 
 export function PaginationToJSON(value?: Pagination | null): any {
-    if (value === undefined) {
-        return undefined;
-    }
-    if (value === null) {
-        return null;
+    if (value == null) {
+        return value;
     }
     return {
         
-        'limit': value.limit,
-        'more': value.more,
-        'offset': value.offset,
-        'total': value.total,
+        'limit': value['limit'],
+        'more': value['more'],
+        'offset': value['offset'],
+        'total': value['total'],
     };
 }
 

@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 /**
  * Finding Ticket (default view)
  * @export
@@ -31,9 +31,7 @@ export interface FindingTicket {
  * Check if a given object implements the FindingTicket interface.
  */
 export function instanceOfFindingTicket(value: object): boolean {
-    let isInstance = true;
-
-    return isInstance;
+    return true;
 }
 
 export function FindingTicketFromJSON(json: any): FindingTicket {
@@ -41,25 +39,22 @@ export function FindingTicketFromJSON(json: any): FindingTicket {
 }
 
 export function FindingTicketFromJSONTyped(json: any, ignoreDiscriminator: boolean): FindingTicket {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
         
-        'urlTracker': !exists(json, 'url_tracker') ? undefined : json['url_tracker'],
+        'urlTracker': json['url_tracker'] == null ? undefined : json['url_tracker'],
     };
 }
 
 export function FindingTicketToJSON(value?: FindingTicket | null): any {
-    if (value === undefined) {
-        return undefined;
-    }
-    if (value === null) {
-        return null;
+    if (value == null) {
+        return value;
     }
     return {
         
-        'url_tracker': value.urlTracker,
+        'url_tracker': value['urlTracker'],
     };
 }
 

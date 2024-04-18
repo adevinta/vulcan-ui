@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 import type { Statsaverages } from './Statsaverages';
 import {
     StatsaveragesFromJSON,
@@ -38,9 +38,7 @@ export interface Exposure {
  * Check if a given object implements the Exposure interface.
  */
 export function instanceOfExposure(value: object): boolean {
-    let isInstance = true;
-
-    return isInstance;
+    return true;
 }
 
 export function ExposureFromJSON(json: any): Exposure {
@@ -48,25 +46,22 @@ export function ExposureFromJSON(json: any): Exposure {
 }
 
 export function ExposureFromJSONTyped(json: any, ignoreDiscriminator: boolean): Exposure {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
         
-        'exposure': !exists(json, 'exposure') ? undefined : StatsaveragesFromJSON(json['exposure']),
+        'exposure': json['exposure'] == null ? undefined : StatsaveragesFromJSON(json['exposure']),
     };
 }
 
 export function ExposureToJSON(value?: Exposure | null): any {
-    if (value === undefined) {
-        return undefined;
-    }
-    if (value === null) {
-        return null;
+    if (value == null) {
+        return value;
     }
     return {
         
-        'exposure': StatsaveragesToJSON(value.exposure),
+        'exposure': StatsaveragesToJSON(value['exposure']),
     };
 }
 

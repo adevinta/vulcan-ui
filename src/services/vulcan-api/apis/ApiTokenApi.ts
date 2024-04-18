@@ -16,11 +16,11 @@
 import * as runtime from '../runtime';
 import type {
   Token,
-} from '../models';
+} from '../models/index';
 import {
     TokenFromJSON,
     TokenToJSON,
-} from '../models';
+} from '../models/index';
 
 export interface ApiTokenCreateRequest {
     userId: string;
@@ -36,8 +36,11 @@ export class ApiTokenApi extends runtime.BaseAPI {
      * create api-token
      */
     async apiTokenCreateRaw(requestParameters: ApiTokenCreateRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Token>> {
-        if (requestParameters.userId === null || requestParameters.userId === undefined) {
-            throw new runtime.RequiredError('userId','Required parameter requestParameters.userId was null or undefined when calling apiTokenCreate.');
+        if (requestParameters['userId'] == null) {
+            throw new runtime.RequiredError(
+                'userId',
+                'Required parameter "userId" was null or undefined when calling apiTokenCreate().'
+            );
         }
 
         const queryParameters: any = {};
@@ -45,11 +48,11 @@ export class ApiTokenApi extends runtime.BaseAPI {
         const headerParameters: runtime.HTTPHeaders = {};
 
         if (this.configuration && this.configuration.apiKey) {
-            headerParameters["authorization"] = this.configuration.apiKey("authorization"); // Bearer authentication
+            headerParameters["authorization"] = await this.configuration.apiKey("authorization"); // Bearer authentication
         }
 
         const response = await this.request({
-            path: `/users/{user_id}/token`.replace(`{${"user_id"}}`, encodeURIComponent(String(requestParameters.userId))),
+            path: `/users/{user_id}/token`.replace(`{${"user_id"}}`, encodeURIComponent(String(requestParameters['userId']))),
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,

@@ -17,13 +17,13 @@ import * as runtime from '../runtime';
 import type {
   Asset,
   AssetGroupPayload,
-} from '../models';
+} from '../models/index';
 import {
     AssetFromJSON,
     AssetToJSON,
     AssetGroupPayloadFromJSON,
     AssetGroupPayloadToJSON,
-} from '../models';
+} from '../models/index';
 
 export interface AssetGroupCreateRequest {
     groupId: string;
@@ -52,16 +52,25 @@ export class AssetGroupApi extends runtime.BaseAPI {
      * create asset-group
      */
     async assetGroupCreateRaw(requestParameters: AssetGroupCreateRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Asset>> {
-        if (requestParameters.groupId === null || requestParameters.groupId === undefined) {
-            throw new runtime.RequiredError('groupId','Required parameter requestParameters.groupId was null or undefined when calling assetGroupCreate.');
+        if (requestParameters['groupId'] == null) {
+            throw new runtime.RequiredError(
+                'groupId',
+                'Required parameter "groupId" was null or undefined when calling assetGroupCreate().'
+            );
         }
 
-        if (requestParameters.teamId === null || requestParameters.teamId === undefined) {
-            throw new runtime.RequiredError('teamId','Required parameter requestParameters.teamId was null or undefined when calling assetGroupCreate.');
+        if (requestParameters['teamId'] == null) {
+            throw new runtime.RequiredError(
+                'teamId',
+                'Required parameter "teamId" was null or undefined when calling assetGroupCreate().'
+            );
         }
 
-        if (requestParameters.payload === null || requestParameters.payload === undefined) {
-            throw new runtime.RequiredError('payload','Required parameter requestParameters.payload was null or undefined when calling assetGroupCreate.');
+        if (requestParameters['payload'] == null) {
+            throw new runtime.RequiredError(
+                'payload',
+                'Required parameter "payload" was null or undefined when calling assetGroupCreate().'
+            );
         }
 
         const queryParameters: any = {};
@@ -71,15 +80,15 @@ export class AssetGroupApi extends runtime.BaseAPI {
         headerParameters['Content-Type'] = 'application/json';
 
         if (this.configuration && this.configuration.apiKey) {
-            headerParameters["authorization"] = this.configuration.apiKey("authorization"); // Bearer authentication
+            headerParameters["authorization"] = await this.configuration.apiKey("authorization"); // Bearer authentication
         }
 
         const response = await this.request({
-            path: `/teams/{team_id}/groups/{group_id}/assets`.replace(`{${"group_id"}}`, encodeURIComponent(String(requestParameters.groupId))).replace(`{${"team_id"}}`, encodeURIComponent(String(requestParameters.teamId))),
+            path: `/teams/{team_id}/groups/{group_id}/assets`.replace(`{${"group_id"}}`, encodeURIComponent(String(requestParameters['groupId']))).replace(`{${"team_id"}}`, encodeURIComponent(String(requestParameters['teamId']))),
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
-            body: AssetGroupPayloadToJSON(requestParameters.payload),
+            body: AssetGroupPayloadToJSON(requestParameters['payload']),
         }, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => AssetFromJSON(jsonValue));
@@ -99,16 +108,25 @@ export class AssetGroupApi extends runtime.BaseAPI {
      * delete asset-group
      */
     async assetGroupDeleteRaw(requestParameters: AssetGroupDeleteRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
-        if (requestParameters.assetId === null || requestParameters.assetId === undefined) {
-            throw new runtime.RequiredError('assetId','Required parameter requestParameters.assetId was null or undefined when calling assetGroupDelete.');
+        if (requestParameters['assetId'] == null) {
+            throw new runtime.RequiredError(
+                'assetId',
+                'Required parameter "assetId" was null or undefined when calling assetGroupDelete().'
+            );
         }
 
-        if (requestParameters.groupId === null || requestParameters.groupId === undefined) {
-            throw new runtime.RequiredError('groupId','Required parameter requestParameters.groupId was null or undefined when calling assetGroupDelete.');
+        if (requestParameters['groupId'] == null) {
+            throw new runtime.RequiredError(
+                'groupId',
+                'Required parameter "groupId" was null or undefined when calling assetGroupDelete().'
+            );
         }
 
-        if (requestParameters.teamId === null || requestParameters.teamId === undefined) {
-            throw new runtime.RequiredError('teamId','Required parameter requestParameters.teamId was null or undefined when calling assetGroupDelete.');
+        if (requestParameters['teamId'] == null) {
+            throw new runtime.RequiredError(
+                'teamId',
+                'Required parameter "teamId" was null or undefined when calling assetGroupDelete().'
+            );
         }
 
         const queryParameters: any = {};
@@ -116,11 +134,11 @@ export class AssetGroupApi extends runtime.BaseAPI {
         const headerParameters: runtime.HTTPHeaders = {};
 
         if (this.configuration && this.configuration.apiKey) {
-            headerParameters["authorization"] = this.configuration.apiKey("authorization"); // Bearer authentication
+            headerParameters["authorization"] = await this.configuration.apiKey("authorization"); // Bearer authentication
         }
 
         const response = await this.request({
-            path: `/teams/{team_id}/groups/{group_id}/assets/{asset_id}`.replace(`{${"asset_id"}}`, encodeURIComponent(String(requestParameters.assetId))).replace(`{${"group_id"}}`, encodeURIComponent(String(requestParameters.groupId))).replace(`{${"team_id"}}`, encodeURIComponent(String(requestParameters.teamId))),
+            path: `/teams/{team_id}/groups/{group_id}/assets/{asset_id}`.replace(`{${"asset_id"}}`, encodeURIComponent(String(requestParameters['assetId']))).replace(`{${"group_id"}}`, encodeURIComponent(String(requestParameters['groupId']))).replace(`{${"team_id"}}`, encodeURIComponent(String(requestParameters['teamId']))),
             method: 'DELETE',
             headers: headerParameters,
             query: queryParameters,
@@ -142,12 +160,18 @@ export class AssetGroupApi extends runtime.BaseAPI {
      * list asset-group
      */
     async assetGroupListRaw(requestParameters: AssetGroupListRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<Asset>>> {
-        if (requestParameters.groupId === null || requestParameters.groupId === undefined) {
-            throw new runtime.RequiredError('groupId','Required parameter requestParameters.groupId was null or undefined when calling assetGroupList.');
+        if (requestParameters['groupId'] == null) {
+            throw new runtime.RequiredError(
+                'groupId',
+                'Required parameter "groupId" was null or undefined when calling assetGroupList().'
+            );
         }
 
-        if (requestParameters.teamId === null || requestParameters.teamId === undefined) {
-            throw new runtime.RequiredError('teamId','Required parameter requestParameters.teamId was null or undefined when calling assetGroupList.');
+        if (requestParameters['teamId'] == null) {
+            throw new runtime.RequiredError(
+                'teamId',
+                'Required parameter "teamId" was null or undefined when calling assetGroupList().'
+            );
         }
 
         const queryParameters: any = {};
@@ -155,11 +179,11 @@ export class AssetGroupApi extends runtime.BaseAPI {
         const headerParameters: runtime.HTTPHeaders = {};
 
         if (this.configuration && this.configuration.apiKey) {
-            headerParameters["authorization"] = this.configuration.apiKey("authorization"); // Bearer authentication
+            headerParameters["authorization"] = await this.configuration.apiKey("authorization"); // Bearer authentication
         }
 
         const response = await this.request({
-            path: `/teams/{team_id}/groups/{group_id}/assets`.replace(`{${"group_id"}}`, encodeURIComponent(String(requestParameters.groupId))).replace(`{${"team_id"}}`, encodeURIComponent(String(requestParameters.teamId))),
+            path: `/teams/{team_id}/groups/{group_id}/assets`.replace(`{${"group_id"}}`, encodeURIComponent(String(requestParameters['groupId']))).replace(`{${"team_id"}}`, encodeURIComponent(String(requestParameters['teamId']))),
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,

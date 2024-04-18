@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 /**
  * 
  * @export
@@ -37,10 +37,8 @@ export interface PolicySettingPayload {
  * Check if a given object implements the PolicySettingPayload interface.
  */
 export function instanceOfPolicySettingPayload(value: object): boolean {
-    let isInstance = true;
-    isInstance = isInstance && "checktypeName" in value;
-
-    return isInstance;
+    if (!('checktypeName' in value)) return false;
+    return true;
 }
 
 export function PolicySettingPayloadFromJSON(json: any): PolicySettingPayload {
@@ -48,27 +46,24 @@ export function PolicySettingPayloadFromJSON(json: any): PolicySettingPayload {
 }
 
 export function PolicySettingPayloadFromJSONTyped(json: any, ignoreDiscriminator: boolean): PolicySettingPayload {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
         
         'checktypeName': json['checktype_name'],
-        'options': !exists(json, 'options') ? undefined : json['options'],
+        'options': json['options'] == null ? undefined : json['options'],
     };
 }
 
 export function PolicySettingPayloadToJSON(value?: PolicySettingPayload | null): any {
-    if (value === undefined) {
-        return undefined;
-    }
-    if (value === null) {
-        return null;
+    if (value == null) {
+        return value;
     }
     return {
         
-        'checktype_name': value.checktypeName,
-        'options': value.options,
+        'checktype_name': value['checktypeName'],
+        'options': value['options'],
     };
 }
 

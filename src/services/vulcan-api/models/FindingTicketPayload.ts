@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 /**
  * 
  * @export
@@ -26,6 +26,12 @@ export interface FindingTicketPayload {
      */
     description?: string;
     /**
+     * Jira issue labels
+     * @type {Array<string>}
+     * @memberof FindingTicketPayload
+     */
+    labels?: Array<string>;
+    /**
      * Summary
      * @type {string}
      * @memberof FindingTicketPayload
@@ -37,10 +43,8 @@ export interface FindingTicketPayload {
  * Check if a given object implements the FindingTicketPayload interface.
  */
 export function instanceOfFindingTicketPayload(value: object): boolean {
-    let isInstance = true;
-    isInstance = isInstance && "summary" in value;
-
-    return isInstance;
+    if (!('summary' in value)) return false;
+    return true;
 }
 
 export function FindingTicketPayloadFromJSON(json: any): FindingTicketPayload {
@@ -48,27 +52,26 @@ export function FindingTicketPayloadFromJSON(json: any): FindingTicketPayload {
 }
 
 export function FindingTicketPayloadFromJSONTyped(json: any, ignoreDiscriminator: boolean): FindingTicketPayload {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
         
-        'description': !exists(json, 'description') ? undefined : json['description'],
+        'description': json['description'] == null ? undefined : json['description'],
+        'labels': json['labels'] == null ? undefined : json['labels'],
         'summary': json['summary'],
     };
 }
 
 export function FindingTicketPayloadToJSON(value?: FindingTicketPayload | null): any {
-    if (value === undefined) {
-        return undefined;
-    }
-    if (value === null) {
-        return null;
+    if (value == null) {
+        return value;
     }
     return {
         
-        'description': value.description,
-        'summary': value.summary,
+        'description': value['description'],
+        'labels': value['labels'],
+        'summary': value['summary'],
     };
 }
 

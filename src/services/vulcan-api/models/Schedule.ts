@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 /**
  * Schedule (default view)
  * @export
@@ -31,10 +31,8 @@ export interface Schedule {
  * Check if a given object implements the Schedule interface.
  */
 export function instanceOfSchedule(value: object): boolean {
-    let isInstance = true;
-    isInstance = isInstance && "cron" in value;
-
-    return isInstance;
+    if (!('cron' in value)) return false;
+    return true;
 }
 
 export function ScheduleFromJSON(json: any): Schedule {
@@ -42,7 +40,7 @@ export function ScheduleFromJSON(json: any): Schedule {
 }
 
 export function ScheduleFromJSONTyped(json: any, ignoreDiscriminator: boolean): Schedule {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
@@ -52,15 +50,12 @@ export function ScheduleFromJSONTyped(json: any, ignoreDiscriminator: boolean): 
 }
 
 export function ScheduleToJSON(value?: Schedule | null): any {
-    if (value === undefined) {
-        return undefined;
-    }
-    if (value === null) {
-        return null;
+    if (value == null) {
+        return value;
     }
     return {
         
-        'cron': value.cron,
+        'cron': value['cron'],
     };
 }
 

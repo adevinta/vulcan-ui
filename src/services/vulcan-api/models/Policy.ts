@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 /**
  * Policy (default view)
  * @export
@@ -43,9 +43,7 @@ export interface Policy {
  * Check if a given object implements the Policy interface.
  */
 export function instanceOfPolicy(value: object): boolean {
-    let isInstance = true;
-
-    return isInstance;
+    return true;
 }
 
 export function PolicyFromJSON(json: any): Policy {
@@ -53,29 +51,26 @@ export function PolicyFromJSON(json: any): Policy {
 }
 
 export function PolicyFromJSONTyped(json: any, ignoreDiscriminator: boolean): Policy {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
         
-        'id': !exists(json, 'id') ? undefined : json['id'],
-        'name': !exists(json, 'name') ? undefined : json['name'],
-        'settingsCount': !exists(json, 'settings_count') ? undefined : json['settings_count'],
+        'id': json['id'] == null ? undefined : json['id'],
+        'name': json['name'] == null ? undefined : json['name'],
+        'settingsCount': json['settings_count'] == null ? undefined : json['settings_count'],
     };
 }
 
 export function PolicyToJSON(value?: Policy | null): any {
-    if (value === undefined) {
-        return undefined;
-    }
-    if (value === null) {
-        return null;
+    if (value == null) {
+        return value;
     }
     return {
         
-        'id': value.id,
-        'name': value.name,
-        'settings_count': value.settingsCount,
+        'id': value['id'],
+        'name': value['name'],
+        'settings_count': value['settingsCount'],
     };
 }
 

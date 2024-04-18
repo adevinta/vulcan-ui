@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 /**
  * 
  * @export
@@ -49,9 +49,7 @@ export interface UserUpdatePayload {
  * Check if a given object implements the UserUpdatePayload interface.
  */
 export function instanceOfUserUpdatePayload(value: object): boolean {
-    let isInstance = true;
-
-    return isInstance;
+    return true;
 }
 
 export function UserUpdatePayloadFromJSON(json: any): UserUpdatePayload {
@@ -59,31 +57,28 @@ export function UserUpdatePayloadFromJSON(json: any): UserUpdatePayload {
 }
 
 export function UserUpdatePayloadFromJSONTyped(json: any, ignoreDiscriminator: boolean): UserUpdatePayload {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
         
-        'active': !exists(json, 'active') ? undefined : json['active'],
-        'admin': !exists(json, 'admin') ? undefined : json['admin'],
-        'firstname': !exists(json, 'firstname') ? undefined : json['firstname'],
-        'lastname': !exists(json, 'lastname') ? undefined : json['lastname'],
+        'active': json['active'] == null ? undefined : json['active'],
+        'admin': json['admin'] == null ? undefined : json['admin'],
+        'firstname': json['firstname'] == null ? undefined : json['firstname'],
+        'lastname': json['lastname'] == null ? undefined : json['lastname'],
     };
 }
 
 export function UserUpdatePayloadToJSON(value?: UserUpdatePayload | null): any {
-    if (value === undefined) {
-        return undefined;
-    }
-    if (value === null) {
-        return null;
+    if (value == null) {
+        return value;
     }
     return {
         
-        'active': value.active,
-        'admin': value.admin,
-        'firstname': value.firstname,
-        'lastname': value.lastname,
+        'active': value['active'],
+        'admin': value['admin'],
+        'firstname': value['firstname'],
+        'lastname': value['lastname'],
     };
 }
 

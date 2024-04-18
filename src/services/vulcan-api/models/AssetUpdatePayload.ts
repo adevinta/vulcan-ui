@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 /**
  * 
  * @export
@@ -67,9 +67,7 @@ export interface AssetUpdatePayload {
  * Check if a given object implements the AssetUpdatePayload interface.
  */
 export function instanceOfAssetUpdatePayload(value: object): boolean {
-    let isInstance = true;
-
-    return isInstance;
+    return true;
 }
 
 export function AssetUpdatePayloadFromJSON(json: any): AssetUpdatePayload {
@@ -77,37 +75,34 @@ export function AssetUpdatePayloadFromJSON(json: any): AssetUpdatePayload {
 }
 
 export function AssetUpdatePayloadFromJSONTyped(json: any, ignoreDiscriminator: boolean): AssetUpdatePayload {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
         
-        'alias': !exists(json, 'alias') ? undefined : json['alias'],
-        'environmentalCvss': !exists(json, 'environmental_cvss') ? undefined : json['environmental_cvss'],
-        'identifier': !exists(json, 'identifier') ? undefined : json['identifier'],
-        'options': !exists(json, 'options') ? undefined : json['options'],
-        'rolfp': !exists(json, 'rolfp') ? undefined : json['rolfp'],
-        'scannable': !exists(json, 'scannable') ? undefined : json['scannable'],
-        'type': !exists(json, 'type') ? undefined : json['type'],
+        'alias': json['alias'] == null ? undefined : json['alias'],
+        'environmentalCvss': json['environmental_cvss'] == null ? undefined : json['environmental_cvss'],
+        'identifier': json['identifier'] == null ? undefined : json['identifier'],
+        'options': json['options'] == null ? undefined : json['options'],
+        'rolfp': json['rolfp'] == null ? undefined : json['rolfp'],
+        'scannable': json['scannable'] == null ? undefined : json['scannable'],
+        'type': json['type'] == null ? undefined : json['type'],
     };
 }
 
 export function AssetUpdatePayloadToJSON(value?: AssetUpdatePayload | null): any {
-    if (value === undefined) {
-        return undefined;
-    }
-    if (value === null) {
-        return null;
+    if (value == null) {
+        return value;
     }
     return {
         
-        'alias': value.alias,
-        'environmental_cvss': value.environmentalCvss,
-        'identifier': value.identifier,
-        'options': value.options,
-        'rolfp': value.rolfp,
-        'scannable': value.scannable,
-        'type': value.type,
+        'alias': value['alias'],
+        'environmental_cvss': value['environmentalCvss'],
+        'identifier': value['identifier'],
+        'options': value['options'],
+        'rolfp': value['rolfp'],
+        'scannable': value['scannable'],
+        'type': value['type'],
     };
 }
 

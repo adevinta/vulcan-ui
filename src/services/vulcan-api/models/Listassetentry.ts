@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 import type { Assettype } from './Assettype';
 import {
     AssettypeFromJSON,
@@ -40,10 +40,10 @@ export interface Listassetentry {
     alias?: string;
     /**
      * 
-     * @type {object}
+     * @type {{ [key: string]: any; }}
      * @memberof Listassetentry
      */
-    annotations?: object;
+    annotations?: { [key: string]: any; };
     /**
      * Classified At
      * @type {string}
@@ -104,9 +104,7 @@ export interface Listassetentry {
  * Check if a given object implements the Listassetentry interface.
  */
 export function instanceOfListassetentry(value: object): boolean {
-    let isInstance = true;
-
-    return isInstance;
+    return true;
 }
 
 export function ListassetentryFromJSON(json: any): Listassetentry {
@@ -114,45 +112,42 @@ export function ListassetentryFromJSON(json: any): Listassetentry {
 }
 
 export function ListassetentryFromJSONTyped(json: any, ignoreDiscriminator: boolean): Listassetentry {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
         
-        'alias': !exists(json, 'alias') ? undefined : json['alias'],
-        'annotations': !exists(json, 'annotations') ? undefined : json['annotations'],
-        'classifiedAt': !exists(json, 'classified_at') ? undefined : json['classified_at'],
-        'environmentalCvss': !exists(json, 'environmental_cvss') ? undefined : json['environmental_cvss'],
-        'groups': !exists(json, 'groups') ? undefined : ((json['groups'] as Array<any>).map(GroupWithoutAssetsCountFromJSON)),
-        'id': !exists(json, 'id') ? undefined : json['id'],
-        'identifier': !exists(json, 'identifier') ? undefined : json['identifier'],
-        'options': !exists(json, 'options') ? undefined : json['options'],
-        'rolfp': !exists(json, 'rolfp') ? undefined : json['rolfp'],
-        'scannable': !exists(json, 'scannable') ? undefined : json['scannable'],
-        'type': !exists(json, 'type') ? undefined : AssettypeFromJSON(json['type']),
+        'alias': json['alias'] == null ? undefined : json['alias'],
+        'annotations': json['annotations'] == null ? undefined : json['annotations'],
+        'classifiedAt': json['classified_at'] == null ? undefined : json['classified_at'],
+        'environmentalCvss': json['environmental_cvss'] == null ? undefined : json['environmental_cvss'],
+        'groups': json['groups'] == null ? undefined : ((json['groups'] as Array<any>).map(GroupWithoutAssetsCountFromJSON)),
+        'id': json['id'] == null ? undefined : json['id'],
+        'identifier': json['identifier'] == null ? undefined : json['identifier'],
+        'options': json['options'] == null ? undefined : json['options'],
+        'rolfp': json['rolfp'] == null ? undefined : json['rolfp'],
+        'scannable': json['scannable'] == null ? undefined : json['scannable'],
+        'type': json['type'] == null ? undefined : AssettypeFromJSON(json['type']),
     };
 }
 
 export function ListassetentryToJSON(value?: Listassetentry | null): any {
-    if (value === undefined) {
-        return undefined;
-    }
-    if (value === null) {
-        return null;
+    if (value == null) {
+        return value;
     }
     return {
         
-        'alias': value.alias,
-        'annotations': value.annotations,
-        'classified_at': value.classifiedAt,
-        'environmental_cvss': value.environmentalCvss,
-        'groups': value.groups === undefined ? undefined : ((value.groups as Array<any>).map(GroupWithoutAssetsCountToJSON)),
-        'id': value.id,
-        'identifier': value.identifier,
-        'options': value.options,
-        'rolfp': value.rolfp,
-        'scannable': value.scannable,
-        'type': AssettypeToJSON(value.type),
+        'alias': value['alias'],
+        'annotations': value['annotations'],
+        'classified_at': value['classifiedAt'],
+        'environmental_cvss': value['environmentalCvss'],
+        'groups': value['groups'] == null ? undefined : ((value['groups'] as Array<any>).map(GroupWithoutAssetsCountToJSON)),
+        'id': value['id'],
+        'identifier': value['identifier'],
+        'options': value['options'],
+        'rolfp': value['rolfp'],
+        'scannable': value['scannable'],
+        'type': AssettypeToJSON(value['type']),
     };
 }
 

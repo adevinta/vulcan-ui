@@ -24,7 +24,7 @@ import type {
   FindingsLabels,
   FindingsList,
   FindingsTargetsList,
-} from '../models';
+} from '../models/index';
 import {
     FindingFromJSON,
     FindingToJSON,
@@ -44,7 +44,7 @@ import {
     FindingsListToJSON,
     FindingsTargetsListFromJSON,
     FindingsTargetsListToJSON,
-} from '../models';
+} from '../models/index';
 
 export interface FindingsFindFindingRequest {
     findingId: string;
@@ -165,12 +165,18 @@ export class FindingsApi extends runtime.BaseAPI {
      * Find finding findings
      */
     async findingsFindFindingRaw(requestParameters: FindingsFindFindingRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Finding>> {
-        if (requestParameters.findingId === null || requestParameters.findingId === undefined) {
-            throw new runtime.RequiredError('findingId','Required parameter requestParameters.findingId was null or undefined when calling findingsFindFinding.');
+        if (requestParameters['findingId'] == null) {
+            throw new runtime.RequiredError(
+                'findingId',
+                'Required parameter "findingId" was null or undefined when calling findingsFindFinding().'
+            );
         }
 
-        if (requestParameters.teamId === null || requestParameters.teamId === undefined) {
-            throw new runtime.RequiredError('teamId','Required parameter requestParameters.teamId was null or undefined when calling findingsFindFinding.');
+        if (requestParameters['teamId'] == null) {
+            throw new runtime.RequiredError(
+                'teamId',
+                'Required parameter "teamId" was null or undefined when calling findingsFindFinding().'
+            );
         }
 
         const queryParameters: any = {};
@@ -178,11 +184,11 @@ export class FindingsApi extends runtime.BaseAPI {
         const headerParameters: runtime.HTTPHeaders = {};
 
         if (this.configuration && this.configuration.apiKey) {
-            headerParameters["authorization"] = this.configuration.apiKey("authorization"); // Bearer authentication
+            headerParameters["authorization"] = await this.configuration.apiKey("authorization"); // Bearer authentication
         }
 
         const response = await this.request({
-            path: `/teams/{team_id}/findings/{finding_id}`.replace(`{${"finding_id"}}`, encodeURIComponent(String(requestParameters.findingId))).replace(`{${"team_id"}}`, encodeURIComponent(String(requestParameters.teamId))),
+            path: `/teams/{team_id}/findings/{finding_id}`.replace(`{${"finding_id"}}`, encodeURIComponent(String(requestParameters['findingId']))).replace(`{${"team_id"}}`, encodeURIComponent(String(requestParameters['teamId']))),
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
@@ -205,68 +211,74 @@ export class FindingsApi extends runtime.BaseAPI {
      * Find findings from a Issue findings
      */
     async findingsFindFindingsFromAIssueRaw(requestParameters: FindingsFindFindingsFromAIssueRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<FindingsList>> {
-        if (requestParameters.issueId === null || requestParameters.issueId === undefined) {
-            throw new runtime.RequiredError('issueId','Required parameter requestParameters.issueId was null or undefined when calling findingsFindFindingsFromAIssue.');
+        if (requestParameters['issueId'] == null) {
+            throw new runtime.RequiredError(
+                'issueId',
+                'Required parameter "issueId" was null or undefined when calling findingsFindFindingsFromAIssue().'
+            );
         }
 
-        if (requestParameters.teamId === null || requestParameters.teamId === undefined) {
-            throw new runtime.RequiredError('teamId','Required parameter requestParameters.teamId was null or undefined when calling findingsFindFindingsFromAIssue.');
+        if (requestParameters['teamId'] == null) {
+            throw new runtime.RequiredError(
+                'teamId',
+                'Required parameter "teamId" was null or undefined when calling findingsFindFindingsFromAIssue().'
+            );
         }
 
         const queryParameters: any = {};
 
-        if (requestParameters.atDate !== undefined) {
-            queryParameters['atDate'] = requestParameters.atDate;
+        if (requestParameters['atDate'] != null) {
+            queryParameters['atDate'] = requestParameters['atDate'];
         }
 
-        if (requestParameters.identifiers !== undefined) {
-            queryParameters['identifiers'] = requestParameters.identifiers;
+        if (requestParameters['identifiers'] != null) {
+            queryParameters['identifiers'] = requestParameters['identifiers'];
         }
 
-        if (requestParameters.labels !== undefined) {
-            queryParameters['labels'] = requestParameters.labels;
+        if (requestParameters['labels'] != null) {
+            queryParameters['labels'] = requestParameters['labels'];
         }
 
-        if (requestParameters.maxDate !== undefined) {
-            queryParameters['maxDate'] = requestParameters.maxDate;
+        if (requestParameters['maxDate'] != null) {
+            queryParameters['maxDate'] = requestParameters['maxDate'];
         }
 
-        if (requestParameters.maxScore !== undefined) {
-            queryParameters['maxScore'] = requestParameters.maxScore;
+        if (requestParameters['maxScore'] != null) {
+            queryParameters['maxScore'] = requestParameters['maxScore'];
         }
 
-        if (requestParameters.minDate !== undefined) {
-            queryParameters['minDate'] = requestParameters.minDate;
+        if (requestParameters['minDate'] != null) {
+            queryParameters['minDate'] = requestParameters['minDate'];
         }
 
-        if (requestParameters.minScore !== undefined) {
-            queryParameters['minScore'] = requestParameters.minScore;
+        if (requestParameters['minScore'] != null) {
+            queryParameters['minScore'] = requestParameters['minScore'];
         }
 
-        if (requestParameters.page !== undefined) {
-            queryParameters['page'] = requestParameters.page;
+        if (requestParameters['page'] != null) {
+            queryParameters['page'] = requestParameters['page'];
         }
 
-        if (requestParameters.size !== undefined) {
-            queryParameters['size'] = requestParameters.size;
+        if (requestParameters['size'] != null) {
+            queryParameters['size'] = requestParameters['size'];
         }
 
-        if (requestParameters.sortBy !== undefined) {
-            queryParameters['sortBy'] = requestParameters.sortBy;
+        if (requestParameters['sortBy'] != null) {
+            queryParameters['sortBy'] = requestParameters['sortBy'];
         }
 
-        if (requestParameters.status !== undefined) {
-            queryParameters['status'] = requestParameters.status;
+        if (requestParameters['status'] != null) {
+            queryParameters['status'] = requestParameters['status'];
         }
 
         const headerParameters: runtime.HTTPHeaders = {};
 
         if (this.configuration && this.configuration.apiKey) {
-            headerParameters["authorization"] = this.configuration.apiKey("authorization"); // Bearer authentication
+            headerParameters["authorization"] = await this.configuration.apiKey("authorization"); // Bearer authentication
         }
 
         const response = await this.request({
-            path: `/teams/{team_id}/findings/issues/{issue_id}`.replace(`{${"issue_id"}}`, encodeURIComponent(String(requestParameters.issueId))).replace(`{${"team_id"}}`, encodeURIComponent(String(requestParameters.teamId))),
+            path: `/teams/{team_id}/findings/issues/{issue_id}`.replace(`{${"issue_id"}}`, encodeURIComponent(String(requestParameters['issueId']))).replace(`{${"team_id"}}`, encodeURIComponent(String(requestParameters['teamId']))),
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
@@ -289,68 +301,74 @@ export class FindingsApi extends runtime.BaseAPI {
      * Find findings from a Target findings
      */
     async findingsFindFindingsFromATargetRaw(requestParameters: FindingsFindFindingsFromATargetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<FindingsList>> {
-        if (requestParameters.targetId === null || requestParameters.targetId === undefined) {
-            throw new runtime.RequiredError('targetId','Required parameter requestParameters.targetId was null or undefined when calling findingsFindFindingsFromATarget.');
+        if (requestParameters['targetId'] == null) {
+            throw new runtime.RequiredError(
+                'targetId',
+                'Required parameter "targetId" was null or undefined when calling findingsFindFindingsFromATarget().'
+            );
         }
 
-        if (requestParameters.teamId === null || requestParameters.teamId === undefined) {
-            throw new runtime.RequiredError('teamId','Required parameter requestParameters.teamId was null or undefined when calling findingsFindFindingsFromATarget.');
+        if (requestParameters['teamId'] == null) {
+            throw new runtime.RequiredError(
+                'teamId',
+                'Required parameter "teamId" was null or undefined when calling findingsFindFindingsFromATarget().'
+            );
         }
 
         const queryParameters: any = {};
 
-        if (requestParameters.atDate !== undefined) {
-            queryParameters['atDate'] = requestParameters.atDate;
+        if (requestParameters['atDate'] != null) {
+            queryParameters['atDate'] = requestParameters['atDate'];
         }
 
-        if (requestParameters.identifiers !== undefined) {
-            queryParameters['identifiers'] = requestParameters.identifiers;
+        if (requestParameters['identifiers'] != null) {
+            queryParameters['identifiers'] = requestParameters['identifiers'];
         }
 
-        if (requestParameters.labels !== undefined) {
-            queryParameters['labels'] = requestParameters.labels;
+        if (requestParameters['labels'] != null) {
+            queryParameters['labels'] = requestParameters['labels'];
         }
 
-        if (requestParameters.maxDate !== undefined) {
-            queryParameters['maxDate'] = requestParameters.maxDate;
+        if (requestParameters['maxDate'] != null) {
+            queryParameters['maxDate'] = requestParameters['maxDate'];
         }
 
-        if (requestParameters.maxScore !== undefined) {
-            queryParameters['maxScore'] = requestParameters.maxScore;
+        if (requestParameters['maxScore'] != null) {
+            queryParameters['maxScore'] = requestParameters['maxScore'];
         }
 
-        if (requestParameters.minDate !== undefined) {
-            queryParameters['minDate'] = requestParameters.minDate;
+        if (requestParameters['minDate'] != null) {
+            queryParameters['minDate'] = requestParameters['minDate'];
         }
 
-        if (requestParameters.minScore !== undefined) {
-            queryParameters['minScore'] = requestParameters.minScore;
+        if (requestParameters['minScore'] != null) {
+            queryParameters['minScore'] = requestParameters['minScore'];
         }
 
-        if (requestParameters.page !== undefined) {
-            queryParameters['page'] = requestParameters.page;
+        if (requestParameters['page'] != null) {
+            queryParameters['page'] = requestParameters['page'];
         }
 
-        if (requestParameters.size !== undefined) {
-            queryParameters['size'] = requestParameters.size;
+        if (requestParameters['size'] != null) {
+            queryParameters['size'] = requestParameters['size'];
         }
 
-        if (requestParameters.sortBy !== undefined) {
-            queryParameters['sortBy'] = requestParameters.sortBy;
+        if (requestParameters['sortBy'] != null) {
+            queryParameters['sortBy'] = requestParameters['sortBy'];
         }
 
-        if (requestParameters.status !== undefined) {
-            queryParameters['status'] = requestParameters.status;
+        if (requestParameters['status'] != null) {
+            queryParameters['status'] = requestParameters['status'];
         }
 
         const headerParameters: runtime.HTTPHeaders = {};
 
         if (this.configuration && this.configuration.apiKey) {
-            headerParameters["authorization"] = this.configuration.apiKey("authorization"); // Bearer authentication
+            headerParameters["authorization"] = await this.configuration.apiKey("authorization"); // Bearer authentication
         }
 
         const response = await this.request({
-            path: `/teams/{team_id}/findings/targets/{target_id}`.replace(`{${"target_id"}}`, encodeURIComponent(String(requestParameters.targetId))).replace(`{${"team_id"}}`, encodeURIComponent(String(requestParameters.teamId))),
+            path: `/teams/{team_id}/findings/targets/{target_id}`.replace(`{${"target_id"}}`, encodeURIComponent(String(requestParameters['targetId']))).replace(`{${"team_id"}}`, encodeURIComponent(String(requestParameters['teamId']))),
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
@@ -373,12 +391,18 @@ export class FindingsApi extends runtime.BaseAPI {
      * List Finding Overwrites findings
      */
     async findingsListFindingOverwritesRaw(requestParameters: FindingsListFindingOverwritesRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<FindingOverwrite>>> {
-        if (requestParameters.findingId === null || requestParameters.findingId === undefined) {
-            throw new runtime.RequiredError('findingId','Required parameter requestParameters.findingId was null or undefined when calling findingsListFindingOverwrites.');
+        if (requestParameters['findingId'] == null) {
+            throw new runtime.RequiredError(
+                'findingId',
+                'Required parameter "findingId" was null or undefined when calling findingsListFindingOverwrites().'
+            );
         }
 
-        if (requestParameters.teamId === null || requestParameters.teamId === undefined) {
-            throw new runtime.RequiredError('teamId','Required parameter requestParameters.teamId was null or undefined when calling findingsListFindingOverwrites.');
+        if (requestParameters['teamId'] == null) {
+            throw new runtime.RequiredError(
+                'teamId',
+                'Required parameter "teamId" was null or undefined when calling findingsListFindingOverwrites().'
+            );
         }
 
         const queryParameters: any = {};
@@ -386,11 +410,11 @@ export class FindingsApi extends runtime.BaseAPI {
         const headerParameters: runtime.HTTPHeaders = {};
 
         if (this.configuration && this.configuration.apiKey) {
-            headerParameters["authorization"] = this.configuration.apiKey("authorization"); // Bearer authentication
+            headerParameters["authorization"] = await this.configuration.apiKey("authorization"); // Bearer authentication
         }
 
         const response = await this.request({
-            path: `/teams/{team_id}/findings/{finding_id}/overwrites`.replace(`{${"finding_id"}}`, encodeURIComponent(String(requestParameters.findingId))).replace(`{${"team_id"}}`, encodeURIComponent(String(requestParameters.teamId))),
+            path: `/teams/{team_id}/findings/{finding_id}/overwrites`.replace(`{${"finding_id"}}`, encodeURIComponent(String(requestParameters['findingId']))).replace(`{${"team_id"}}`, encodeURIComponent(String(requestParameters['teamId']))),
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
@@ -413,76 +437,79 @@ export class FindingsApi extends runtime.BaseAPI {
      * list findings findings
      */
     async findingsListFindingsRaw(requestParameters: FindingsListFindingsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<FindingsList>> {
-        if (requestParameters.teamId === null || requestParameters.teamId === undefined) {
-            throw new runtime.RequiredError('teamId','Required parameter requestParameters.teamId was null or undefined when calling findingsListFindings.');
+        if (requestParameters['teamId'] == null) {
+            throw new runtime.RequiredError(
+                'teamId',
+                'Required parameter "teamId" was null or undefined when calling findingsListFindings().'
+            );
         }
 
         const queryParameters: any = {};
 
-        if (requestParameters.atDate !== undefined) {
-            queryParameters['atDate'] = requestParameters.atDate;
+        if (requestParameters['atDate'] != null) {
+            queryParameters['atDate'] = requestParameters['atDate'];
         }
 
-        if (requestParameters.identifier !== undefined) {
-            queryParameters['identifier'] = requestParameters.identifier;
+        if (requestParameters['identifier'] != null) {
+            queryParameters['identifier'] = requestParameters['identifier'];
         }
 
-        if (requestParameters.identifiers !== undefined) {
-            queryParameters['identifiers'] = requestParameters.identifiers;
+        if (requestParameters['identifiers'] != null) {
+            queryParameters['identifiers'] = requestParameters['identifiers'];
         }
 
-        if (requestParameters.issueID !== undefined) {
-            queryParameters['issueID'] = requestParameters.issueID;
+        if (requestParameters['issueID'] != null) {
+            queryParameters['issueID'] = requestParameters['issueID'];
         }
 
-        if (requestParameters.labels !== undefined) {
-            queryParameters['labels'] = requestParameters.labels;
+        if (requestParameters['labels'] != null) {
+            queryParameters['labels'] = requestParameters['labels'];
         }
 
-        if (requestParameters.maxDate !== undefined) {
-            queryParameters['maxDate'] = requestParameters.maxDate;
+        if (requestParameters['maxDate'] != null) {
+            queryParameters['maxDate'] = requestParameters['maxDate'];
         }
 
-        if (requestParameters.maxScore !== undefined) {
-            queryParameters['maxScore'] = requestParameters.maxScore;
+        if (requestParameters['maxScore'] != null) {
+            queryParameters['maxScore'] = requestParameters['maxScore'];
         }
 
-        if (requestParameters.minDate !== undefined) {
-            queryParameters['minDate'] = requestParameters.minDate;
+        if (requestParameters['minDate'] != null) {
+            queryParameters['minDate'] = requestParameters['minDate'];
         }
 
-        if (requestParameters.minScore !== undefined) {
-            queryParameters['minScore'] = requestParameters.minScore;
+        if (requestParameters['minScore'] != null) {
+            queryParameters['minScore'] = requestParameters['minScore'];
         }
 
-        if (requestParameters.page !== undefined) {
-            queryParameters['page'] = requestParameters.page;
+        if (requestParameters['page'] != null) {
+            queryParameters['page'] = requestParameters['page'];
         }
 
-        if (requestParameters.size !== undefined) {
-            queryParameters['size'] = requestParameters.size;
+        if (requestParameters['size'] != null) {
+            queryParameters['size'] = requestParameters['size'];
         }
 
-        if (requestParameters.sortBy !== undefined) {
-            queryParameters['sortBy'] = requestParameters.sortBy;
+        if (requestParameters['sortBy'] != null) {
+            queryParameters['sortBy'] = requestParameters['sortBy'];
         }
 
-        if (requestParameters.status !== undefined) {
-            queryParameters['status'] = requestParameters.status;
+        if (requestParameters['status'] != null) {
+            queryParameters['status'] = requestParameters['status'];
         }
 
-        if (requestParameters.targetID !== undefined) {
-            queryParameters['targetID'] = requestParameters.targetID;
+        if (requestParameters['targetID'] != null) {
+            queryParameters['targetID'] = requestParameters['targetID'];
         }
 
         const headerParameters: runtime.HTTPHeaders = {};
 
         if (this.configuration && this.configuration.apiKey) {
-            headerParameters["authorization"] = this.configuration.apiKey("authorization"); // Bearer authentication
+            headerParameters["authorization"] = await this.configuration.apiKey("authorization"); // Bearer authentication
         }
 
         const response = await this.request({
-            path: `/teams/{team_id}/findings`.replace(`{${"team_id"}}`, encodeURIComponent(String(requestParameters.teamId))),
+            path: `/teams/{team_id}/findings`.replace(`{${"team_id"}}`, encodeURIComponent(String(requestParameters['teamId']))),
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
@@ -505,60 +532,63 @@ export class FindingsApi extends runtime.BaseAPI {
      * list findings issues findings
      */
     async findingsListFindingsIssuesRaw(requestParameters: FindingsListFindingsIssuesRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<FindingsIssuesList>> {
-        if (requestParameters.teamId === null || requestParameters.teamId === undefined) {
-            throw new runtime.RequiredError('teamId','Required parameter requestParameters.teamId was null or undefined when calling findingsListFindingsIssues.');
+        if (requestParameters['teamId'] == null) {
+            throw new runtime.RequiredError(
+                'teamId',
+                'Required parameter "teamId" was null or undefined when calling findingsListFindingsIssues().'
+            );
         }
 
         const queryParameters: any = {};
 
-        if (requestParameters.atDate !== undefined) {
-            queryParameters['atDate'] = requestParameters.atDate;
+        if (requestParameters['atDate'] != null) {
+            queryParameters['atDate'] = requestParameters['atDate'];
         }
 
-        if (requestParameters.identifiers !== undefined) {
-            queryParameters['identifiers'] = requestParameters.identifiers;
+        if (requestParameters['identifiers'] != null) {
+            queryParameters['identifiers'] = requestParameters['identifiers'];
         }
 
-        if (requestParameters.labels !== undefined) {
-            queryParameters['labels'] = requestParameters.labels;
+        if (requestParameters['labels'] != null) {
+            queryParameters['labels'] = requestParameters['labels'];
         }
 
-        if (requestParameters.maxDate !== undefined) {
-            queryParameters['maxDate'] = requestParameters.maxDate;
+        if (requestParameters['maxDate'] != null) {
+            queryParameters['maxDate'] = requestParameters['maxDate'];
         }
 
-        if (requestParameters.minDate !== undefined) {
-            queryParameters['minDate'] = requestParameters.minDate;
+        if (requestParameters['minDate'] != null) {
+            queryParameters['minDate'] = requestParameters['minDate'];
         }
 
-        if (requestParameters.page !== undefined) {
-            queryParameters['page'] = requestParameters.page;
+        if (requestParameters['page'] != null) {
+            queryParameters['page'] = requestParameters['page'];
         }
 
-        if (requestParameters.size !== undefined) {
-            queryParameters['size'] = requestParameters.size;
+        if (requestParameters['size'] != null) {
+            queryParameters['size'] = requestParameters['size'];
         }
 
-        if (requestParameters.sortBy !== undefined) {
-            queryParameters['sortBy'] = requestParameters.sortBy;
+        if (requestParameters['sortBy'] != null) {
+            queryParameters['sortBy'] = requestParameters['sortBy'];
         }
 
-        if (requestParameters.status !== undefined) {
-            queryParameters['status'] = requestParameters.status;
+        if (requestParameters['status'] != null) {
+            queryParameters['status'] = requestParameters['status'];
         }
 
-        if (requestParameters.targetID !== undefined) {
-            queryParameters['targetID'] = requestParameters.targetID;
+        if (requestParameters['targetID'] != null) {
+            queryParameters['targetID'] = requestParameters['targetID'];
         }
 
         const headerParameters: runtime.HTTPHeaders = {};
 
         if (this.configuration && this.configuration.apiKey) {
-            headerParameters["authorization"] = this.configuration.apiKey("authorization"); // Bearer authentication
+            headerParameters["authorization"] = await this.configuration.apiKey("authorization"); // Bearer authentication
         }
 
         const response = await this.request({
-            path: `/teams/{team_id}/findings/issues`.replace(`{${"team_id"}}`, encodeURIComponent(String(requestParameters.teamId))),
+            path: `/teams/{team_id}/findings/issues`.replace(`{${"team_id"}}`, encodeURIComponent(String(requestParameters['teamId']))),
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
@@ -581,40 +611,43 @@ export class FindingsApi extends runtime.BaseAPI {
      * List findings labels findings
      */
     async findingsListFindingsLabelsRaw(requestParameters: FindingsListFindingsLabelsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<FindingsLabels>> {
-        if (requestParameters.teamId === null || requestParameters.teamId === undefined) {
-            throw new runtime.RequiredError('teamId','Required parameter requestParameters.teamId was null or undefined when calling findingsListFindingsLabels.');
+        if (requestParameters['teamId'] == null) {
+            throw new runtime.RequiredError(
+                'teamId',
+                'Required parameter "teamId" was null or undefined when calling findingsListFindingsLabels().'
+            );
         }
 
         const queryParameters: any = {};
 
-        if (requestParameters.atDate !== undefined) {
-            queryParameters['atDate'] = requestParameters.atDate;
+        if (requestParameters['atDate'] != null) {
+            queryParameters['atDate'] = requestParameters['atDate'];
         }
 
-        if (requestParameters.identifiers !== undefined) {
-            queryParameters['identifiers'] = requestParameters.identifiers;
+        if (requestParameters['identifiers'] != null) {
+            queryParameters['identifiers'] = requestParameters['identifiers'];
         }
 
-        if (requestParameters.maxDate !== undefined) {
-            queryParameters['maxDate'] = requestParameters.maxDate;
+        if (requestParameters['maxDate'] != null) {
+            queryParameters['maxDate'] = requestParameters['maxDate'];
         }
 
-        if (requestParameters.minDate !== undefined) {
-            queryParameters['minDate'] = requestParameters.minDate;
+        if (requestParameters['minDate'] != null) {
+            queryParameters['minDate'] = requestParameters['minDate'];
         }
 
-        if (requestParameters.status !== undefined) {
-            queryParameters['status'] = requestParameters.status;
+        if (requestParameters['status'] != null) {
+            queryParameters['status'] = requestParameters['status'];
         }
 
         const headerParameters: runtime.HTTPHeaders = {};
 
         if (this.configuration && this.configuration.apiKey) {
-            headerParameters["authorization"] = this.configuration.apiKey("authorization"); // Bearer authentication
+            headerParameters["authorization"] = await this.configuration.apiKey("authorization"); // Bearer authentication
         }
 
         const response = await this.request({
-            path: `/teams/{team_id}/findings/labels`.replace(`{${"team_id"}}`, encodeURIComponent(String(requestParameters.teamId))),
+            path: `/teams/{team_id}/findings/labels`.replace(`{${"team_id"}}`, encodeURIComponent(String(requestParameters['teamId']))),
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
@@ -637,60 +670,63 @@ export class FindingsApi extends runtime.BaseAPI {
      * list findings targets findings
      */
     async findingsListFindingsTargetsRaw(requestParameters: FindingsListFindingsTargetsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<FindingsTargetsList>> {
-        if (requestParameters.teamId === null || requestParameters.teamId === undefined) {
-            throw new runtime.RequiredError('teamId','Required parameter requestParameters.teamId was null or undefined when calling findingsListFindingsTargets.');
+        if (requestParameters['teamId'] == null) {
+            throw new runtime.RequiredError(
+                'teamId',
+                'Required parameter "teamId" was null or undefined when calling findingsListFindingsTargets().'
+            );
         }
 
         const queryParameters: any = {};
 
-        if (requestParameters.atDate !== undefined) {
-            queryParameters['atDate'] = requestParameters.atDate;
+        if (requestParameters['atDate'] != null) {
+            queryParameters['atDate'] = requestParameters['atDate'];
         }
 
-        if (requestParameters.identifiers !== undefined) {
-            queryParameters['identifiers'] = requestParameters.identifiers;
+        if (requestParameters['identifiers'] != null) {
+            queryParameters['identifiers'] = requestParameters['identifiers'];
         }
 
-        if (requestParameters.issueID !== undefined) {
-            queryParameters['issueID'] = requestParameters.issueID;
+        if (requestParameters['issueID'] != null) {
+            queryParameters['issueID'] = requestParameters['issueID'];
         }
 
-        if (requestParameters.labels !== undefined) {
-            queryParameters['labels'] = requestParameters.labels;
+        if (requestParameters['labels'] != null) {
+            queryParameters['labels'] = requestParameters['labels'];
         }
 
-        if (requestParameters.maxDate !== undefined) {
-            queryParameters['maxDate'] = requestParameters.maxDate;
+        if (requestParameters['maxDate'] != null) {
+            queryParameters['maxDate'] = requestParameters['maxDate'];
         }
 
-        if (requestParameters.minDate !== undefined) {
-            queryParameters['minDate'] = requestParameters.minDate;
+        if (requestParameters['minDate'] != null) {
+            queryParameters['minDate'] = requestParameters['minDate'];
         }
 
-        if (requestParameters.page !== undefined) {
-            queryParameters['page'] = requestParameters.page;
+        if (requestParameters['page'] != null) {
+            queryParameters['page'] = requestParameters['page'];
         }
 
-        if (requestParameters.size !== undefined) {
-            queryParameters['size'] = requestParameters.size;
+        if (requestParameters['size'] != null) {
+            queryParameters['size'] = requestParameters['size'];
         }
 
-        if (requestParameters.sortBy !== undefined) {
-            queryParameters['sortBy'] = requestParameters.sortBy;
+        if (requestParameters['sortBy'] != null) {
+            queryParameters['sortBy'] = requestParameters['sortBy'];
         }
 
-        if (requestParameters.status !== undefined) {
-            queryParameters['status'] = requestParameters.status;
+        if (requestParameters['status'] != null) {
+            queryParameters['status'] = requestParameters['status'];
         }
 
         const headerParameters: runtime.HTTPHeaders = {};
 
         if (this.configuration && this.configuration.apiKey) {
-            headerParameters["authorization"] = this.configuration.apiKey("authorization"); // Bearer authentication
+            headerParameters["authorization"] = await this.configuration.apiKey("authorization"); // Bearer authentication
         }
 
         const response = await this.request({
-            path: `/teams/{team_id}/findings/targets`.replace(`{${"team_id"}}`, encodeURIComponent(String(requestParameters.teamId))),
+            path: `/teams/{team_id}/findings/targets`.replace(`{${"team_id"}}`, encodeURIComponent(String(requestParameters['teamId']))),
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
@@ -713,16 +749,25 @@ export class FindingsApi extends runtime.BaseAPI {
      * Submit a Finding Overwrite findings
      */
     async findingsSubmitAFindingOverwriteRaw(requestParameters: FindingsSubmitAFindingOverwriteRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<FindingsList>> {
-        if (requestParameters.findingId === null || requestParameters.findingId === undefined) {
-            throw new runtime.RequiredError('findingId','Required parameter requestParameters.findingId was null or undefined when calling findingsSubmitAFindingOverwrite.');
+        if (requestParameters['findingId'] == null) {
+            throw new runtime.RequiredError(
+                'findingId',
+                'Required parameter "findingId" was null or undefined when calling findingsSubmitAFindingOverwrite().'
+            );
         }
 
-        if (requestParameters.teamId === null || requestParameters.teamId === undefined) {
-            throw new runtime.RequiredError('teamId','Required parameter requestParameters.teamId was null or undefined when calling findingsSubmitAFindingOverwrite.');
+        if (requestParameters['teamId'] == null) {
+            throw new runtime.RequiredError(
+                'teamId',
+                'Required parameter "teamId" was null or undefined when calling findingsSubmitAFindingOverwrite().'
+            );
         }
 
-        if (requestParameters.payload === null || requestParameters.payload === undefined) {
-            throw new runtime.RequiredError('payload','Required parameter requestParameters.payload was null or undefined when calling findingsSubmitAFindingOverwrite.');
+        if (requestParameters['payload'] == null) {
+            throw new runtime.RequiredError(
+                'payload',
+                'Required parameter "payload" was null or undefined when calling findingsSubmitAFindingOverwrite().'
+            );
         }
 
         const queryParameters: any = {};
@@ -732,15 +777,15 @@ export class FindingsApi extends runtime.BaseAPI {
         headerParameters['Content-Type'] = 'application/json';
 
         if (this.configuration && this.configuration.apiKey) {
-            headerParameters["authorization"] = this.configuration.apiKey("authorization"); // Bearer authentication
+            headerParameters["authorization"] = await this.configuration.apiKey("authorization"); // Bearer authentication
         }
 
         const response = await this.request({
-            path: `/teams/{team_id}/findings/{finding_id}/overwrites`.replace(`{${"finding_id"}}`, encodeURIComponent(String(requestParameters.findingId))).replace(`{${"team_id"}}`, encodeURIComponent(String(requestParameters.teamId))),
+            path: `/teams/{team_id}/findings/{finding_id}/overwrites`.replace(`{${"finding_id"}}`, encodeURIComponent(String(requestParameters['findingId']))).replace(`{${"team_id"}}`, encodeURIComponent(String(requestParameters['teamId']))),
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
-            body: FindingOverwritePayloadToJSON(requestParameters.payload),
+            body: FindingOverwritePayloadToJSON(requestParameters['payload']),
         }, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => FindingsListFromJSON(jsonValue));
@@ -760,16 +805,25 @@ export class FindingsApi extends runtime.BaseAPI {
      * Submit a Finding Ticket Creation findings
      */
     async findingsSubmitAFindingTicketCreationRaw(requestParameters: FindingsSubmitAFindingTicketCreationRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<FindingTicket>> {
-        if (requestParameters.findingId === null || requestParameters.findingId === undefined) {
-            throw new runtime.RequiredError('findingId','Required parameter requestParameters.findingId was null or undefined when calling findingsSubmitAFindingTicketCreation.');
+        if (requestParameters['findingId'] == null) {
+            throw new runtime.RequiredError(
+                'findingId',
+                'Required parameter "findingId" was null or undefined when calling findingsSubmitAFindingTicketCreation().'
+            );
         }
 
-        if (requestParameters.teamId === null || requestParameters.teamId === undefined) {
-            throw new runtime.RequiredError('teamId','Required parameter requestParameters.teamId was null or undefined when calling findingsSubmitAFindingTicketCreation.');
+        if (requestParameters['teamId'] == null) {
+            throw new runtime.RequiredError(
+                'teamId',
+                'Required parameter "teamId" was null or undefined when calling findingsSubmitAFindingTicketCreation().'
+            );
         }
 
-        if (requestParameters.payload === null || requestParameters.payload === undefined) {
-            throw new runtime.RequiredError('payload','Required parameter requestParameters.payload was null or undefined when calling findingsSubmitAFindingTicketCreation.');
+        if (requestParameters['payload'] == null) {
+            throw new runtime.RequiredError(
+                'payload',
+                'Required parameter "payload" was null or undefined when calling findingsSubmitAFindingTicketCreation().'
+            );
         }
 
         const queryParameters: any = {};
@@ -779,15 +833,15 @@ export class FindingsApi extends runtime.BaseAPI {
         headerParameters['Content-Type'] = 'application/json';
 
         if (this.configuration && this.configuration.apiKey) {
-            headerParameters["authorization"] = this.configuration.apiKey("authorization"); // Bearer authentication
+            headerParameters["authorization"] = await this.configuration.apiKey("authorization"); // Bearer authentication
         }
 
         const response = await this.request({
-            path: `/teams/{team_id}/findings/{finding_id}/ticket`.replace(`{${"finding_id"}}`, encodeURIComponent(String(requestParameters.findingId))).replace(`{${"team_id"}}`, encodeURIComponent(String(requestParameters.teamId))),
+            path: `/teams/{team_id}/findings/{finding_id}/ticket`.replace(`{${"finding_id"}}`, encodeURIComponent(String(requestParameters['findingId']))).replace(`{${"team_id"}}`, encodeURIComponent(String(requestParameters['teamId']))),
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
-            body: FindingTicketPayloadToJSON(requestParameters.payload),
+            body: FindingTicketPayloadToJSON(requestParameters['payload']),
         }, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => FindingTicketFromJSON(jsonValue));

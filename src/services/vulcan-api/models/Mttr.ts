@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 import type { Statstotal } from './Statstotal';
 import {
     StatstotalFromJSON,
@@ -38,9 +38,7 @@ export interface Mttr {
  * Check if a given object implements the Mttr interface.
  */
 export function instanceOfMttr(value: object): boolean {
-    let isInstance = true;
-
-    return isInstance;
+    return true;
 }
 
 export function MttrFromJSON(json: any): Mttr {
@@ -48,25 +46,22 @@ export function MttrFromJSON(json: any): Mttr {
 }
 
 export function MttrFromJSONTyped(json: any, ignoreDiscriminator: boolean): Mttr {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
         
-        'mttr': !exists(json, 'mttr') ? undefined : StatstotalFromJSON(json['mttr']),
+        'mttr': json['mttr'] == null ? undefined : StatstotalFromJSON(json['mttr']),
     };
 }
 
 export function MttrToJSON(value?: Mttr | null): any {
-    if (value === undefined) {
-        return undefined;
-    }
-    if (value === null) {
-        return null;
+    if (value == null) {
+        return value;
     }
     return {
         
-        'mttr': StatstotalToJSON(value.mttr),
+        'mttr': StatstotalToJSON(value['mttr']),
     };
 }
 

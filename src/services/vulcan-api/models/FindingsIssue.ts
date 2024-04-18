@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 /**
  * Findings by Issue (default view)
  * @export
@@ -55,9 +55,7 @@ export interface FindingsIssue {
  * Check if a given object implements the FindingsIssue interface.
  */
 export function instanceOfFindingsIssue(value: object): boolean {
-    let isInstance = true;
-
-    return isInstance;
+    return true;
 }
 
 export function FindingsIssueFromJSON(json: any): FindingsIssue {
@@ -65,33 +63,30 @@ export function FindingsIssueFromJSON(json: any): FindingsIssue {
 }
 
 export function FindingsIssueFromJSONTyped(json: any, ignoreDiscriminator: boolean): FindingsIssue {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
         
-        'issueId': !exists(json, 'issue_id') ? undefined : json['issue_id'],
-        'maxScore': !exists(json, 'max_score') ? undefined : json['max_score'],
-        'resourcesCount': !exists(json, 'resources_count') ? undefined : json['resources_count'],
-        'summary': !exists(json, 'summary') ? undefined : json['summary'],
-        'targetsCount': !exists(json, 'targets_count') ? undefined : json['targets_count'],
+        'issueId': json['issue_id'] == null ? undefined : json['issue_id'],
+        'maxScore': json['max_score'] == null ? undefined : json['max_score'],
+        'resourcesCount': json['resources_count'] == null ? undefined : json['resources_count'],
+        'summary': json['summary'] == null ? undefined : json['summary'],
+        'targetsCount': json['targets_count'] == null ? undefined : json['targets_count'],
     };
 }
 
 export function FindingsIssueToJSON(value?: FindingsIssue | null): any {
-    if (value === undefined) {
-        return undefined;
-    }
-    if (value === null) {
-        return null;
+    if (value == null) {
+        return value;
     }
     return {
         
-        'issue_id': value.issueId,
-        'max_score': value.maxScore,
-        'resources_count': value.resourcesCount,
-        'summary': value.summary,
-        'targets_count': value.targetsCount,
+        'issue_id': value['issueId'],
+        'max_score': value['maxScore'],
+        'resources_count': value['resourcesCount'],
+        'summary': value['summary'],
+        'targets_count': value['targetsCount'],
     };
 }
 

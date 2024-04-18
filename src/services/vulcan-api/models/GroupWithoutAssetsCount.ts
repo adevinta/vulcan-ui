@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 /**
  * Group (WithoutAssetsCount view)
  * @export
@@ -49,9 +49,7 @@ export interface GroupWithoutAssetsCount {
  * Check if a given object implements the GroupWithoutAssetsCount interface.
  */
 export function instanceOfGroupWithoutAssetsCount(value: object): boolean {
-    let isInstance = true;
-
-    return isInstance;
+    return true;
 }
 
 export function GroupWithoutAssetsCountFromJSON(json: any): GroupWithoutAssetsCount {
@@ -59,31 +57,28 @@ export function GroupWithoutAssetsCountFromJSON(json: any): GroupWithoutAssetsCo
 }
 
 export function GroupWithoutAssetsCountFromJSONTyped(json: any, ignoreDiscriminator: boolean): GroupWithoutAssetsCount {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
         
-        'description': !exists(json, 'description') ? undefined : json['description'],
-        'id': !exists(json, 'id') ? undefined : json['id'],
-        'name': !exists(json, 'name') ? undefined : json['name'],
-        'options': !exists(json, 'options') ? undefined : json['options'],
+        'description': json['description'] == null ? undefined : json['description'],
+        'id': json['id'] == null ? undefined : json['id'],
+        'name': json['name'] == null ? undefined : json['name'],
+        'options': json['options'] == null ? undefined : json['options'],
     };
 }
 
 export function GroupWithoutAssetsCountToJSON(value?: GroupWithoutAssetsCount | null): any {
-    if (value === undefined) {
-        return undefined;
-    }
-    if (value === null) {
-        return null;
+    if (value == null) {
+        return value;
     }
     return {
         
-        'description': value.description,
-        'id': value.id,
-        'name': value.name,
-        'options': value.options,
+        'description': value['description'],
+        'id': value['id'],
+        'name': value['name'],
+        'options': value['options'],
     };
 }
 

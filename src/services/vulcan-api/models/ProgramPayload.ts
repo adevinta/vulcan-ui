@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 import type { ProgramPolicyGroupPayload } from './ProgramPolicyGroupPayload';
 import {
     ProgramPolicyGroupPayloadFromJSON,
@@ -56,9 +56,7 @@ export interface ProgramPayload {
  * Check if a given object implements the ProgramPayload interface.
  */
 export function instanceOfProgramPayload(value: object): boolean {
-    let isInstance = true;
-
-    return isInstance;
+    return true;
 }
 
 export function ProgramPayloadFromJSON(json: any): ProgramPayload {
@@ -66,31 +64,28 @@ export function ProgramPayloadFromJSON(json: any): ProgramPayload {
 }
 
 export function ProgramPayloadFromJSONTyped(json: any, ignoreDiscriminator: boolean): ProgramPayload {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
         
-        'autosend': !exists(json, 'autosend') ? undefined : json['autosend'],
-        'disabled': !exists(json, 'disabled') ? undefined : json['disabled'],
-        'name': !exists(json, 'name') ? undefined : json['name'],
-        'policyGroups': !exists(json, 'policy_groups') ? undefined : ((json['policy_groups'] as Array<any>).map(ProgramPolicyGroupPayloadFromJSON)),
+        'autosend': json['autosend'] == null ? undefined : json['autosend'],
+        'disabled': json['disabled'] == null ? undefined : json['disabled'],
+        'name': json['name'] == null ? undefined : json['name'],
+        'policyGroups': json['policy_groups'] == null ? undefined : ((json['policy_groups'] as Array<any>).map(ProgramPolicyGroupPayloadFromJSON)),
     };
 }
 
 export function ProgramPayloadToJSON(value?: ProgramPayload | null): any {
-    if (value === undefined) {
-        return undefined;
-    }
-    if (value === null) {
-        return null;
+    if (value == null) {
+        return value;
     }
     return {
         
-        'autosend': value.autosend,
-        'disabled': value.disabled,
-        'name': value.name,
-        'policy_groups': value.policyGroups === undefined ? undefined : ((value.policyGroups as Array<any>).map(ProgramPolicyGroupPayloadToJSON)),
+        'autosend': value['autosend'],
+        'disabled': value['disabled'],
+        'name': value['name'],
+        'policy_groups': value['policyGroups'] == null ? undefined : ((value['policyGroups'] as Array<any>).map(ProgramPolicyGroupPayloadToJSON)),
     };
 }
 

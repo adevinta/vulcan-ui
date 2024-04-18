@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 /**
  * 
  * @export
@@ -31,10 +31,8 @@ export interface RecipientsPayload {
  * Check if a given object implements the RecipientsPayload interface.
  */
 export function instanceOfRecipientsPayload(value: object): boolean {
-    let isInstance = true;
-    isInstance = isInstance && "emails" in value;
-
-    return isInstance;
+    if (!('emails' in value)) return false;
+    return true;
 }
 
 export function RecipientsPayloadFromJSON(json: any): RecipientsPayload {
@@ -42,7 +40,7 @@ export function RecipientsPayloadFromJSON(json: any): RecipientsPayload {
 }
 
 export function RecipientsPayloadFromJSONTyped(json: any, ignoreDiscriminator: boolean): RecipientsPayload {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
@@ -52,15 +50,12 @@ export function RecipientsPayloadFromJSONTyped(json: any, ignoreDiscriminator: b
 }
 
 export function RecipientsPayloadToJSON(value?: RecipientsPayload | null): any {
-    if (value === undefined) {
-        return undefined;
-    }
-    if (value === null) {
-        return null;
+    if (value == null) {
+        return value;
     }
     return {
         
-        'emails': value.emails,
+        'emails': value['emails'],
     };
 }
 

@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 import type { Attachment } from './Attachment';
 import {
     AttachmentFromJSON,
@@ -140,9 +140,7 @@ export interface Finding {
  * Check if a given object implements the Finding interface.
  */
 export function instanceOfFinding(value: object): boolean {
-    let isInstance = true;
-
-    return isInstance;
+    return true;
 }
 
 export function FindingFromJSON(json: any): Finding {
@@ -150,51 +148,48 @@ export function FindingFromJSON(json: any): Finding {
 }
 
 export function FindingFromJSONTyped(json: any, ignoreDiscriminator: boolean): Finding {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
         
-        'affectedResource': !exists(json, 'affected_resource') ? undefined : json['affected_resource'],
-        'attachments': !exists(json, 'attachments') ? undefined : ((json['attachments'] as Array<any>).map(AttachmentFromJSON)),
-        'currentExposure': !exists(json, 'current_exposure') ? undefined : json['current_exposure'],
-        'details': !exists(json, 'details') ? undefined : json['details'],
-        'id': !exists(json, 'id') ? undefined : json['id'],
-        'impactDetails': !exists(json, 'impact_details') ? undefined : json['impact_details'],
-        'issue': !exists(json, 'issue') ? undefined : IssueFromJSON(json['issue']),
-        'resources': !exists(json, 'resources') ? undefined : ((json['resources'] as Array<any>).map(ResourceFromJSON)),
-        'score': !exists(json, 'score') ? undefined : json['score'],
-        'source': !exists(json, 'source') ? undefined : SourceFromJSON(json['source']),
-        'status': !exists(json, 'status') ? undefined : json['status'],
-        'target': !exists(json, 'target') ? undefined : TargetFromJSON(json['target']),
-        'totalExposure': !exists(json, 'total_exposure') ? undefined : json['total_exposure'],
-        'urlTracker': !exists(json, 'url_tracker') ? undefined : json['url_tracker'],
+        'affectedResource': json['affected_resource'] == null ? undefined : json['affected_resource'],
+        'attachments': json['attachments'] == null ? undefined : ((json['attachments'] as Array<any>).map(AttachmentFromJSON)),
+        'currentExposure': json['current_exposure'] == null ? undefined : json['current_exposure'],
+        'details': json['details'] == null ? undefined : json['details'],
+        'id': json['id'] == null ? undefined : json['id'],
+        'impactDetails': json['impact_details'] == null ? undefined : json['impact_details'],
+        'issue': json['issue'] == null ? undefined : IssueFromJSON(json['issue']),
+        'resources': json['resources'] == null ? undefined : ((json['resources'] as Array<any>).map(ResourceFromJSON)),
+        'score': json['score'] == null ? undefined : json['score'],
+        'source': json['source'] == null ? undefined : SourceFromJSON(json['source']),
+        'status': json['status'] == null ? undefined : json['status'],
+        'target': json['target'] == null ? undefined : TargetFromJSON(json['target']),
+        'totalExposure': json['total_exposure'] == null ? undefined : json['total_exposure'],
+        'urlTracker': json['url_tracker'] == null ? undefined : json['url_tracker'],
     };
 }
 
 export function FindingToJSON(value?: Finding | null): any {
-    if (value === undefined) {
-        return undefined;
-    }
-    if (value === null) {
-        return null;
+    if (value == null) {
+        return value;
     }
     return {
         
-        'affected_resource': value.affectedResource,
-        'attachments': value.attachments === undefined ? undefined : ((value.attachments as Array<any>).map(AttachmentToJSON)),
-        'current_exposure': value.currentExposure,
-        'details': value.details,
-        'id': value.id,
-        'impact_details': value.impactDetails,
-        'issue': IssueToJSON(value.issue),
-        'resources': value.resources === undefined ? undefined : ((value.resources as Array<any>).map(ResourceToJSON)),
-        'score': value.score,
-        'source': SourceToJSON(value.source),
-        'status': value.status,
-        'target': TargetToJSON(value.target),
-        'total_exposure': value.totalExposure,
-        'url_tracker': value.urlTracker,
+        'affected_resource': value['affectedResource'],
+        'attachments': value['attachments'] == null ? undefined : ((value['attachments'] as Array<any>).map(AttachmentToJSON)),
+        'current_exposure': value['currentExposure'],
+        'details': value['details'],
+        'id': value['id'],
+        'impact_details': value['impactDetails'],
+        'issue': IssueToJSON(value['issue']),
+        'resources': value['resources'] == null ? undefined : ((value['resources'] as Array<any>).map(ResourceToJSON)),
+        'score': value['score'],
+        'source': SourceToJSON(value['source']),
+        'status': value['status'],
+        'target': TargetToJSON(value['target']),
+        'total_exposure': value['totalExposure'],
+        'url_tracker': value['urlTracker'],
     };
 }
 

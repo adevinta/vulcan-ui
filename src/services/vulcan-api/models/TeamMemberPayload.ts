@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 /**
  * 
  * @export
@@ -43,9 +43,7 @@ export interface TeamMemberPayload {
  * Check if a given object implements the TeamMemberPayload interface.
  */
 export function instanceOfTeamMemberPayload(value: object): boolean {
-    let isInstance = true;
-
-    return isInstance;
+    return true;
 }
 
 export function TeamMemberPayloadFromJSON(json: any): TeamMemberPayload {
@@ -53,29 +51,26 @@ export function TeamMemberPayloadFromJSON(json: any): TeamMemberPayload {
 }
 
 export function TeamMemberPayloadFromJSONTyped(json: any, ignoreDiscriminator: boolean): TeamMemberPayload {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
         
-        'email': !exists(json, 'email') ? undefined : json['email'],
-        'role': !exists(json, 'role') ? undefined : json['role'],
-        'userId': !exists(json, 'user_id') ? undefined : json['user_id'],
+        'email': json['email'] == null ? undefined : json['email'],
+        'role': json['role'] == null ? undefined : json['role'],
+        'userId': json['user_id'] == null ? undefined : json['user_id'],
     };
 }
 
 export function TeamMemberPayloadToJSON(value?: TeamMemberPayload | null): any {
-    if (value === undefined) {
-        return undefined;
-    }
-    if (value === null) {
-        return null;
+    if (value == null) {
+        return value;
     }
     return {
         
-        'email': value.email,
-        'role': value.role,
-        'user_id': value.userId,
+        'email': value['email'],
+        'role': value['role'],
+        'user_id': value['userId'],
     };
 }
 

@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 import type { AssetWithAnnotationsPayload } from './AssetWithAnnotationsPayload';
 import {
     AssetWithAnnotationsPayloadFromJSON,
@@ -46,10 +46,8 @@ export interface DiscoveredAssetsPayload {
  * Check if a given object implements the DiscoveredAssetsPayload interface.
  */
 export function instanceOfDiscoveredAssetsPayload(value: object): boolean {
-    let isInstance = true;
-    isInstance = isInstance && "groupName" in value;
-
-    return isInstance;
+    if (!('groupName' in value)) return false;
+    return true;
 }
 
 export function DiscoveredAssetsPayloadFromJSON(json: any): DiscoveredAssetsPayload {
@@ -57,27 +55,24 @@ export function DiscoveredAssetsPayloadFromJSON(json: any): DiscoveredAssetsPayl
 }
 
 export function DiscoveredAssetsPayloadFromJSONTyped(json: any, ignoreDiscriminator: boolean): DiscoveredAssetsPayload {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
         
-        'assets': !exists(json, 'assets') ? undefined : ((json['assets'] as Array<any>).map(AssetWithAnnotationsPayloadFromJSON)),
+        'assets': json['assets'] == null ? undefined : ((json['assets'] as Array<any>).map(AssetWithAnnotationsPayloadFromJSON)),
         'groupName': json['group_name'],
     };
 }
 
 export function DiscoveredAssetsPayloadToJSON(value?: DiscoveredAssetsPayload | null): any {
-    if (value === undefined) {
-        return undefined;
-    }
-    if (value === null) {
-        return null;
+    if (value == null) {
+        return value;
     }
     return {
         
-        'assets': value.assets === undefined ? undefined : ((value.assets as Array<any>).map(AssetWithAnnotationsPayloadToJSON)),
-        'group_name': value.groupName,
+        'assets': value['assets'] == null ? undefined : ((value['assets'] as Array<any>).map(AssetWithAnnotationsPayloadToJSON)),
+        'group_name': value['groupName'],
     };
 }
 

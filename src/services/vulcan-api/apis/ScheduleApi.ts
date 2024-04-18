@@ -17,13 +17,13 @@ import * as runtime from '../runtime';
 import type {
   Schedule,
   ScheduleUpdatePayload,
-} from '../models';
+} from '../models/index';
 import {
     ScheduleFromJSON,
     ScheduleToJSON,
     ScheduleUpdatePayloadFromJSON,
     ScheduleUpdatePayloadToJSON,
-} from '../models';
+} from '../models/index';
 
 export interface ScheduleDeleteRequest {
     programId: string;
@@ -46,12 +46,18 @@ export class ScheduleApi extends runtime.BaseAPI {
      * delete schedule
      */
     async scheduleDeleteRaw(requestParameters: ScheduleDeleteRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
-        if (requestParameters.programId === null || requestParameters.programId === undefined) {
-            throw new runtime.RequiredError('programId','Required parameter requestParameters.programId was null or undefined when calling scheduleDelete.');
+        if (requestParameters['programId'] == null) {
+            throw new runtime.RequiredError(
+                'programId',
+                'Required parameter "programId" was null or undefined when calling scheduleDelete().'
+            );
         }
 
-        if (requestParameters.teamId === null || requestParameters.teamId === undefined) {
-            throw new runtime.RequiredError('teamId','Required parameter requestParameters.teamId was null or undefined when calling scheduleDelete.');
+        if (requestParameters['teamId'] == null) {
+            throw new runtime.RequiredError(
+                'teamId',
+                'Required parameter "teamId" was null or undefined when calling scheduleDelete().'
+            );
         }
 
         const queryParameters: any = {};
@@ -59,11 +65,11 @@ export class ScheduleApi extends runtime.BaseAPI {
         const headerParameters: runtime.HTTPHeaders = {};
 
         if (this.configuration && this.configuration.apiKey) {
-            headerParameters["authorization"] = this.configuration.apiKey("authorization"); // Bearer authentication
+            headerParameters["authorization"] = await this.configuration.apiKey("authorization"); // Bearer authentication
         }
 
         const response = await this.request({
-            path: `/teams/{team_id}/programs/{program_id}/schedule`.replace(`{${"program_id"}}`, encodeURIComponent(String(requestParameters.programId))).replace(`{${"team_id"}}`, encodeURIComponent(String(requestParameters.teamId))),
+            path: `/teams/{team_id}/programs/{program_id}/schedule`.replace(`{${"program_id"}}`, encodeURIComponent(String(requestParameters['programId']))).replace(`{${"team_id"}}`, encodeURIComponent(String(requestParameters['teamId']))),
             method: 'DELETE',
             headers: headerParameters,
             query: queryParameters,
@@ -85,16 +91,25 @@ export class ScheduleApi extends runtime.BaseAPI {
      * update schedule
      */
     async scheduleUpdateRaw(requestParameters: ScheduleUpdateRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Schedule>> {
-        if (requestParameters.programId === null || requestParameters.programId === undefined) {
-            throw new runtime.RequiredError('programId','Required parameter requestParameters.programId was null or undefined when calling scheduleUpdate.');
+        if (requestParameters['programId'] == null) {
+            throw new runtime.RequiredError(
+                'programId',
+                'Required parameter "programId" was null or undefined when calling scheduleUpdate().'
+            );
         }
 
-        if (requestParameters.teamId === null || requestParameters.teamId === undefined) {
-            throw new runtime.RequiredError('teamId','Required parameter requestParameters.teamId was null or undefined when calling scheduleUpdate.');
+        if (requestParameters['teamId'] == null) {
+            throw new runtime.RequiredError(
+                'teamId',
+                'Required parameter "teamId" was null or undefined when calling scheduleUpdate().'
+            );
         }
 
-        if (requestParameters.payload === null || requestParameters.payload === undefined) {
-            throw new runtime.RequiredError('payload','Required parameter requestParameters.payload was null or undefined when calling scheduleUpdate.');
+        if (requestParameters['payload'] == null) {
+            throw new runtime.RequiredError(
+                'payload',
+                'Required parameter "payload" was null or undefined when calling scheduleUpdate().'
+            );
         }
 
         const queryParameters: any = {};
@@ -104,15 +119,15 @@ export class ScheduleApi extends runtime.BaseAPI {
         headerParameters['Content-Type'] = 'application/json';
 
         if (this.configuration && this.configuration.apiKey) {
-            headerParameters["authorization"] = this.configuration.apiKey("authorization"); // Bearer authentication
+            headerParameters["authorization"] = await this.configuration.apiKey("authorization"); // Bearer authentication
         }
 
         const response = await this.request({
-            path: `/teams/{team_id}/programs/{program_id}/schedule`.replace(`{${"program_id"}}`, encodeURIComponent(String(requestParameters.programId))).replace(`{${"team_id"}}`, encodeURIComponent(String(requestParameters.teamId))),
+            path: `/teams/{team_id}/programs/{program_id}/schedule`.replace(`{${"program_id"}}`, encodeURIComponent(String(requestParameters['programId']))).replace(`{${"team_id"}}`, encodeURIComponent(String(requestParameters['teamId']))),
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
-            body: ScheduleUpdatePayloadToJSON(requestParameters.payload),
+            body: ScheduleUpdatePayloadToJSON(requestParameters['payload']),
         }, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => ScheduleFromJSON(jsonValue));
