@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 /**
  * Asset Annotations (default view)
  * @export
@@ -21,19 +21,17 @@ import { exists, mapValues } from '../runtime';
 export interface AssetannotationsResponse {
     /**
      * 
-     * @type {object}
+     * @type {{ [key: string]: any; }}
      * @memberof AssetannotationsResponse
      */
-    annotations?: object;
+    annotations?: { [key: string]: any; };
 }
 
 /**
  * Check if a given object implements the AssetannotationsResponse interface.
  */
 export function instanceOfAssetannotationsResponse(value: object): boolean {
-    let isInstance = true;
-
-    return isInstance;
+    return true;
 }
 
 export function AssetannotationsResponseFromJSON(json: any): AssetannotationsResponse {
@@ -41,25 +39,22 @@ export function AssetannotationsResponseFromJSON(json: any): AssetannotationsRes
 }
 
 export function AssetannotationsResponseFromJSONTyped(json: any, ignoreDiscriminator: boolean): AssetannotationsResponse {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
         
-        'annotations': !exists(json, 'annotations') ? undefined : json['annotations'],
+        'annotations': json['annotations'] == null ? undefined : json['annotations'],
     };
 }
 
 export function AssetannotationsResponseToJSON(value?: AssetannotationsResponse | null): any {
-    if (value === undefined) {
-        return undefined;
-    }
-    if (value === null) {
-        return null;
+    if (value == null) {
+        return value;
     }
     return {
         
-        'annotations': value.annotations,
+        'annotations': value['annotations'],
     };
 }
 

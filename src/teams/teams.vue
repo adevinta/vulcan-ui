@@ -44,7 +44,7 @@ export default class Teams extends Vue {
 
   async mounted() {
     try {
-      // Load the config paramters needed to build the apli clients.
+      // Load the config parameters needed to build the apli clients.
       const conf = await loadConfig();
       this.teamsCrudEnabled = (conf.teamsCrud === true);
     } catch (err) {

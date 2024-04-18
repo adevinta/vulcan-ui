@@ -18,7 +18,7 @@ import type {
   Team,
   TeamPayload,
   TeamUpdatePayload,
-} from '../models';
+} from '../models/index';
 import {
     TeamFromJSON,
     TeamToJSON,
@@ -26,7 +26,7 @@ import {
     TeamPayloadToJSON,
     TeamUpdatePayloadFromJSON,
     TeamUpdatePayloadToJSON,
-} from '../models';
+} from '../models/index';
 
 export interface TeamsCreateRequest {
     payload: TeamPayload;
@@ -59,8 +59,11 @@ export class TeamsApi extends runtime.BaseAPI {
      * create teams
      */
     async teamsCreateRaw(requestParameters: TeamsCreateRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Team>> {
-        if (requestParameters.payload === null || requestParameters.payload === undefined) {
-            throw new runtime.RequiredError('payload','Required parameter requestParameters.payload was null or undefined when calling teamsCreate.');
+        if (requestParameters['payload'] == null) {
+            throw new runtime.RequiredError(
+                'payload',
+                'Required parameter "payload" was null or undefined when calling teamsCreate().'
+            );
         }
 
         const queryParameters: any = {};
@@ -70,7 +73,7 @@ export class TeamsApi extends runtime.BaseAPI {
         headerParameters['Content-Type'] = 'application/json';
 
         if (this.configuration && this.configuration.apiKey) {
-            headerParameters["authorization"] = this.configuration.apiKey("authorization"); // Bearer authentication
+            headerParameters["authorization"] = await this.configuration.apiKey("authorization"); // Bearer authentication
         }
 
         const response = await this.request({
@@ -78,7 +81,7 @@ export class TeamsApi extends runtime.BaseAPI {
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
-            body: TeamPayloadToJSON(requestParameters.payload),
+            body: TeamPayloadToJSON(requestParameters['payload']),
         }, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => TeamFromJSON(jsonValue));
@@ -98,8 +101,11 @@ export class TeamsApi extends runtime.BaseAPI {
      * delete teams
      */
     async teamsDeleteRaw(requestParameters: TeamsDeleteRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
-        if (requestParameters.teamId === null || requestParameters.teamId === undefined) {
-            throw new runtime.RequiredError('teamId','Required parameter requestParameters.teamId was null or undefined when calling teamsDelete.');
+        if (requestParameters['teamId'] == null) {
+            throw new runtime.RequiredError(
+                'teamId',
+                'Required parameter "teamId" was null or undefined when calling teamsDelete().'
+            );
         }
 
         const queryParameters: any = {};
@@ -107,11 +113,11 @@ export class TeamsApi extends runtime.BaseAPI {
         const headerParameters: runtime.HTTPHeaders = {};
 
         if (this.configuration && this.configuration.apiKey) {
-            headerParameters["authorization"] = this.configuration.apiKey("authorization"); // Bearer authentication
+            headerParameters["authorization"] = await this.configuration.apiKey("authorization"); // Bearer authentication
         }
 
         const response = await this.request({
-            path: `/teams/{team_id}`.replace(`{${"team_id"}}`, encodeURIComponent(String(requestParameters.teamId))),
+            path: `/teams/{team_id}`.replace(`{${"team_id"}}`, encodeURIComponent(String(requestParameters['teamId']))),
             method: 'DELETE',
             headers: headerParameters,
             query: queryParameters,
@@ -135,14 +141,14 @@ export class TeamsApi extends runtime.BaseAPI {
     async teamsListRaw(requestParameters: TeamsListRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<Team>>> {
         const queryParameters: any = {};
 
-        if (requestParameters.tag !== undefined) {
-            queryParameters['tag'] = requestParameters.tag;
+        if (requestParameters['tag'] != null) {
+            queryParameters['tag'] = requestParameters['tag'];
         }
 
         const headerParameters: runtime.HTTPHeaders = {};
 
         if (this.configuration && this.configuration.apiKey) {
-            headerParameters["authorization"] = this.configuration.apiKey("authorization"); // Bearer authentication
+            headerParameters["authorization"] = await this.configuration.apiKey("authorization"); // Bearer authentication
         }
 
         const response = await this.request({
@@ -169,8 +175,11 @@ export class TeamsApi extends runtime.BaseAPI {
      * show teams
      */
     async teamsShowRaw(requestParameters: TeamsShowRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Team>> {
-        if (requestParameters.teamId === null || requestParameters.teamId === undefined) {
-            throw new runtime.RequiredError('teamId','Required parameter requestParameters.teamId was null or undefined when calling teamsShow.');
+        if (requestParameters['teamId'] == null) {
+            throw new runtime.RequiredError(
+                'teamId',
+                'Required parameter "teamId" was null or undefined when calling teamsShow().'
+            );
         }
 
         const queryParameters: any = {};
@@ -178,11 +187,11 @@ export class TeamsApi extends runtime.BaseAPI {
         const headerParameters: runtime.HTTPHeaders = {};
 
         if (this.configuration && this.configuration.apiKey) {
-            headerParameters["authorization"] = this.configuration.apiKey("authorization"); // Bearer authentication
+            headerParameters["authorization"] = await this.configuration.apiKey("authorization"); // Bearer authentication
         }
 
         const response = await this.request({
-            path: `/teams/{team_id}`.replace(`{${"team_id"}}`, encodeURIComponent(String(requestParameters.teamId))),
+            path: `/teams/{team_id}`.replace(`{${"team_id"}}`, encodeURIComponent(String(requestParameters['teamId']))),
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
@@ -205,12 +214,18 @@ export class TeamsApi extends runtime.BaseAPI {
      * update teams
      */
     async teamsUpdateRaw(requestParameters: TeamsUpdateRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Team>> {
-        if (requestParameters.teamId === null || requestParameters.teamId === undefined) {
-            throw new runtime.RequiredError('teamId','Required parameter requestParameters.teamId was null or undefined when calling teamsUpdate.');
+        if (requestParameters['teamId'] == null) {
+            throw new runtime.RequiredError(
+                'teamId',
+                'Required parameter "teamId" was null or undefined when calling teamsUpdate().'
+            );
         }
 
-        if (requestParameters.payload === null || requestParameters.payload === undefined) {
-            throw new runtime.RequiredError('payload','Required parameter requestParameters.payload was null or undefined when calling teamsUpdate.');
+        if (requestParameters['payload'] == null) {
+            throw new runtime.RequiredError(
+                'payload',
+                'Required parameter "payload" was null or undefined when calling teamsUpdate().'
+            );
         }
 
         const queryParameters: any = {};
@@ -220,15 +235,15 @@ export class TeamsApi extends runtime.BaseAPI {
         headerParameters['Content-Type'] = 'application/json';
 
         if (this.configuration && this.configuration.apiKey) {
-            headerParameters["authorization"] = this.configuration.apiKey("authorization"); // Bearer authentication
+            headerParameters["authorization"] = await this.configuration.apiKey("authorization"); // Bearer authentication
         }
 
         const response = await this.request({
-            path: `/teams/{team_id}`.replace(`{${"team_id"}}`, encodeURIComponent(String(requestParameters.teamId))),
+            path: `/teams/{team_id}`.replace(`{${"team_id"}}`, encodeURIComponent(String(requestParameters['teamId']))),
             method: 'PATCH',
             headers: headerParameters,
             query: queryParameters,
-            body: TeamUpdatePayloadToJSON(requestParameters.payload),
+            body: TeamUpdatePayloadToJSON(requestParameters['payload']),
         }, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => TeamFromJSON(jsonValue));

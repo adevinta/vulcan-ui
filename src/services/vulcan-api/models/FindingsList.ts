@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 import type { Finding } from './Finding';
 import {
     FindingFromJSON,
@@ -50,9 +50,7 @@ export interface FindingsList {
  * Check if a given object implements the FindingsList interface.
  */
 export function instanceOfFindingsList(value: object): boolean {
-    let isInstance = true;
-
-    return isInstance;
+    return true;
 }
 
 export function FindingsListFromJSON(json: any): FindingsList {
@@ -60,27 +58,24 @@ export function FindingsListFromJSON(json: any): FindingsList {
 }
 
 export function FindingsListFromJSONTyped(json: any, ignoreDiscriminator: boolean): FindingsList {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
         
-        'findings': !exists(json, 'findings') ? undefined : ((json['findings'] as Array<any>).map(FindingFromJSON)),
-        'pagination': !exists(json, 'pagination') ? undefined : PaginationFromJSON(json['pagination']),
+        'findings': json['findings'] == null ? undefined : ((json['findings'] as Array<any>).map(FindingFromJSON)),
+        'pagination': json['pagination'] == null ? undefined : PaginationFromJSON(json['pagination']),
     };
 }
 
 export function FindingsListToJSON(value?: FindingsList | null): any {
-    if (value === undefined) {
-        return undefined;
-    }
-    if (value === null) {
-        return null;
+    if (value == null) {
+        return value;
     }
     return {
         
-        'findings': value.findings === undefined ? undefined : ((value.findings as Array<any>).map(FindingToJSON)),
-        'pagination': PaginationToJSON(value.pagination),
+        'findings': value['findings'] == null ? undefined : ((value['findings'] as Array<any>).map(FindingToJSON)),
+        'pagination': PaginationToJSON(value['pagination']),
     };
 }
 

@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 /**
  * 
  * @export
@@ -31,9 +31,7 @@ export interface AssetAnnotationDeleteRequest {
  * Check if a given object implements the AssetAnnotationDeleteRequest interface.
  */
 export function instanceOfAssetAnnotationDeleteRequest(value: object): boolean {
-    let isInstance = true;
-
-    return isInstance;
+    return true;
 }
 
 export function AssetAnnotationDeleteRequestFromJSON(json: any): AssetAnnotationDeleteRequest {
@@ -41,25 +39,22 @@ export function AssetAnnotationDeleteRequestFromJSON(json: any): AssetAnnotation
 }
 
 export function AssetAnnotationDeleteRequestFromJSONTyped(json: any, ignoreDiscriminator: boolean): AssetAnnotationDeleteRequest {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
         
-        'annotations': !exists(json, 'annotations') ? undefined : json['annotations'],
+        'annotations': json['annotations'] == null ? undefined : json['annotations'],
     };
 }
 
 export function AssetAnnotationDeleteRequestToJSON(value?: AssetAnnotationDeleteRequest | null): any {
-    if (value === undefined) {
-        return undefined;
-    }
-    if (value === null) {
-        return null;
+    if (value == null) {
+        return value;
     }
     return {
         
-        'annotations': value.annotations,
+        'annotations': value['annotations'],
     };
 }
 

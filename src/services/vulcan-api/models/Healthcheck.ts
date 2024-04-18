@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 /**
  * Healthcheck (default view)
  * @export
@@ -31,9 +31,7 @@ export interface Healthcheck {
  * Check if a given object implements the Healthcheck interface.
  */
 export function instanceOfHealthcheck(value: object): boolean {
-    let isInstance = true;
-
-    return isInstance;
+    return true;
 }
 
 export function HealthcheckFromJSON(json: any): Healthcheck {
@@ -41,25 +39,22 @@ export function HealthcheckFromJSON(json: any): Healthcheck {
 }
 
 export function HealthcheckFromJSONTyped(json: any, ignoreDiscriminator: boolean): Healthcheck {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
         
-        'status': !exists(json, 'status') ? undefined : json['status'],
+        'status': json['status'] == null ? undefined : json['status'],
     };
 }
 
 export function HealthcheckToJSON(value?: Healthcheck | null): any {
-    if (value === undefined) {
-        return undefined;
-    }
-    if (value === null) {
-        return null;
+    if (value == null) {
+        return value;
     }
     return {
         
-        'status': value.status,
+        'status': value['status'],
     };
 }
 

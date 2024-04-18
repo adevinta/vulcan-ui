@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 /**
  * 
  * @export
@@ -37,9 +37,7 @@ export interface PolicySettingUploadPayload {
  * Check if a given object implements the PolicySettingUploadPayload interface.
  */
 export function instanceOfPolicySettingUploadPayload(value: object): boolean {
-    let isInstance = true;
-
-    return isInstance;
+    return true;
 }
 
 export function PolicySettingUploadPayloadFromJSON(json: any): PolicySettingUploadPayload {
@@ -47,27 +45,24 @@ export function PolicySettingUploadPayloadFromJSON(json: any): PolicySettingUplo
 }
 
 export function PolicySettingUploadPayloadFromJSONTyped(json: any, ignoreDiscriminator: boolean): PolicySettingUploadPayload {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
         
-        'checktypeName': !exists(json, 'checktype_name') ? undefined : json['checktype_name'],
-        'options': !exists(json, 'options') ? undefined : json['options'],
+        'checktypeName': json['checktype_name'] == null ? undefined : json['checktype_name'],
+        'options': json['options'] == null ? undefined : json['options'],
     };
 }
 
 export function PolicySettingUploadPayloadToJSON(value?: PolicySettingUploadPayload | null): any {
-    if (value === undefined) {
-        return undefined;
-    }
-    if (value === null) {
-        return null;
+    if (value == null) {
+        return value;
     }
     return {
         
-        'checktype_name': value.checktypeName,
-        'options': value.options,
+        'checktype_name': value['checktypeName'],
+        'options': value['options'],
     };
 }
 

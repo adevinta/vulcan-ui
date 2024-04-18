@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 /**
  * Team (default view)
  * @export
@@ -55,9 +55,7 @@ export interface Team {
  * Check if a given object implements the Team interface.
  */
 export function instanceOfTeam(value: object): boolean {
-    let isInstance = true;
-
-    return isInstance;
+    return true;
 }
 
 export function TeamFromJSON(json: any): Team {
@@ -65,33 +63,30 @@ export function TeamFromJSON(json: any): Team {
 }
 
 export function TeamFromJSONTyped(json: any, ignoreDiscriminator: boolean): Team {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
         
-        'description': !exists(json, 'description') ? undefined : json['description'],
-        'id': !exists(json, 'id') ? undefined : json['id'],
-        'name': !exists(json, 'name') ? undefined : json['name'],
-        'tag': !exists(json, 'tag') ? undefined : json['tag'],
-        'usingTracker': !exists(json, 'using_tracker') ? undefined : json['using_tracker'],
+        'description': json['description'] == null ? undefined : json['description'],
+        'id': json['id'] == null ? undefined : json['id'],
+        'name': json['name'] == null ? undefined : json['name'],
+        'tag': json['tag'] == null ? undefined : json['tag'],
+        'usingTracker': json['using_tracker'] == null ? undefined : json['using_tracker'],
     };
 }
 
 export function TeamToJSON(value?: Team | null): any {
-    if (value === undefined) {
-        return undefined;
-    }
-    if (value === null) {
-        return null;
+    if (value == null) {
+        return value;
     }
     return {
         
-        'description': value.description,
-        'id': value.id,
-        'name': value.name,
-        'tag': value.tag,
-        'using_tracker': value.usingTracker,
+        'description': value['description'],
+        'id': value['id'],
+        'name': value['name'],
+        'tag': value['tag'],
+        'using_tracker': value['usingTracker'],
     };
 }
 

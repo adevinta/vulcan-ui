@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 /**
  * Result of the job operation
  * @export
@@ -37,9 +37,7 @@ export interface JobResult {
  * Check if a given object implements the JobResult interface.
  */
 export function instanceOfJobResult(value: object): boolean {
-    let isInstance = true;
-
-    return isInstance;
+    return true;
 }
 
 export function JobResultFromJSON(json: any): JobResult {
@@ -47,27 +45,24 @@ export function JobResultFromJSON(json: any): JobResult {
 }
 
 export function JobResultFromJSONTyped(json: any, ignoreDiscriminator: boolean): JobResult {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
         
-        'data': !exists(json, 'data') ? undefined : json['data'],
-        'error': !exists(json, 'error') ? undefined : json['error'],
+        'data': json['data'] == null ? undefined : json['data'],
+        'error': json['error'] == null ? undefined : json['error'],
     };
 }
 
 export function JobResultToJSON(value?: JobResult | null): any {
-    if (value === undefined) {
-        return undefined;
-    }
-    if (value === null) {
-        return null;
+    if (value == null) {
+        return value;
     }
     return {
         
-        'data': value.data,
-        'error': value.error,
+        'data': value['data'],
+        'error': value['error'],
     };
 }
 

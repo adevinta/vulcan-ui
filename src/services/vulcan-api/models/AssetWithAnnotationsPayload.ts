@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 /**
  * 
  * @export
@@ -29,10 +29,10 @@ export interface AssetWithAnnotationsPayload {
      * The provided annotations may differ from the ones that
      * will be stored, because they will include a prefix to not mess with any other
      * annotations already present in the asset.
-     * @type {object}
+     * @type {{ [key: string]: any; }}
      * @memberof AssetWithAnnotationsPayload
      */
-    annotations?: object;
+    annotations?: { [key: string]: any; };
     /**
      * Environmental CVSS
      * @type {string}
@@ -75,11 +75,9 @@ export interface AssetWithAnnotationsPayload {
  * Check if a given object implements the AssetWithAnnotationsPayload interface.
  */
 export function instanceOfAssetWithAnnotationsPayload(value: object): boolean {
-    let isInstance = true;
-    isInstance = isInstance && "identifier" in value;
-    isInstance = isInstance && "type" in value;
-
-    return isInstance;
+    if (!('identifier' in value)) return false;
+    if (!('type' in value)) return false;
+    return true;
 }
 
 export function AssetWithAnnotationsPayloadFromJSON(json: any): AssetWithAnnotationsPayload {
@@ -87,39 +85,36 @@ export function AssetWithAnnotationsPayloadFromJSON(json: any): AssetWithAnnotat
 }
 
 export function AssetWithAnnotationsPayloadFromJSONTyped(json: any, ignoreDiscriminator: boolean): AssetWithAnnotationsPayload {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
         
-        'alias': !exists(json, 'alias') ? undefined : json['alias'],
-        'annotations': !exists(json, 'annotations') ? undefined : json['annotations'],
-        'environmentalCvss': !exists(json, 'environmental_cvss') ? undefined : json['environmental_cvss'],
+        'alias': json['alias'] == null ? undefined : json['alias'],
+        'annotations': json['annotations'] == null ? undefined : json['annotations'],
+        'environmentalCvss': json['environmental_cvss'] == null ? undefined : json['environmental_cvss'],
         'identifier': json['identifier'],
-        'options': !exists(json, 'options') ? undefined : json['options'],
-        'rolfp': !exists(json, 'rolfp') ? undefined : json['rolfp'],
-        'scannable': !exists(json, 'scannable') ? undefined : json['scannable'],
+        'options': json['options'] == null ? undefined : json['options'],
+        'rolfp': json['rolfp'] == null ? undefined : json['rolfp'],
+        'scannable': json['scannable'] == null ? undefined : json['scannable'],
         'type': json['type'],
     };
 }
 
 export function AssetWithAnnotationsPayloadToJSON(value?: AssetWithAnnotationsPayload | null): any {
-    if (value === undefined) {
-        return undefined;
-    }
-    if (value === null) {
-        return null;
+    if (value == null) {
+        return value;
     }
     return {
         
-        'alias': value.alias,
-        'annotations': value.annotations,
-        'environmental_cvss': value.environmentalCvss,
-        'identifier': value.identifier,
-        'options': value.options,
-        'rolfp': value.rolfp,
-        'scannable': value.scannable,
-        'type': value.type,
+        'alias': value['alias'],
+        'annotations': value['annotations'],
+        'environmental_cvss': value['environmentalCvss'],
+        'identifier': value['identifier'],
+        'options': value['options'],
+        'rolfp': value['rolfp'],
+        'scannable': value['scannable'],
+        'type': value['type'],
     };
 }
 

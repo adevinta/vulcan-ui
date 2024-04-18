@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 /**
  * 
  * @export
@@ -43,11 +43,9 @@ export interface TeamPayload {
  * Check if a given object implements the TeamPayload interface.
  */
 export function instanceOfTeamPayload(value: object): boolean {
-    let isInstance = true;
-    isInstance = isInstance && "name" in value;
-    isInstance = isInstance && "tag" in value;
-
-    return isInstance;
+    if (!('name' in value)) return false;
+    if (!('tag' in value)) return false;
+    return true;
 }
 
 export function TeamPayloadFromJSON(json: any): TeamPayload {
@@ -55,29 +53,26 @@ export function TeamPayloadFromJSON(json: any): TeamPayload {
 }
 
 export function TeamPayloadFromJSONTyped(json: any, ignoreDiscriminator: boolean): TeamPayload {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
         
-        'description': !exists(json, 'description') ? undefined : json['description'],
+        'description': json['description'] == null ? undefined : json['description'],
         'name': json['name'],
         'tag': json['tag'],
     };
 }
 
 export function TeamPayloadToJSON(value?: TeamPayload | null): any {
-    if (value === undefined) {
-        return undefined;
-    }
-    if (value === null) {
-        return null;
+    if (value == null) {
+        return value;
     }
     return {
         
-        'description': value.description,
-        'name': value.name,
-        'tag': value.tag,
+        'description': value['description'],
+        'name': value['name'],
+        'tag': value['tag'],
     };
 }
 

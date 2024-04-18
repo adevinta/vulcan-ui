@@ -14,7 +14,6 @@ apis/ProgramsApi.ts
 apis/RecipientsApi.ts
 apis/ReportApi.ts
 apis/ScanApi.ts
-apis/ScanReportApi.ts
 apis/ScheduleApi.ts
 apis/StatsApi.ts
 apis/TeamMembersApi.ts
@@ -73,8 +72,6 @@ models/ProgramPolicyGroupPayload.ts
 models/ProgramUpdatePayload.ts
 models/Recipient.ts
 models/RecipientsPayload.ts
-models/Report.ts
-models/Reportemail.ts
 models/Resource.ts
 models/Scan.ts
 models/ScanPayload.ts

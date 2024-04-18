@@ -41,7 +41,13 @@ import {Component, Prop, Vue} from "vue-property-decorator";
 import loadConfig from "../../common/config";
 import tokenProvider from "../../common/token";
 import ErrorDialog from "../../components/error.vue";
-import {Configuration as ApiConf, ConfigurationParameters, ResponseError} from "../../services/vulcan-api";
+import {
+  Configuration as ApiConf,
+  ConfigurationParameters,
+  ResponseError,
+  TeamsApi,
+  TeamsShowRequest
+} from "../../services/vulcan-api";
 import {FindingsApi, FindingsSubmitAFindingTicketCreationRequest} from "../../services/vulcan-api/apis";
 import {Finding, FindingTicket} from "../../services/vulcan-api/models";
 import {severityText} from "../utils/utils";
@@ -55,6 +61,7 @@ import {severityText} from "../utils/utils";
 
 export default class FindingTicketCreationForm extends Vue {
   private findingsApi!: FindingsApi;
+  private teamsApi?: TeamsApi
 
   @Prop({required: true, default: ""})
   private findingId!: string;
@@ -70,6 +77,7 @@ export default class FindingTicketCreationForm extends Vue {
   private isLoading: boolean = true;
   private summary: string = "";
   private description: string = "";
+  private teamTag: string = "";
 
   async mounted() {
     try {
@@ -83,6 +91,13 @@ export default class FindingTicketCreationForm extends Vue {
       // Build the api clients.
       const apiConfg = new ApiConf(c);
       this.findingsApi = new FindingsApi(apiConfg);
+      this.teamsApi = new TeamsApi(apiConfg);
+
+      await this.loadTeam(
+          this.teamId,
+          this.teamsApi
+      );
+
       this.isLoading = false;
 
       this.summary = this.buildCreateTicketSummary(this.finding);
@@ -107,7 +122,8 @@ export default class FindingTicketCreationForm extends Vue {
         teamId: this.teamId,
         payload: {
           summary: this.summary,
-          description: this.description
+          description: this.description,
+          labels: [this.teamTag]
         }
       };
       const finding: FindingTicket = await this.findingsApi.findingsSubmitAFindingTicketCreation(req);
@@ -153,6 +169,15 @@ export default class FindingTicketCreationForm extends Vue {
       description += `* Impact Details: ${finding.impactDetails}\n`;
     }
     return description;
+  }
+
+  private async loadTeam(teamId: string, api: TeamsApi) {
+    const req: TeamsShowRequest = {
+      teamId: teamId
+    };
+
+    const teamInfo = await api.teamsShow(req);
+    this.teamTag = teamInfo.tag
   }
 
   private handleError(err: any) {

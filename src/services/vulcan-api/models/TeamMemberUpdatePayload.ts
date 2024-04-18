@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 /**
  * 
  * @export
@@ -31,9 +31,7 @@ export interface TeamMemberUpdatePayload {
  * Check if a given object implements the TeamMemberUpdatePayload interface.
  */
 export function instanceOfTeamMemberUpdatePayload(value: object): boolean {
-    let isInstance = true;
-
-    return isInstance;
+    return true;
 }
 
 export function TeamMemberUpdatePayloadFromJSON(json: any): TeamMemberUpdatePayload {
@@ -41,25 +39,22 @@ export function TeamMemberUpdatePayloadFromJSON(json: any): TeamMemberUpdatePayl
 }
 
 export function TeamMemberUpdatePayloadFromJSONTyped(json: any, ignoreDiscriminator: boolean): TeamMemberUpdatePayload {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
         
-        'role': !exists(json, 'role') ? undefined : json['role'],
+        'role': json['role'] == null ? undefined : json['role'],
     };
 }
 
 export function TeamMemberUpdatePayloadToJSON(value?: TeamMemberUpdatePayload | null): any {
-    if (value === undefined) {
-        return undefined;
-    }
-    if (value === null) {
-        return null;
+    if (value == null) {
+        return value;
     }
     return {
         
-        'role': value.role,
+        'role': value['role'],
     };
 }
 

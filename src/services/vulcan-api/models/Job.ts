@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 import type { JobResult } from './JobResult';
 import {
     JobResultFromJSON,
@@ -65,9 +65,7 @@ export interface Job {
  * Check if a given object implements the Job interface.
  */
 export function instanceOfJob(value: object): boolean {
-    let isInstance = true;
-
-    return isInstance;
+    return true;
 }
 
 export function JobFromJSON(json: any): Job {
@@ -75,33 +73,30 @@ export function JobFromJSON(json: any): Job {
 }
 
 export function JobFromJSONTyped(json: any, ignoreDiscriminator: boolean): Job {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
         
-        'id': !exists(json, 'id') ? undefined : json['id'],
-        'operation': !exists(json, 'operation') ? undefined : json['operation'],
-        'result': !exists(json, 'result') ? undefined : JobResultFromJSON(json['result']),
-        'status': !exists(json, 'status') ? undefined : json['status'],
-        'teamId': !exists(json, 'team_id') ? undefined : json['team_id'],
+        'id': json['id'] == null ? undefined : json['id'],
+        'operation': json['operation'] == null ? undefined : json['operation'],
+        'result': json['result'] == null ? undefined : JobResultFromJSON(json['result']),
+        'status': json['status'] == null ? undefined : json['status'],
+        'teamId': json['team_id'] == null ? undefined : json['team_id'],
     };
 }
 
 export function JobToJSON(value?: Job | null): any {
-    if (value === undefined) {
-        return undefined;
-    }
-    if (value === null) {
-        return null;
+    if (value == null) {
+        return value;
     }
     return {
         
-        'id': value.id,
-        'operation': value.operation,
-        'result': JobResultToJSON(value.result),
-        'status': value.status,
-        'team_id': value.teamId,
+        'id': value['id'],
+        'operation': value['operation'],
+        'result': JobResultToJSON(value['result']),
+        'status': value['status'],
+        'team_id': value['teamId'],
     };
 }
 

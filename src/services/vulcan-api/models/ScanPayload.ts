@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 /**
  * 
  * @export
@@ -37,10 +37,8 @@ export interface ScanPayload {
  * Check if a given object implements the ScanPayload interface.
  */
 export function instanceOfScanPayload(value: object): boolean {
-    let isInstance = true;
-    isInstance = isInstance && "programId" in value;
-
-    return isInstance;
+    if (!('programId' in value)) return false;
+    return true;
 }
 
 export function ScanPayloadFromJSON(json: any): ScanPayload {
@@ -48,27 +46,24 @@ export function ScanPayloadFromJSON(json: any): ScanPayload {
 }
 
 export function ScanPayloadFromJSONTyped(json: any, ignoreDiscriminator: boolean): ScanPayload {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
         
         'programId': json['program_id'],
-        'scheduledTime': !exists(json, 'scheduled_time') ? undefined : (new Date(json['scheduled_time'])),
+        'scheduledTime': json['scheduled_time'] == null ? undefined : (new Date(json['scheduled_time'])),
     };
 }
 
 export function ScanPayloadToJSON(value?: ScanPayload | null): any {
-    if (value === undefined) {
-        return undefined;
-    }
-    if (value === null) {
-        return null;
+    if (value == null) {
+        return value;
     }
     return {
         
-        'program_id': value.programId,
-        'scheduled_time': value.scheduledTime === undefined ? undefined : (value.scheduledTime.toISOString()),
+        'program_id': value['programId'],
+        'scheduled_time': value['scheduledTime'] == null ? undefined : ((value['scheduledTime']).toISOString()),
     };
 }
 

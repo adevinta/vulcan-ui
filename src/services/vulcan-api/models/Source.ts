@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 /**
  * source (default view)
  * @export
@@ -61,9 +61,7 @@ export interface Source {
  * Check if a given object implements the Source interface.
  */
 export function instanceOfSource(value: object): boolean {
-    let isInstance = true;
-
-    return isInstance;
+    return true;
 }
 
 export function SourceFromJSON(json: any): Source {
@@ -71,35 +69,32 @@ export function SourceFromJSON(json: any): Source {
 }
 
 export function SourceFromJSONTyped(json: any, ignoreDiscriminator: boolean): Source {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
         
-        'component': !exists(json, 'component') ? undefined : json['component'],
-        'id': !exists(json, 'id') ? undefined : json['id'],
-        'instance': !exists(json, 'instance') ? undefined : json['instance'],
-        'name': !exists(json, 'name') ? undefined : json['name'],
-        'options': !exists(json, 'options') ? undefined : json['options'],
-        'time': !exists(json, 'time') ? undefined : json['time'],
+        'component': json['component'] == null ? undefined : json['component'],
+        'id': json['id'] == null ? undefined : json['id'],
+        'instance': json['instance'] == null ? undefined : json['instance'],
+        'name': json['name'] == null ? undefined : json['name'],
+        'options': json['options'] == null ? undefined : json['options'],
+        'time': json['time'] == null ? undefined : json['time'],
     };
 }
 
 export function SourceToJSON(value?: Source | null): any {
-    if (value === undefined) {
-        return undefined;
-    }
-    if (value === null) {
-        return null;
+    if (value == null) {
+        return value;
     }
     return {
         
-        'component': value.component,
-        'id': value.id,
-        'instance': value.instance,
-        'name': value.name,
-        'options': value.options,
-        'time': value.time,
+        'component': value['component'],
+        'id': value['id'],
+        'instance': value['instance'],
+        'name': value['name'],
+        'options': value['options'],
+        'time': value['time'],
     };
 }
 

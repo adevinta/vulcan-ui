@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 /**
  * 
  * @export
@@ -31,10 +31,8 @@ export interface AssetGroupPayload {
  * Check if a given object implements the AssetGroupPayload interface.
  */
 export function instanceOfAssetGroupPayload(value: object): boolean {
-    let isInstance = true;
-    isInstance = isInstance && "assetId" in value;
-
-    return isInstance;
+    if (!('assetId' in value)) return false;
+    return true;
 }
 
 export function AssetGroupPayloadFromJSON(json: any): AssetGroupPayload {
@@ -42,7 +40,7 @@ export function AssetGroupPayloadFromJSON(json: any): AssetGroupPayload {
 }
 
 export function AssetGroupPayloadFromJSONTyped(json: any, ignoreDiscriminator: boolean): AssetGroupPayload {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
@@ -52,15 +50,12 @@ export function AssetGroupPayloadFromJSONTyped(json: any, ignoreDiscriminator: b
 }
 
 export function AssetGroupPayloadToJSON(value?: AssetGroupPayload | null): any {
-    if (value === undefined) {
-        return undefined;
-    }
-    if (value === null) {
-        return null;
+    if (value == null) {
+        return value;
     }
     return {
         
-        'asset_id': value.assetId,
+        'asset_id': value['assetId'],
     };
 }
 

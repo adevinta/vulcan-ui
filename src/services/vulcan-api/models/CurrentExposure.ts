@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 import type { Statsaverages } from './Statsaverages';
 import {
     StatsaveragesFromJSON,
@@ -38,9 +38,7 @@ export interface CurrentExposure {
  * Check if a given object implements the CurrentExposure interface.
  */
 export function instanceOfCurrentExposure(value: object): boolean {
-    let isInstance = true;
-
-    return isInstance;
+    return true;
 }
 
 export function CurrentExposureFromJSON(json: any): CurrentExposure {
@@ -48,25 +46,22 @@ export function CurrentExposureFromJSON(json: any): CurrentExposure {
 }
 
 export function CurrentExposureFromJSONTyped(json: any, ignoreDiscriminator: boolean): CurrentExposure {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
         
-        'currentExposure': !exists(json, 'current_exposure') ? undefined : StatsaveragesFromJSON(json['current_exposure']),
+        'currentExposure': json['current_exposure'] == null ? undefined : StatsaveragesFromJSON(json['current_exposure']),
     };
 }
 
 export function CurrentExposureToJSON(value?: CurrentExposure | null): any {
-    if (value === undefined) {
-        return undefined;
-    }
-    if (value === null) {
-        return null;
+    if (value == null) {
+        return value;
     }
     return {
         
-        'current_exposure': StatsaveragesToJSON(value.currentExposure),
+        'current_exposure': StatsaveragesToJSON(value['currentExposure']),
     };
 }
 

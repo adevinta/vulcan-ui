@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 import type { User } from './User';
 import {
     UserFromJSON,
@@ -44,9 +44,7 @@ export interface Teammember {
  * Check if a given object implements the Teammember interface.
  */
 export function instanceOfTeammember(value: object): boolean {
-    let isInstance = true;
-
-    return isInstance;
+    return true;
 }
 
 export function TeammemberFromJSON(json: any): Teammember {
@@ -54,27 +52,24 @@ export function TeammemberFromJSON(json: any): Teammember {
 }
 
 export function TeammemberFromJSONTyped(json: any, ignoreDiscriminator: boolean): Teammember {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
         
-        'role': !exists(json, 'role') ? undefined : json['role'],
-        'user': !exists(json, 'user') ? undefined : UserFromJSON(json['user']),
+        'role': json['role'] == null ? undefined : json['role'],
+        'user': json['user'] == null ? undefined : UserFromJSON(json['user']),
     };
 }
 
 export function TeammemberToJSON(value?: Teammember | null): any {
-    if (value === undefined) {
-        return undefined;
-    }
-    if (value === null) {
-        return null;
+    if (value == null) {
+        return value;
     }
     return {
         
-        'role': value.role,
-        'user': UserToJSON(value.user),
+        'role': value['role'],
+        'user': UserToJSON(value['user']),
     };
 }
 

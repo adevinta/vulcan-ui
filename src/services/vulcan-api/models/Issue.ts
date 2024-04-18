@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 /**
  * Issue (default view)
  * @export
@@ -67,9 +67,7 @@ export interface Issue {
  * Check if a given object implements the Issue interface.
  */
 export function instanceOfIssue(value: object): boolean {
-    let isInstance = true;
-
-    return isInstance;
+    return true;
 }
 
 export function IssueFromJSON(json: any): Issue {
@@ -77,37 +75,34 @@ export function IssueFromJSON(json: any): Issue {
 }
 
 export function IssueFromJSONTyped(json: any, ignoreDiscriminator: boolean): Issue {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
         
-        'cweId': !exists(json, 'cwe_id') ? undefined : json['cwe_id'],
-        'description': !exists(json, 'description') ? undefined : json['description'],
-        'id': !exists(json, 'id') ? undefined : json['id'],
-        'labels': !exists(json, 'labels') ? undefined : json['labels'],
-        'recommendations': !exists(json, 'recommendations') ? undefined : json['recommendations'],
-        'referenceLinks': !exists(json, 'reference_links') ? undefined : json['reference_links'],
-        'summary': !exists(json, 'summary') ? undefined : json['summary'],
+        'cweId': json['cwe_id'] == null ? undefined : json['cwe_id'],
+        'description': json['description'] == null ? undefined : json['description'],
+        'id': json['id'] == null ? undefined : json['id'],
+        'labels': json['labels'] == null ? undefined : json['labels'],
+        'recommendations': json['recommendations'] == null ? undefined : json['recommendations'],
+        'referenceLinks': json['reference_links'] == null ? undefined : json['reference_links'],
+        'summary': json['summary'] == null ? undefined : json['summary'],
     };
 }
 
 export function IssueToJSON(value?: Issue | null): any {
-    if (value === undefined) {
-        return undefined;
-    }
-    if (value === null) {
-        return null;
+    if (value == null) {
+        return value;
     }
     return {
         
-        'cwe_id': value.cweId,
-        'description': value.description,
-        'id': value.id,
-        'labels': value.labels,
-        'recommendations': value.recommendations,
-        'reference_links': value.referenceLinks,
-        'summary': value.summary,
+        'cwe_id': value['cweId'],
+        'description': value['description'],
+        'id': value['id'],
+        'labels': value['labels'],
+        'recommendations': value['recommendations'],
+        'reference_links': value['referenceLinks'],
+        'summary': value['summary'],
     };
 }
 

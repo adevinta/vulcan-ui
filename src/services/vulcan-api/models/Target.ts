@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 /**
  * target (default view)
  * @export
@@ -43,9 +43,7 @@ export interface Target {
  * Check if a given object implements the Target interface.
  */
 export function instanceOfTarget(value: object): boolean {
-    let isInstance = true;
-
-    return isInstance;
+    return true;
 }
 
 export function TargetFromJSON(json: any): Target {
@@ -53,29 +51,26 @@ export function TargetFromJSON(json: any): Target {
 }
 
 export function TargetFromJSONTyped(json: any, ignoreDiscriminator: boolean): Target {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
         
-        'id': !exists(json, 'id') ? undefined : json['id'],
-        'identifier': !exists(json, 'identifier') ? undefined : json['identifier'],
-        'teams': !exists(json, 'teams') ? undefined : json['teams'],
+        'id': json['id'] == null ? undefined : json['id'],
+        'identifier': json['identifier'] == null ? undefined : json['identifier'],
+        'teams': json['teams'] == null ? undefined : json['teams'],
     };
 }
 
 export function TargetToJSON(value?: Target | null): any {
-    if (value === undefined) {
-        return undefined;
-    }
-    if (value === null) {
-        return null;
+    if (value == null) {
+        return value;
     }
     return {
         
-        'id': value.id,
-        'identifier': value.identifier,
-        'teams': value.teams,
+        'id': value['id'],
+        'identifier': value['identifier'],
+        'teams': value['teams'],
     };
 }
 

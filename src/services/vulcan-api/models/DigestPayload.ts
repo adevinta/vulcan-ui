@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 /**
  * 
  * @export
@@ -37,9 +37,7 @@ export interface DigestPayload {
  * Check if a given object implements the DigestPayload interface.
  */
 export function instanceOfDigestPayload(value: object): boolean {
-    let isInstance = true;
-
-    return isInstance;
+    return true;
 }
 
 export function DigestPayloadFromJSON(json: any): DigestPayload {
@@ -47,27 +45,24 @@ export function DigestPayloadFromJSON(json: any): DigestPayload {
 }
 
 export function DigestPayloadFromJSONTyped(json: any, ignoreDiscriminator: boolean): DigestPayload {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
         
-        'endDate': !exists(json, 'end_date') ? undefined : json['end_date'],
-        'startDate': !exists(json, 'start_date') ? undefined : json['start_date'],
+        'endDate': json['end_date'] == null ? undefined : json['end_date'],
+        'startDate': json['start_date'] == null ? undefined : json['start_date'],
     };
 }
 
 export function DigestPayloadToJSON(value?: DigestPayload | null): any {
-    if (value === undefined) {
-        return undefined;
-    }
-    if (value === null) {
-        return null;
+    if (value == null) {
+        return value;
     }
     return {
         
-        'end_date': value.endDate,
-        'start_date': value.startDate,
+        'end_date': value['endDate'],
+        'start_date': value['startDate'],
     };
 }
 

@@ -16,11 +16,11 @@
 import * as runtime from '../runtime';
 import type {
   Healthcheck,
-} from '../models';
+} from '../models/index';
 import {
     HealthcheckFromJSON,
     HealthcheckToJSON,
-} from '../models';
+} from '../models/index';
 
 /**
  * 

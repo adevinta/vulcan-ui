@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 /**
  * 
  * @export
@@ -61,10 +61,8 @@ export interface UserPayload {
  * Check if a given object implements the UserPayload interface.
  */
 export function instanceOfUserPayload(value: object): boolean {
-    let isInstance = true;
-    isInstance = isInstance && "email" in value;
-
-    return isInstance;
+    if (!('email' in value)) return false;
+    return true;
 }
 
 export function UserPayloadFromJSON(json: any): UserPayload {
@@ -72,35 +70,32 @@ export function UserPayloadFromJSON(json: any): UserPayload {
 }
 
 export function UserPayloadFromJSONTyped(json: any, ignoreDiscriminator: boolean): UserPayload {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
         
-        'active': !exists(json, 'active') ? undefined : json['active'],
-        'admin': !exists(json, 'admin') ? undefined : json['admin'],
+        'active': json['active'] == null ? undefined : json['active'],
+        'admin': json['admin'] == null ? undefined : json['admin'],
         'email': json['email'],
-        'firstname': !exists(json, 'firstname') ? undefined : json['firstname'],
-        'lastname': !exists(json, 'lastname') ? undefined : json['lastname'],
-        'observer': !exists(json, 'observer') ? undefined : json['observer'],
+        'firstname': json['firstname'] == null ? undefined : json['firstname'],
+        'lastname': json['lastname'] == null ? undefined : json['lastname'],
+        'observer': json['observer'] == null ? undefined : json['observer'],
     };
 }
 
 export function UserPayloadToJSON(value?: UserPayload | null): any {
-    if (value === undefined) {
-        return undefined;
-    }
-    if (value === null) {
-        return null;
+    if (value == null) {
+        return value;
     }
     return {
         
-        'active': value.active,
-        'admin': value.admin,
-        'email': value.email,
-        'firstname': value.firstname,
-        'lastname': value.lastname,
-        'observer': value.observer,
+        'active': value['active'],
+        'admin': value['admin'],
+        'email': value['email'],
+        'firstname': value['firstname'],
+        'lastname': value['lastname'],
+        'observer': value['observer'],
     };
 }
 

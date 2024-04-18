@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 /**
  * Findings Labels (default view)
  * @export
@@ -31,9 +31,7 @@ export interface FindingsLabels {
  * Check if a given object implements the FindingsLabels interface.
  */
 export function instanceOfFindingsLabels(value: object): boolean {
-    let isInstance = true;
-
-    return isInstance;
+    return true;
 }
 
 export function FindingsLabelsFromJSON(json: any): FindingsLabels {
@@ -41,25 +39,22 @@ export function FindingsLabelsFromJSON(json: any): FindingsLabels {
 }
 
 export function FindingsLabelsFromJSONTyped(json: any, ignoreDiscriminator: boolean): FindingsLabels {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
         
-        'labels': !exists(json, 'labels') ? undefined : json['labels'],
+        'labels': json['labels'] == null ? undefined : json['labels'],
     };
 }
 
 export function FindingsLabelsToJSON(value?: FindingsLabels | null): any {
-    if (value === undefined) {
-        return undefined;
-    }
-    if (value === null) {
-        return null;
+    if (value == null) {
+        return value;
     }
     return {
         
-        'labels': value.labels,
+        'labels': value['labels'],
     };
 }
 

@@ -16,11 +16,11 @@
 import * as runtime from '../runtime';
 import type {
   Job,
-} from '../models';
+} from '../models/index';
 import {
     JobFromJSON,
     JobToJSON,
-} from '../models';
+} from '../models/index';
 
 export interface JobsShowRequest {
     jobId: string;
@@ -36,8 +36,11 @@ export class JobsApi extends runtime.BaseAPI {
      * show jobs
      */
     async jobsShowRaw(requestParameters: JobsShowRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Job>> {
-        if (requestParameters.jobId === null || requestParameters.jobId === undefined) {
-            throw new runtime.RequiredError('jobId','Required parameter requestParameters.jobId was null or undefined when calling jobsShow.');
+        if (requestParameters['jobId'] == null) {
+            throw new runtime.RequiredError(
+                'jobId',
+                'Required parameter "jobId" was null or undefined when calling jobsShow().'
+            );
         }
 
         const queryParameters: any = {};
@@ -45,11 +48,11 @@ export class JobsApi extends runtime.BaseAPI {
         const headerParameters: runtime.HTTPHeaders = {};
 
         if (this.configuration && this.configuration.apiKey) {
-            headerParameters["authorization"] = this.configuration.apiKey("authorization"); // Bearer authentication
+            headerParameters["authorization"] = await this.configuration.apiKey("authorization"); // Bearer authentication
         }
 
         const response = await this.request({
-            path: `/jobs/{job_id}`.replace(`{${"job_id"}}`, encodeURIComponent(String(requestParameters.jobId))),
+            path: `/jobs/{job_id}`.replace(`{${"job_id"}}`, encodeURIComponent(String(requestParameters['jobId']))),
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,

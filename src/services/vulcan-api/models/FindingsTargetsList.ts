@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 import type { FindingsTarget } from './FindingsTarget';
 import {
     FindingsTargetFromJSON,
@@ -50,9 +50,7 @@ export interface FindingsTargetsList {
  * Check if a given object implements the FindingsTargetsList interface.
  */
 export function instanceOfFindingsTargetsList(value: object): boolean {
-    let isInstance = true;
-
-    return isInstance;
+    return true;
 }
 
 export function FindingsTargetsListFromJSON(json: any): FindingsTargetsList {
@@ -60,27 +58,24 @@ export function FindingsTargetsListFromJSON(json: any): FindingsTargetsList {
 }
 
 export function FindingsTargetsListFromJSONTyped(json: any, ignoreDiscriminator: boolean): FindingsTargetsList {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
         
-        'pagination': !exists(json, 'pagination') ? undefined : PaginationFromJSON(json['pagination']),
-        'targets': !exists(json, 'targets') ? undefined : ((json['targets'] as Array<any>).map(FindingsTargetFromJSON)),
+        'pagination': json['pagination'] == null ? undefined : PaginationFromJSON(json['pagination']),
+        'targets': json['targets'] == null ? undefined : ((json['targets'] as Array<any>).map(FindingsTargetFromJSON)),
     };
 }
 
 export function FindingsTargetsListToJSON(value?: FindingsTargetsList | null): any {
-    if (value === undefined) {
-        return undefined;
-    }
-    if (value === null) {
-        return null;
+    if (value == null) {
+        return value;
     }
     return {
         
-        'pagination': PaginationToJSON(value.pagination),
-        'targets': value.targets === undefined ? undefined : ((value.targets as Array<any>).map(FindingsTargetToJSON)),
+        'pagination': PaginationToJSON(value['pagination']),
+        'targets': value['targets'] == null ? undefined : ((value['targets'] as Array<any>).map(FindingsTargetToJSON)),
     };
 }
 

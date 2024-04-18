@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 import type { Program } from './Program';
 import {
     ProgramFromJSON,
@@ -86,9 +86,7 @@ export interface Scan {
  * Check if a given object implements the Scan interface.
  */
 export function instanceOfScan(value: object): boolean {
-    let isInstance = true;
-
-    return isInstance;
+    return true;
 }
 
 export function ScanFromJSON(json: any): Scan {
@@ -96,41 +94,38 @@ export function ScanFromJSON(json: any): Scan {
 }
 
 export function ScanFromJSONTyped(json: any, ignoreDiscriminator: boolean): Scan {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
         
-        'checksCount': !exists(json, 'checks_count') ? undefined : json['checks_count'],
-        'endTime': !exists(json, 'end_time') ? undefined : (new Date(json['end_time'])),
-        'id': !exists(json, 'id') ? undefined : json['id'],
-        'program': !exists(json, 'program') ? undefined : ProgramFromJSON(json['program']),
-        'progress': !exists(json, 'progress') ? undefined : json['progress'],
-        'requestedBy': !exists(json, 'requested_by') ? undefined : json['requested_by'],
-        'scheduledTime': !exists(json, 'scheduled_time') ? undefined : (new Date(json['scheduled_time'])),
-        'startTime': !exists(json, 'start_time') ? undefined : (new Date(json['start_time'])),
-        'status': !exists(json, 'status') ? undefined : json['status'],
+        'checksCount': json['checks_count'] == null ? undefined : json['checks_count'],
+        'endTime': json['end_time'] == null ? undefined : (new Date(json['end_time'])),
+        'id': json['id'] == null ? undefined : json['id'],
+        'program': json['program'] == null ? undefined : ProgramFromJSON(json['program']),
+        'progress': json['progress'] == null ? undefined : json['progress'],
+        'requestedBy': json['requested_by'] == null ? undefined : json['requested_by'],
+        'scheduledTime': json['scheduled_time'] == null ? undefined : (new Date(json['scheduled_time'])),
+        'startTime': json['start_time'] == null ? undefined : (new Date(json['start_time'])),
+        'status': json['status'] == null ? undefined : json['status'],
     };
 }
 
 export function ScanToJSON(value?: Scan | null): any {
-    if (value === undefined) {
-        return undefined;
-    }
-    if (value === null) {
-        return null;
+    if (value == null) {
+        return value;
     }
     return {
         
-        'checks_count': value.checksCount,
-        'end_time': value.endTime === undefined ? undefined : (value.endTime.toISOString()),
-        'id': value.id,
-        'program': ProgramToJSON(value.program),
-        'progress': value.progress,
-        'requested_by': value.requestedBy,
-        'scheduled_time': value.scheduledTime === undefined ? undefined : (value.scheduledTime.toISOString()),
-        'start_time': value.startTime === undefined ? undefined : (value.startTime.toISOString()),
-        'status': value.status,
+        'checks_count': value['checksCount'],
+        'end_time': value['endTime'] == null ? undefined : ((value['endTime']).toISOString()),
+        'id': value['id'],
+        'program': ProgramToJSON(value['program']),
+        'progress': value['progress'],
+        'requested_by': value['requestedBy'],
+        'scheduled_time': value['scheduledTime'] == null ? undefined : ((value['scheduledTime']).toISOString()),
+        'start_time': value['startTime'] == null ? undefined : ((value['startTime']).toISOString()),
+        'status': value['status'],
     };
 }
 

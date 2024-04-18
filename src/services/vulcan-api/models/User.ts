@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 /**
  * User (default view)
  * @export
@@ -73,9 +73,7 @@ export interface User {
  * Check if a given object implements the User interface.
  */
 export function instanceOfUser(value: object): boolean {
-    let isInstance = true;
-
-    return isInstance;
+    return true;
 }
 
 export function UserFromJSON(json: any): User {
@@ -83,39 +81,36 @@ export function UserFromJSON(json: any): User {
 }
 
 export function UserFromJSONTyped(json: any, ignoreDiscriminator: boolean): User {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
         
-        'active': !exists(json, 'active') ? undefined : json['active'],
-        'admin': !exists(json, 'admin') ? undefined : json['admin'],
-        'email': !exists(json, 'email') ? undefined : json['email'],
-        'firstname': !exists(json, 'firstname') ? undefined : json['firstname'],
-        'id': !exists(json, 'id') ? undefined : json['id'],
-        'lastLogin': !exists(json, 'last_login') ? undefined : (new Date(json['last_login'])),
-        'lastname': !exists(json, 'lastname') ? undefined : json['lastname'],
-        'observer': !exists(json, 'observer') ? undefined : json['observer'],
+        'active': json['active'] == null ? undefined : json['active'],
+        'admin': json['admin'] == null ? undefined : json['admin'],
+        'email': json['email'] == null ? undefined : json['email'],
+        'firstname': json['firstname'] == null ? undefined : json['firstname'],
+        'id': json['id'] == null ? undefined : json['id'],
+        'lastLogin': json['last_login'] == null ? undefined : (new Date(json['last_login'])),
+        'lastname': json['lastname'] == null ? undefined : json['lastname'],
+        'observer': json['observer'] == null ? undefined : json['observer'],
     };
 }
 
 export function UserToJSON(value?: User | null): any {
-    if (value === undefined) {
-        return undefined;
-    }
-    if (value === null) {
-        return null;
+    if (value == null) {
+        return value;
     }
     return {
         
-        'active': value.active,
-        'admin': value.admin,
-        'email': value.email,
-        'firstname': value.firstname,
-        'id': value.id,
-        'last_login': value.lastLogin === undefined ? undefined : (value.lastLogin.toISOString()),
-        'lastname': value.lastname,
-        'observer': value.observer,
+        'active': value['active'],
+        'admin': value['admin'],
+        'email': value['email'],
+        'firstname': value['firstname'],
+        'id': value['id'],
+        'last_login': value['lastLogin'] == null ? undefined : ((value['lastLogin']).toISOString()),
+        'lastname': value['lastname'],
+        'observer': value['observer'],
     };
 }
 

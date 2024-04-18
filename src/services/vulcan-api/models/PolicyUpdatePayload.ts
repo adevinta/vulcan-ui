@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 /**
  * 
  * @export
@@ -31,9 +31,7 @@ export interface PolicyUpdatePayload {
  * Check if a given object implements the PolicyUpdatePayload interface.
  */
 export function instanceOfPolicyUpdatePayload(value: object): boolean {
-    let isInstance = true;
-
-    return isInstance;
+    return true;
 }
 
 export function PolicyUpdatePayloadFromJSON(json: any): PolicyUpdatePayload {
@@ -41,25 +39,22 @@ export function PolicyUpdatePayloadFromJSON(json: any): PolicyUpdatePayload {
 }
 
 export function PolicyUpdatePayloadFromJSONTyped(json: any, ignoreDiscriminator: boolean): PolicyUpdatePayload {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
         
-        'name': !exists(json, 'name') ? undefined : json['name'],
+        'name': json['name'] == null ? undefined : json['name'],
     };
 }
 
 export function PolicyUpdatePayloadToJSON(value?: PolicyUpdatePayload | null): any {
-    if (value === undefined) {
-        return undefined;
-    }
-    if (value === null) {
-        return null;
+    if (value == null) {
+        return value;
     }
     return {
         
-        'name': value.name,
+        'name': value['name'],
     };
 }
 

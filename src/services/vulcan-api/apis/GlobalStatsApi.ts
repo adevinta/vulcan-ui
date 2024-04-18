@@ -21,7 +21,7 @@ import type {
   Statsassets,
   Statsfixed,
   Statsopen,
-} from '../models';
+} from '../models/index';
 import {
     CurrentExposureFromJSON,
     CurrentExposureToJSON,
@@ -35,7 +35,7 @@ import {
     StatsfixedToJSON,
     StatsopenFromJSON,
     StatsopenToJSON,
-} from '../models';
+} from '../models/index';
 
 export interface GlobalStatsAssetsRequest {
     identifiers?: string;
@@ -94,22 +94,22 @@ export class GlobalStatsApi extends runtime.BaseAPI {
     async globalStatsAssetsRaw(requestParameters: GlobalStatsAssetsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Statsassets>> {
         const queryParameters: any = {};
 
-        if (requestParameters.identifiers !== undefined) {
-            queryParameters['identifiers'] = requestParameters.identifiers;
+        if (requestParameters['identifiers'] != null) {
+            queryParameters['identifiers'] = requestParameters['identifiers'];
         }
 
-        if (requestParameters.labels !== undefined) {
-            queryParameters['labels'] = requestParameters.labels;
+        if (requestParameters['labels'] != null) {
+            queryParameters['labels'] = requestParameters['labels'];
         }
 
-        if (requestParameters.tags !== undefined) {
-            queryParameters['tags'] = requestParameters.tags;
+        if (requestParameters['tags'] != null) {
+            queryParameters['tags'] = requestParameters['tags'];
         }
 
         const headerParameters: runtime.HTTPHeaders = {};
 
         if (this.configuration && this.configuration.apiKey) {
-            headerParameters["authorization"] = this.configuration.apiKey("authorization"); // Bearer authentication
+            headerParameters["authorization"] = await this.configuration.apiKey("authorization"); // Bearer authentication
         }
 
         const response = await this.request({
@@ -138,26 +138,26 @@ export class GlobalStatsApi extends runtime.BaseAPI {
     async globalStatsCurrentExposureRaw(requestParameters: GlobalStatsCurrentExposureRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<CurrentExposure>> {
         const queryParameters: any = {};
 
-        if (requestParameters.labels !== undefined) {
-            queryParameters['labels'] = requestParameters.labels;
+        if (requestParameters['labels'] != null) {
+            queryParameters['labels'] = requestParameters['labels'];
         }
 
-        if (requestParameters.maxScore !== undefined) {
-            queryParameters['maxScore'] = requestParameters.maxScore;
+        if (requestParameters['maxScore'] != null) {
+            queryParameters['maxScore'] = requestParameters['maxScore'];
         }
 
-        if (requestParameters.minScore !== undefined) {
-            queryParameters['minScore'] = requestParameters.minScore;
+        if (requestParameters['minScore'] != null) {
+            queryParameters['minScore'] = requestParameters['minScore'];
         }
 
-        if (requestParameters.tags !== undefined) {
-            queryParameters['tags'] = requestParameters.tags;
+        if (requestParameters['tags'] != null) {
+            queryParameters['tags'] = requestParameters['tags'];
         }
 
         const headerParameters: runtime.HTTPHeaders = {};
 
         if (this.configuration && this.configuration.apiKey) {
-            headerParameters["authorization"] = this.configuration.apiKey("authorization"); // Bearer authentication
+            headerParameters["authorization"] = await this.configuration.apiKey("authorization"); // Bearer authentication
         }
 
         const response = await this.request({
@@ -186,26 +186,26 @@ export class GlobalStatsApi extends runtime.BaseAPI {
     async globalStatsExposureRaw(requestParameters: GlobalStatsExposureRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Exposure>> {
         const queryParameters: any = {};
 
-        if (requestParameters.atDate !== undefined) {
-            queryParameters['atDate'] = requestParameters.atDate;
+        if (requestParameters['atDate'] != null) {
+            queryParameters['atDate'] = requestParameters['atDate'];
         }
 
-        if (requestParameters.maxScore !== undefined) {
-            queryParameters['maxScore'] = requestParameters.maxScore;
+        if (requestParameters['maxScore'] != null) {
+            queryParameters['maxScore'] = requestParameters['maxScore'];
         }
 
-        if (requestParameters.minScore !== undefined) {
-            queryParameters['minScore'] = requestParameters.minScore;
+        if (requestParameters['minScore'] != null) {
+            queryParameters['minScore'] = requestParameters['minScore'];
         }
 
-        if (requestParameters.tags !== undefined) {
-            queryParameters['tags'] = requestParameters.tags;
+        if (requestParameters['tags'] != null) {
+            queryParameters['tags'] = requestParameters['tags'];
         }
 
         const headerParameters: runtime.HTTPHeaders = {};
 
         if (this.configuration && this.configuration.apiKey) {
-            headerParameters["authorization"] = this.configuration.apiKey("authorization"); // Bearer authentication
+            headerParameters["authorization"] = await this.configuration.apiKey("authorization"); // Bearer authentication
         }
 
         const response = await this.request({
@@ -234,34 +234,34 @@ export class GlobalStatsApi extends runtime.BaseAPI {
     async globalStatsFixedRaw(requestParameters: GlobalStatsFixedRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Statsfixed>> {
         const queryParameters: any = {};
 
-        if (requestParameters.atDate !== undefined) {
-            queryParameters['atDate'] = requestParameters.atDate;
+        if (requestParameters['atDate'] != null) {
+            queryParameters['atDate'] = requestParameters['atDate'];
         }
 
-        if (requestParameters.identifiers !== undefined) {
-            queryParameters['identifiers'] = requestParameters.identifiers;
+        if (requestParameters['identifiers'] != null) {
+            queryParameters['identifiers'] = requestParameters['identifiers'];
         }
 
-        if (requestParameters.labels !== undefined) {
-            queryParameters['labels'] = requestParameters.labels;
+        if (requestParameters['labels'] != null) {
+            queryParameters['labels'] = requestParameters['labels'];
         }
 
-        if (requestParameters.maxDate !== undefined) {
-            queryParameters['maxDate'] = requestParameters.maxDate;
+        if (requestParameters['maxDate'] != null) {
+            queryParameters['maxDate'] = requestParameters['maxDate'];
         }
 
-        if (requestParameters.minDate !== undefined) {
-            queryParameters['minDate'] = requestParameters.minDate;
+        if (requestParameters['minDate'] != null) {
+            queryParameters['minDate'] = requestParameters['minDate'];
         }
 
-        if (requestParameters.tags !== undefined) {
-            queryParameters['tags'] = requestParameters.tags;
+        if (requestParameters['tags'] != null) {
+            queryParameters['tags'] = requestParameters['tags'];
         }
 
         const headerParameters: runtime.HTTPHeaders = {};
 
         if (this.configuration && this.configuration.apiKey) {
-            headerParameters["authorization"] = this.configuration.apiKey("authorization"); // Bearer authentication
+            headerParameters["authorization"] = await this.configuration.apiKey("authorization"); // Bearer authentication
         }
 
         const response = await this.request({
@@ -290,26 +290,26 @@ export class GlobalStatsApi extends runtime.BaseAPI {
     async globalStatsMttrRaw(requestParameters: GlobalStatsMttrRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Mttr>> {
         const queryParameters: any = {};
 
-        if (requestParameters.labels !== undefined) {
-            queryParameters['labels'] = requestParameters.labels;
+        if (requestParameters['labels'] != null) {
+            queryParameters['labels'] = requestParameters['labels'];
         }
 
-        if (requestParameters.maxDate !== undefined) {
-            queryParameters['maxDate'] = requestParameters.maxDate;
+        if (requestParameters['maxDate'] != null) {
+            queryParameters['maxDate'] = requestParameters['maxDate'];
         }
 
-        if (requestParameters.minDate !== undefined) {
-            queryParameters['minDate'] = requestParameters.minDate;
+        if (requestParameters['minDate'] != null) {
+            queryParameters['minDate'] = requestParameters['minDate'];
         }
 
-        if (requestParameters.tags !== undefined) {
-            queryParameters['tags'] = requestParameters.tags;
+        if (requestParameters['tags'] != null) {
+            queryParameters['tags'] = requestParameters['tags'];
         }
 
         const headerParameters: runtime.HTTPHeaders = {};
 
         if (this.configuration && this.configuration.apiKey) {
-            headerParameters["authorization"] = this.configuration.apiKey("authorization"); // Bearer authentication
+            headerParameters["authorization"] = await this.configuration.apiKey("authorization"); // Bearer authentication
         }
 
         const response = await this.request({
@@ -338,34 +338,34 @@ export class GlobalStatsApi extends runtime.BaseAPI {
     async globalStatsOpenRaw(requestParameters: GlobalStatsOpenRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Statsopen>> {
         const queryParameters: any = {};
 
-        if (requestParameters.atDate !== undefined) {
-            queryParameters['atDate'] = requestParameters.atDate;
+        if (requestParameters['atDate'] != null) {
+            queryParameters['atDate'] = requestParameters['atDate'];
         }
 
-        if (requestParameters.identifiers !== undefined) {
-            queryParameters['identifiers'] = requestParameters.identifiers;
+        if (requestParameters['identifiers'] != null) {
+            queryParameters['identifiers'] = requestParameters['identifiers'];
         }
 
-        if (requestParameters.labels !== undefined) {
-            queryParameters['labels'] = requestParameters.labels;
+        if (requestParameters['labels'] != null) {
+            queryParameters['labels'] = requestParameters['labels'];
         }
 
-        if (requestParameters.maxDate !== undefined) {
-            queryParameters['maxDate'] = requestParameters.maxDate;
+        if (requestParameters['maxDate'] != null) {
+            queryParameters['maxDate'] = requestParameters['maxDate'];
         }
 
-        if (requestParameters.minDate !== undefined) {
-            queryParameters['minDate'] = requestParameters.minDate;
+        if (requestParameters['minDate'] != null) {
+            queryParameters['minDate'] = requestParameters['minDate'];
         }
 
-        if (requestParameters.tags !== undefined) {
-            queryParameters['tags'] = requestParameters.tags;
+        if (requestParameters['tags'] != null) {
+            queryParameters['tags'] = requestParameters['tags'];
         }
 
         const headerParameters: runtime.HTTPHeaders = {};
 
         if (this.configuration && this.configuration.apiKey) {
-            headerParameters["authorization"] = this.configuration.apiKey("authorization"); // Bearer authentication
+            headerParameters["authorization"] = await this.configuration.apiKey("authorization"); // Bearer authentication
         }
 
         const response = await this.request({

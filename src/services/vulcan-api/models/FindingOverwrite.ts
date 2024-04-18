@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 /**
  * Finding Overwrite (default view)
  * @export
@@ -73,9 +73,7 @@ export interface FindingOverwrite {
  * Check if a given object implements the FindingOverwrite interface.
  */
 export function instanceOfFindingOverwrite(value: object): boolean {
-    let isInstance = true;
-
-    return isInstance;
+    return true;
 }
 
 export function FindingOverwriteFromJSON(json: any): FindingOverwrite {
@@ -83,39 +81,36 @@ export function FindingOverwriteFromJSON(json: any): FindingOverwrite {
 }
 
 export function FindingOverwriteFromJSONTyped(json: any, ignoreDiscriminator: boolean): FindingOverwrite {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
         
-        'createdAt': !exists(json, 'created_at') ? undefined : (new Date(json['created_at'])),
-        'findingId': !exists(json, 'finding_id') ? undefined : json['finding_id'],
-        'id': !exists(json, 'id') ? undefined : json['id'],
-        'notes': !exists(json, 'notes') ? undefined : json['notes'],
-        'status': !exists(json, 'status') ? undefined : json['status'],
-        'statusPrevious': !exists(json, 'status_previous') ? undefined : json['status_previous'],
-        'teamId': !exists(json, 'team_id') ? undefined : json['team_id'],
-        'user': !exists(json, 'user') ? undefined : json['user'],
+        'createdAt': json['created_at'] == null ? undefined : (new Date(json['created_at'])),
+        'findingId': json['finding_id'] == null ? undefined : json['finding_id'],
+        'id': json['id'] == null ? undefined : json['id'],
+        'notes': json['notes'] == null ? undefined : json['notes'],
+        'status': json['status'] == null ? undefined : json['status'],
+        'statusPrevious': json['status_previous'] == null ? undefined : json['status_previous'],
+        'teamId': json['team_id'] == null ? undefined : json['team_id'],
+        'user': json['user'] == null ? undefined : json['user'],
     };
 }
 
 export function FindingOverwriteToJSON(value?: FindingOverwrite | null): any {
-    if (value === undefined) {
-        return undefined;
-    }
-    if (value === null) {
-        return null;
+    if (value == null) {
+        return value;
     }
     return {
         
-        'created_at': value.createdAt === undefined ? undefined : (value.createdAt.toISOString()),
-        'finding_id': value.findingId,
-        'id': value.id,
-        'notes': value.notes,
-        'status': value.status,
-        'status_previous': value.statusPrevious,
-        'team_id': value.teamId,
-        'user': value.user,
+        'created_at': value['createdAt'] == null ? undefined : ((value['createdAt']).toISOString()),
+        'finding_id': value['findingId'],
+        'id': value['id'],
+        'notes': value['notes'],
+        'status': value['status'],
+        'status_previous': value['statusPrevious'],
+        'team_id': value['teamId'],
+        'user': value['user'],
     };
 }
 

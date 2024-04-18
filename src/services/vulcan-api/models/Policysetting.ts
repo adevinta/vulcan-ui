@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 /**
  * Policy Setting (default view)
  * @export
@@ -43,9 +43,7 @@ export interface Policysetting {
  * Check if a given object implements the Policysetting interface.
  */
 export function instanceOfPolicysetting(value: object): boolean {
-    let isInstance = true;
-
-    return isInstance;
+    return true;
 }
 
 export function PolicysettingFromJSON(json: any): Policysetting {
@@ -53,29 +51,26 @@ export function PolicysettingFromJSON(json: any): Policysetting {
 }
 
 export function PolicysettingFromJSONTyped(json: any, ignoreDiscriminator: boolean): Policysetting {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
         
-        'checktypeName': !exists(json, 'checktype_name') ? undefined : json['checktype_name'],
-        'id': !exists(json, 'id') ? undefined : json['id'],
-        'options': !exists(json, 'options') ? undefined : json['options'],
+        'checktypeName': json['checktype_name'] == null ? undefined : json['checktype_name'],
+        'id': json['id'] == null ? undefined : json['id'],
+        'options': json['options'] == null ? undefined : json['options'],
     };
 }
 
 export function PolicysettingToJSON(value?: Policysetting | null): any {
-    if (value === undefined) {
-        return undefined;
-    }
-    if (value === null) {
-        return null;
+    if (value == null) {
+        return value;
     }
     return {
         
-        'checktype_name': value.checktypeName,
-        'id': value.id,
-        'options': value.options,
+        'checktype_name': value['checktypeName'],
+        'id': value['id'],
+        'options': value['options'],
     };
 }
 

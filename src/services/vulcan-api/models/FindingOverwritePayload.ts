@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 /**
  * 
  * @export
@@ -37,11 +37,9 @@ export interface FindingOverwritePayload {
  * Check if a given object implements the FindingOverwritePayload interface.
  */
 export function instanceOfFindingOverwritePayload(value: object): boolean {
-    let isInstance = true;
-    isInstance = isInstance && "notes" in value;
-    isInstance = isInstance && "status" in value;
-
-    return isInstance;
+    if (!('notes' in value)) return false;
+    if (!('status' in value)) return false;
+    return true;
 }
 
 export function FindingOverwritePayloadFromJSON(json: any): FindingOverwritePayload {
@@ -49,7 +47,7 @@ export function FindingOverwritePayloadFromJSON(json: any): FindingOverwritePayl
 }
 
 export function FindingOverwritePayloadFromJSONTyped(json: any, ignoreDiscriminator: boolean): FindingOverwritePayload {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
@@ -60,16 +58,13 @@ export function FindingOverwritePayloadFromJSONTyped(json: any, ignoreDiscrimina
 }
 
 export function FindingOverwritePayloadToJSON(value?: FindingOverwritePayload | null): any {
-    if (value === undefined) {
-        return undefined;
-    }
-    if (value === null) {
-        return null;
+    if (value == null) {
+        return value;
     }
     return {
         
-        'notes': value.notes,
-        'status': value.status,
+        'notes': value['notes'],
+        'status': value['status'],
     };
 }
 

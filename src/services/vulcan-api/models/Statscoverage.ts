@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 /**
  * Asset Coverage: discovered vs. confirmed (default view)
  * @export
@@ -31,9 +31,7 @@ export interface Statscoverage {
  * Check if a given object implements the Statscoverage interface.
  */
 export function instanceOfStatscoverage(value: object): boolean {
-    let isInstance = true;
-
-    return isInstance;
+    return true;
 }
 
 export function StatscoverageFromJSON(json: any): Statscoverage {
@@ -41,25 +39,22 @@ export function StatscoverageFromJSON(json: any): Statscoverage {
 }
 
 export function StatscoverageFromJSONTyped(json: any, ignoreDiscriminator: boolean): Statscoverage {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
         
-        'coverage': !exists(json, 'coverage') ? undefined : json['coverage'],
+        'coverage': json['coverage'] == null ? undefined : json['coverage'],
     };
 }
 
 export function StatscoverageToJSON(value?: Statscoverage | null): any {
-    if (value === undefined) {
-        return undefined;
-    }
-    if (value === null) {
-        return null;
+    if (value == null) {
+        return value;
     }
     return {
         
-        'coverage': value.coverage,
+        'coverage': value['coverage'],
     };
 }
 

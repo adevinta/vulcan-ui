@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 /**
  * 
  * @export
@@ -37,9 +37,7 @@ export interface ProgramPolicyGroupPayload {
  * Check if a given object implements the ProgramPolicyGroupPayload interface.
  */
 export function instanceOfProgramPolicyGroupPayload(value: object): boolean {
-    let isInstance = true;
-
-    return isInstance;
+    return true;
 }
 
 export function ProgramPolicyGroupPayloadFromJSON(json: any): ProgramPolicyGroupPayload {
@@ -47,27 +45,24 @@ export function ProgramPolicyGroupPayloadFromJSON(json: any): ProgramPolicyGroup
 }
 
 export function ProgramPolicyGroupPayloadFromJSONTyped(json: any, ignoreDiscriminator: boolean): ProgramPolicyGroupPayload {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
         
-        'groupId': !exists(json, 'group_id') ? undefined : json['group_id'],
-        'policyId': !exists(json, 'policy_id') ? undefined : json['policy_id'],
+        'groupId': json['group_id'] == null ? undefined : json['group_id'],
+        'policyId': json['policy_id'] == null ? undefined : json['policy_id'],
     };
 }
 
 export function ProgramPolicyGroupPayloadToJSON(value?: ProgramPolicyGroupPayload | null): any {
-    if (value === undefined) {
-        return undefined;
-    }
-    if (value === null) {
-        return null;
+    if (value == null) {
+        return value;
     }
     return {
         
-        'group_id': value.groupId,
-        'policy_id': value.policyId,
+        'group_id': value['groupId'],
+        'policy_id': value['policyId'],
     };
 }
 

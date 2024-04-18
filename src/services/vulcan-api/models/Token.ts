@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 /**
  * Token (default view)
  * @export
@@ -49,9 +49,7 @@ export interface Token {
  * Check if a given object implements the Token interface.
  */
 export function instanceOfToken(value: object): boolean {
-    let isInstance = true;
-
-    return isInstance;
+    return true;
 }
 
 export function TokenFromJSON(json: any): Token {
@@ -59,31 +57,28 @@ export function TokenFromJSON(json: any): Token {
 }
 
 export function TokenFromJSONTyped(json: any, ignoreDiscriminator: boolean): Token {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
         
-        'creationTime': !exists(json, 'creation_time') ? undefined : json['creation_time'],
-        'email': !exists(json, 'email') ? undefined : json['email'],
-        'hash': !exists(json, 'hash') ? undefined : json['hash'],
-        'token': !exists(json, 'token') ? undefined : json['token'],
+        'creationTime': json['creation_time'] == null ? undefined : json['creation_time'],
+        'email': json['email'] == null ? undefined : json['email'],
+        'hash': json['hash'] == null ? undefined : json['hash'],
+        'token': json['token'] == null ? undefined : json['token'],
     };
 }
 
 export function TokenToJSON(value?: Token | null): any {
-    if (value === undefined) {
-        return undefined;
-    }
-    if (value === null) {
-        return null;
+    if (value == null) {
+        return value;
     }
     return {
         
-        'creation_time': value.creationTime,
-        'email': value.email,
-        'hash': value.hash,
-        'token': value.token,
+        'creation_time': value['creationTime'],
+        'email': value['email'],
+        'hash': value['hash'],
+        'token': value['token'],
     };
 }
 

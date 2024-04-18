@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 import type { Group } from './Group';
 import {
     GroupFromJSON,
@@ -50,9 +50,7 @@ export interface ProgramPolicyGroup {
  * Check if a given object implements the ProgramPolicyGroup interface.
  */
 export function instanceOfProgramPolicyGroup(value: object): boolean {
-    let isInstance = true;
-
-    return isInstance;
+    return true;
 }
 
 export function ProgramPolicyGroupFromJSON(json: any): ProgramPolicyGroup {
@@ -60,27 +58,24 @@ export function ProgramPolicyGroupFromJSON(json: any): ProgramPolicyGroup {
 }
 
 export function ProgramPolicyGroupFromJSONTyped(json: any, ignoreDiscriminator: boolean): ProgramPolicyGroup {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
         
-        'group': !exists(json, 'group') ? undefined : GroupFromJSON(json['group']),
-        'policy': !exists(json, 'policy') ? undefined : PolicyFromJSON(json['policy']),
+        'group': json['group'] == null ? undefined : GroupFromJSON(json['group']),
+        'policy': json['policy'] == null ? undefined : PolicyFromJSON(json['policy']),
     };
 }
 
 export function ProgramPolicyGroupToJSON(value?: ProgramPolicyGroup | null): any {
-    if (value === undefined) {
-        return undefined;
-    }
-    if (value === null) {
-        return null;
+    if (value == null) {
+        return value;
     }
     return {
         
-        'group': GroupToJSON(value.group),
-        'policy': PolicyToJSON(value.policy),
+        'group': GroupToJSON(value['group']),
+        'policy': PolicyToJSON(value['policy']),
     };
 }
 

@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 import type { Statstotal } from './Statstotal';
 import {
     StatstotalFromJSON,
@@ -38,9 +38,7 @@ export interface Statsassets {
  * Check if a given object implements the Statsassets interface.
  */
 export function instanceOfStatsassets(value: object): boolean {
-    let isInstance = true;
-
-    return isInstance;
+    return true;
 }
 
 export function StatsassetsFromJSON(json: any): Statsassets {
@@ -48,25 +46,22 @@ export function StatsassetsFromJSON(json: any): Statsassets {
 }
 
 export function StatsassetsFromJSONTyped(json: any, ignoreDiscriminator: boolean): Statsassets {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
         
-        'assets': !exists(json, 'assets') ? undefined : StatstotalFromJSON(json['assets']),
+        'assets': json['assets'] == null ? undefined : StatstotalFromJSON(json['assets']),
     };
 }
 
 export function StatsassetsToJSON(value?: Statsassets | null): any {
-    if (value === undefined) {
-        return undefined;
-    }
-    if (value === null) {
-        return null;
+    if (value == null) {
+        return value;
     }
     return {
         
-        'assets': StatstotalToJSON(value.assets),
+        'assets': StatstotalToJSON(value['assets']),
     };
 }
 

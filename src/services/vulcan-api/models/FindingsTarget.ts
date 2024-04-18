@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 /**
  * Findings by Target (default view)
  * @export
@@ -55,9 +55,7 @@ export interface FindingsTarget {
  * Check if a given object implements the FindingsTarget interface.
  */
 export function instanceOfFindingsTarget(value: object): boolean {
-    let isInstance = true;
-
-    return isInstance;
+    return true;
 }
 
 export function FindingsTargetFromJSON(json: any): FindingsTarget {
@@ -65,33 +63,30 @@ export function FindingsTargetFromJSON(json: any): FindingsTarget {
 }
 
 export function FindingsTargetFromJSONTyped(json: any, ignoreDiscriminator: boolean): FindingsTarget {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
         
-        'findingsCount': !exists(json, 'findings_count') ? undefined : json['findings_count'],
-        'identifier': !exists(json, 'identifier') ? undefined : json['identifier'],
-        'issuesCount': !exists(json, 'issues_count') ? undefined : json['issues_count'],
-        'maxScore': !exists(json, 'max_score') ? undefined : json['max_score'],
-        'targetId': !exists(json, 'target_id') ? undefined : json['target_id'],
+        'findingsCount': json['findings_count'] == null ? undefined : json['findings_count'],
+        'identifier': json['identifier'] == null ? undefined : json['identifier'],
+        'issuesCount': json['issues_count'] == null ? undefined : json['issues_count'],
+        'maxScore': json['max_score'] == null ? undefined : json['max_score'],
+        'targetId': json['target_id'] == null ? undefined : json['target_id'],
     };
 }
 
 export function FindingsTargetToJSON(value?: FindingsTarget | null): any {
-    if (value === undefined) {
-        return undefined;
-    }
-    if (value === null) {
-        return null;
+    if (value == null) {
+        return value;
     }
     return {
         
-        'findings_count': value.findingsCount,
-        'identifier': value.identifier,
-        'issues_count': value.issuesCount,
-        'max_score': value.maxScore,
-        'target_id': value.targetId,
+        'findings_count': value['findingsCount'],
+        'identifier': value['identifier'],
+        'issues_count': value['issuesCount'],
+        'max_score': value['maxScore'],
+        'target_id': value['targetId'],
     };
 }
 

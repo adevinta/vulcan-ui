@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 import type { FindingsIssue } from './FindingsIssue';
 import {
     FindingsIssueFromJSON,
@@ -50,9 +50,7 @@ export interface FindingsIssuesList {
  * Check if a given object implements the FindingsIssuesList interface.
  */
 export function instanceOfFindingsIssuesList(value: object): boolean {
-    let isInstance = true;
-
-    return isInstance;
+    return true;
 }
 
 export function FindingsIssuesListFromJSON(json: any): FindingsIssuesList {
@@ -60,27 +58,24 @@ export function FindingsIssuesListFromJSON(json: any): FindingsIssuesList {
 }
 
 export function FindingsIssuesListFromJSONTyped(json: any, ignoreDiscriminator: boolean): FindingsIssuesList {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
         
-        'issues': !exists(json, 'issues') ? undefined : ((json['issues'] as Array<any>).map(FindingsIssueFromJSON)),
-        'pagination': !exists(json, 'pagination') ? undefined : PaginationFromJSON(json['pagination']),
+        'issues': json['issues'] == null ? undefined : ((json['issues'] as Array<any>).map(FindingsIssueFromJSON)),
+        'pagination': json['pagination'] == null ? undefined : PaginationFromJSON(json['pagination']),
     };
 }
 
 export function FindingsIssuesListToJSON(value?: FindingsIssuesList | null): any {
-    if (value === undefined) {
-        return undefined;
-    }
-    if (value === null) {
-        return null;
+    if (value == null) {
+        return value;
     }
     return {
         
-        'issues': value.issues === undefined ? undefined : ((value.issues as Array<any>).map(FindingsIssueToJSON)),
-        'pagination': PaginationToJSON(value.pagination),
+        'issues': value['issues'] == null ? undefined : ((value['issues'] as Array<any>).map(FindingsIssueToJSON)),
+        'pagination': PaginationToJSON(value['pagination']),
     };
 }
 

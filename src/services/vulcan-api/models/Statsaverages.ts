@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 /**
  * Stats by different averages (default view)
  * @export
@@ -61,9 +61,7 @@ export interface Statsaverages {
  * Check if a given object implements the Statsaverages interface.
  */
 export function instanceOfStatsaverages(value: object): boolean {
-    let isInstance = true;
-
-    return isInstance;
+    return true;
 }
 
 export function StatsaveragesFromJSON(json: any): Statsaverages {
@@ -71,35 +69,32 @@ export function StatsaveragesFromJSON(json: any): Statsaverages {
 }
 
 export function StatsaveragesFromJSONTyped(json: any, ignoreDiscriminator: boolean): Statsaverages {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
         
-        'mean': !exists(json, 'mean') ? undefined : json['mean'],
-        'percentile10': !exists(json, 'percentile_10') ? undefined : json['percentile_10'],
-        'percentile25': !exists(json, 'percentile_25') ? undefined : json['percentile_25'],
-        'percentile50': !exists(json, 'percentile_50') ? undefined : json['percentile_50'],
-        'percentile75': !exists(json, 'percentile_75') ? undefined : json['percentile_75'],
-        'percentile90': !exists(json, 'percentile_90') ? undefined : json['percentile_90'],
+        'mean': json['mean'] == null ? undefined : json['mean'],
+        'percentile10': json['percentile_10'] == null ? undefined : json['percentile_10'],
+        'percentile25': json['percentile_25'] == null ? undefined : json['percentile_25'],
+        'percentile50': json['percentile_50'] == null ? undefined : json['percentile_50'],
+        'percentile75': json['percentile_75'] == null ? undefined : json['percentile_75'],
+        'percentile90': json['percentile_90'] == null ? undefined : json['percentile_90'],
     };
 }
 
 export function StatsaveragesToJSON(value?: Statsaverages | null): any {
-    if (value === undefined) {
-        return undefined;
-    }
-    if (value === null) {
-        return null;
+    if (value == null) {
+        return value;
     }
     return {
         
-        'mean': value.mean,
-        'percentile_10': value.percentile10,
-        'percentile_25': value.percentile25,
-        'percentile_50': value.percentile50,
-        'percentile_75': value.percentile75,
-        'percentile_90': value.percentile90,
+        'mean': value['mean'],
+        'percentile_10': value['percentile10'],
+        'percentile_25': value['percentile25'],
+        'percentile_50': value['percentile50'],
+        'percentile_75': value['percentile75'],
+        'percentile_90': value['percentile90'],
     };
 }
 

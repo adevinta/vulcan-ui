@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 import type { AssetPayload } from './AssetPayload';
 import {
     AssetPayloadFromJSON,
@@ -28,10 +28,10 @@ import {
 export interface CreateAssetPayload {
     /**
      * 
-     * @type {object}
+     * @type {{ [key: string]: any; }}
      * @memberof CreateAssetPayload
      */
-    annotations?: object;
+    annotations?: { [key: string]: any; };
     /**
      * 
      * @type {Array<AssetPayload>}
@@ -50,10 +50,8 @@ export interface CreateAssetPayload {
  * Check if a given object implements the CreateAssetPayload interface.
  */
 export function instanceOfCreateAssetPayload(value: object): boolean {
-    let isInstance = true;
-    isInstance = isInstance && "assets" in value;
-
-    return isInstance;
+    if (!('assets' in value)) return false;
+    return true;
 }
 
 export function CreateAssetPayloadFromJSON(json: any): CreateAssetPayload {
@@ -61,29 +59,26 @@ export function CreateAssetPayloadFromJSON(json: any): CreateAssetPayload {
 }
 
 export function CreateAssetPayloadFromJSONTyped(json: any, ignoreDiscriminator: boolean): CreateAssetPayload {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
         
-        'annotations': !exists(json, 'annotations') ? undefined : json['annotations'],
+        'annotations': json['annotations'] == null ? undefined : json['annotations'],
         'assets': ((json['assets'] as Array<any>).map(AssetPayloadFromJSON)),
-        'groups': !exists(json, 'groups') ? undefined : json['groups'],
+        'groups': json['groups'] == null ? undefined : json['groups'],
     };
 }
 
 export function CreateAssetPayloadToJSON(value?: CreateAssetPayload | null): any {
-    if (value === undefined) {
-        return undefined;
-    }
-    if (value === null) {
-        return null;
+    if (value == null) {
+        return value;
     }
     return {
         
-        'annotations': value.annotations,
-        'assets': ((value.assets as Array<any>).map(AssetPayloadToJSON)),
-        'groups': value.groups,
+        'annotations': value['annotations'],
+        'assets': ((value['assets'] as Array<any>).map(AssetPayloadToJSON)),
+        'groups': value['groups'],
     };
 }
 

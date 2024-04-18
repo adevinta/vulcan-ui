@@ -18,7 +18,7 @@ import type {
   Policy,
   PolicyPayload,
   PolicyUpdatePayload,
-} from '../models';
+} from '../models/index';
 import {
     PolicyFromJSON,
     PolicyToJSON,
@@ -26,7 +26,7 @@ import {
     PolicyPayloadToJSON,
     PolicyUpdatePayloadFromJSON,
     PolicyUpdatePayloadToJSON,
-} from '../models';
+} from '../models/index';
 
 export interface PoliciesCreateRequest {
     teamId: string;
@@ -63,12 +63,18 @@ export class PoliciesApi extends runtime.BaseAPI {
      * create policies
      */
     async policiesCreateRaw(requestParameters: PoliciesCreateRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Policy>> {
-        if (requestParameters.teamId === null || requestParameters.teamId === undefined) {
-            throw new runtime.RequiredError('teamId','Required parameter requestParameters.teamId was null or undefined when calling policiesCreate.');
+        if (requestParameters['teamId'] == null) {
+            throw new runtime.RequiredError(
+                'teamId',
+                'Required parameter "teamId" was null or undefined when calling policiesCreate().'
+            );
         }
 
-        if (requestParameters.payload === null || requestParameters.payload === undefined) {
-            throw new runtime.RequiredError('payload','Required parameter requestParameters.payload was null or undefined when calling policiesCreate.');
+        if (requestParameters['payload'] == null) {
+            throw new runtime.RequiredError(
+                'payload',
+                'Required parameter "payload" was null or undefined when calling policiesCreate().'
+            );
         }
 
         const queryParameters: any = {};
@@ -78,15 +84,15 @@ export class PoliciesApi extends runtime.BaseAPI {
         headerParameters['Content-Type'] = 'application/json';
 
         if (this.configuration && this.configuration.apiKey) {
-            headerParameters["authorization"] = this.configuration.apiKey("authorization"); // Bearer authentication
+            headerParameters["authorization"] = await this.configuration.apiKey("authorization"); // Bearer authentication
         }
 
         const response = await this.request({
-            path: `/teams/{team_id}/policies`.replace(`{${"team_id"}}`, encodeURIComponent(String(requestParameters.teamId))),
+            path: `/teams/{team_id}/policies`.replace(`{${"team_id"}}`, encodeURIComponent(String(requestParameters['teamId']))),
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
-            body: PolicyPayloadToJSON(requestParameters.payload),
+            body: PolicyPayloadToJSON(requestParameters['payload']),
         }, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => PolicyFromJSON(jsonValue));
@@ -106,12 +112,18 @@ export class PoliciesApi extends runtime.BaseAPI {
      * delete policies
      */
     async policiesDeleteRaw(requestParameters: PoliciesDeleteRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
-        if (requestParameters.policyId === null || requestParameters.policyId === undefined) {
-            throw new runtime.RequiredError('policyId','Required parameter requestParameters.policyId was null or undefined when calling policiesDelete.');
+        if (requestParameters['policyId'] == null) {
+            throw new runtime.RequiredError(
+                'policyId',
+                'Required parameter "policyId" was null or undefined when calling policiesDelete().'
+            );
         }
 
-        if (requestParameters.teamId === null || requestParameters.teamId === undefined) {
-            throw new runtime.RequiredError('teamId','Required parameter requestParameters.teamId was null or undefined when calling policiesDelete.');
+        if (requestParameters['teamId'] == null) {
+            throw new runtime.RequiredError(
+                'teamId',
+                'Required parameter "teamId" was null or undefined when calling policiesDelete().'
+            );
         }
 
         const queryParameters: any = {};
@@ -119,11 +131,11 @@ export class PoliciesApi extends runtime.BaseAPI {
         const headerParameters: runtime.HTTPHeaders = {};
 
         if (this.configuration && this.configuration.apiKey) {
-            headerParameters["authorization"] = this.configuration.apiKey("authorization"); // Bearer authentication
+            headerParameters["authorization"] = await this.configuration.apiKey("authorization"); // Bearer authentication
         }
 
         const response = await this.request({
-            path: `/teams/{team_id}/policies/{policy_id}`.replace(`{${"policy_id"}}`, encodeURIComponent(String(requestParameters.policyId))).replace(`{${"team_id"}}`, encodeURIComponent(String(requestParameters.teamId))),
+            path: `/teams/{team_id}/policies/{policy_id}`.replace(`{${"policy_id"}}`, encodeURIComponent(String(requestParameters['policyId']))).replace(`{${"team_id"}}`, encodeURIComponent(String(requestParameters['teamId']))),
             method: 'DELETE',
             headers: headerParameters,
             query: queryParameters,
@@ -145,8 +157,11 @@ export class PoliciesApi extends runtime.BaseAPI {
      * list policies
      */
     async policiesListRaw(requestParameters: PoliciesListRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<Policy>>> {
-        if (requestParameters.teamId === null || requestParameters.teamId === undefined) {
-            throw new runtime.RequiredError('teamId','Required parameter requestParameters.teamId was null or undefined when calling policiesList.');
+        if (requestParameters['teamId'] == null) {
+            throw new runtime.RequiredError(
+                'teamId',
+                'Required parameter "teamId" was null or undefined when calling policiesList().'
+            );
         }
 
         const queryParameters: any = {};
@@ -154,11 +169,11 @@ export class PoliciesApi extends runtime.BaseAPI {
         const headerParameters: runtime.HTTPHeaders = {};
 
         if (this.configuration && this.configuration.apiKey) {
-            headerParameters["authorization"] = this.configuration.apiKey("authorization"); // Bearer authentication
+            headerParameters["authorization"] = await this.configuration.apiKey("authorization"); // Bearer authentication
         }
 
         const response = await this.request({
-            path: `/teams/{team_id}/policies`.replace(`{${"team_id"}}`, encodeURIComponent(String(requestParameters.teamId))),
+            path: `/teams/{team_id}/policies`.replace(`{${"team_id"}}`, encodeURIComponent(String(requestParameters['teamId']))),
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
@@ -181,12 +196,18 @@ export class PoliciesApi extends runtime.BaseAPI {
      * show policies
      */
     async policiesShowRaw(requestParameters: PoliciesShowRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Policy>> {
-        if (requestParameters.policyId === null || requestParameters.policyId === undefined) {
-            throw new runtime.RequiredError('policyId','Required parameter requestParameters.policyId was null or undefined when calling policiesShow.');
+        if (requestParameters['policyId'] == null) {
+            throw new runtime.RequiredError(
+                'policyId',
+                'Required parameter "policyId" was null or undefined when calling policiesShow().'
+            );
         }
 
-        if (requestParameters.teamId === null || requestParameters.teamId === undefined) {
-            throw new runtime.RequiredError('teamId','Required parameter requestParameters.teamId was null or undefined when calling policiesShow.');
+        if (requestParameters['teamId'] == null) {
+            throw new runtime.RequiredError(
+                'teamId',
+                'Required parameter "teamId" was null or undefined when calling policiesShow().'
+            );
         }
 
         const queryParameters: any = {};
@@ -194,11 +215,11 @@ export class PoliciesApi extends runtime.BaseAPI {
         const headerParameters: runtime.HTTPHeaders = {};
 
         if (this.configuration && this.configuration.apiKey) {
-            headerParameters["authorization"] = this.configuration.apiKey("authorization"); // Bearer authentication
+            headerParameters["authorization"] = await this.configuration.apiKey("authorization"); // Bearer authentication
         }
 
         const response = await this.request({
-            path: `/teams/{team_id}/policies/{policy_id}`.replace(`{${"policy_id"}}`, encodeURIComponent(String(requestParameters.policyId))).replace(`{${"team_id"}}`, encodeURIComponent(String(requestParameters.teamId))),
+            path: `/teams/{team_id}/policies/{policy_id}`.replace(`{${"policy_id"}}`, encodeURIComponent(String(requestParameters['policyId']))).replace(`{${"team_id"}}`, encodeURIComponent(String(requestParameters['teamId']))),
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
@@ -221,16 +242,25 @@ export class PoliciesApi extends runtime.BaseAPI {
      * update policies
      */
     async policiesUpdateRaw(requestParameters: PoliciesUpdateRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Policy>> {
-        if (requestParameters.policyId === null || requestParameters.policyId === undefined) {
-            throw new runtime.RequiredError('policyId','Required parameter requestParameters.policyId was null or undefined when calling policiesUpdate.');
+        if (requestParameters['policyId'] == null) {
+            throw new runtime.RequiredError(
+                'policyId',
+                'Required parameter "policyId" was null or undefined when calling policiesUpdate().'
+            );
         }
 
-        if (requestParameters.teamId === null || requestParameters.teamId === undefined) {
-            throw new runtime.RequiredError('teamId','Required parameter requestParameters.teamId was null or undefined when calling policiesUpdate.');
+        if (requestParameters['teamId'] == null) {
+            throw new runtime.RequiredError(
+                'teamId',
+                'Required parameter "teamId" was null or undefined when calling policiesUpdate().'
+            );
         }
 
-        if (requestParameters.payload === null || requestParameters.payload === undefined) {
-            throw new runtime.RequiredError('payload','Required parameter requestParameters.payload was null or undefined when calling policiesUpdate.');
+        if (requestParameters['payload'] == null) {
+            throw new runtime.RequiredError(
+                'payload',
+                'Required parameter "payload" was null or undefined when calling policiesUpdate().'
+            );
         }
 
         const queryParameters: any = {};
@@ -240,15 +270,15 @@ export class PoliciesApi extends runtime.BaseAPI {
         headerParameters['Content-Type'] = 'application/json';
 
         if (this.configuration && this.configuration.apiKey) {
-            headerParameters["authorization"] = this.configuration.apiKey("authorization"); // Bearer authentication
+            headerParameters["authorization"] = await this.configuration.apiKey("authorization"); // Bearer authentication
         }
 
         const response = await this.request({
-            path: `/teams/{team_id}/policies/{policy_id}`.replace(`{${"policy_id"}}`, encodeURIComponent(String(requestParameters.policyId))).replace(`{${"team_id"}}`, encodeURIComponent(String(requestParameters.teamId))),
+            path: `/teams/{team_id}/policies/{policy_id}`.replace(`{${"policy_id"}}`, encodeURIComponent(String(requestParameters['policyId']))).replace(`{${"team_id"}}`, encodeURIComponent(String(requestParameters['teamId']))),
             method: 'PATCH',
             headers: headerParameters,
             query: queryParameters,
-            body: PolicyUpdatePayloadToJSON(requestParameters.payload),
+            body: PolicyUpdatePayloadToJSON(requestParameters['payload']),
         }, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => PolicyFromJSON(jsonValue));

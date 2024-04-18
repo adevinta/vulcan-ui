@@ -17,13 +17,13 @@ import * as runtime from '../runtime';
 import type {
   Recipient,
   RecipientsPayload,
-} from '../models';
+} from '../models/index';
 import {
     RecipientFromJSON,
     RecipientToJSON,
     RecipientsPayloadFromJSON,
     RecipientsPayloadToJSON,
-} from '../models';
+} from '../models/index';
 
 export interface RecipientsListRequest {
     teamId: string;
@@ -44,8 +44,11 @@ export class RecipientsApi extends runtime.BaseAPI {
      * list recipients
      */
     async recipientsListRaw(requestParameters: RecipientsListRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<Recipient>>> {
-        if (requestParameters.teamId === null || requestParameters.teamId === undefined) {
-            throw new runtime.RequiredError('teamId','Required parameter requestParameters.teamId was null or undefined when calling recipientsList.');
+        if (requestParameters['teamId'] == null) {
+            throw new runtime.RequiredError(
+                'teamId',
+                'Required parameter "teamId" was null or undefined when calling recipientsList().'
+            );
         }
 
         const queryParameters: any = {};
@@ -53,11 +56,11 @@ export class RecipientsApi extends runtime.BaseAPI {
         const headerParameters: runtime.HTTPHeaders = {};
 
         if (this.configuration && this.configuration.apiKey) {
-            headerParameters["authorization"] = this.configuration.apiKey("authorization"); // Bearer authentication
+            headerParameters["authorization"] = await this.configuration.apiKey("authorization"); // Bearer authentication
         }
 
         const response = await this.request({
-            path: `/teams/{team_id}/recipients`.replace(`{${"team_id"}}`, encodeURIComponent(String(requestParameters.teamId))),
+            path: `/teams/{team_id}/recipients`.replace(`{${"team_id"}}`, encodeURIComponent(String(requestParameters['teamId']))),
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
@@ -80,12 +83,18 @@ export class RecipientsApi extends runtime.BaseAPI {
      * update recipients
      */
     async recipientsUpdateRaw(requestParameters: RecipientsUpdateRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<Recipient>>> {
-        if (requestParameters.teamId === null || requestParameters.teamId === undefined) {
-            throw new runtime.RequiredError('teamId','Required parameter requestParameters.teamId was null or undefined when calling recipientsUpdate.');
+        if (requestParameters['teamId'] == null) {
+            throw new runtime.RequiredError(
+                'teamId',
+                'Required parameter "teamId" was null or undefined when calling recipientsUpdate().'
+            );
         }
 
-        if (requestParameters.payload === null || requestParameters.payload === undefined) {
-            throw new runtime.RequiredError('payload','Required parameter requestParameters.payload was null or undefined when calling recipientsUpdate.');
+        if (requestParameters['payload'] == null) {
+            throw new runtime.RequiredError(
+                'payload',
+                'Required parameter "payload" was null or undefined when calling recipientsUpdate().'
+            );
         }
 
         const queryParameters: any = {};
@@ -95,15 +104,15 @@ export class RecipientsApi extends runtime.BaseAPI {
         headerParameters['Content-Type'] = 'application/json';
 
         if (this.configuration && this.configuration.apiKey) {
-            headerParameters["authorization"] = this.configuration.apiKey("authorization"); // Bearer authentication
+            headerParameters["authorization"] = await this.configuration.apiKey("authorization"); // Bearer authentication
         }
 
         const response = await this.request({
-            path: `/teams/{team_id}/recipients`.replace(`{${"team_id"}}`, encodeURIComponent(String(requestParameters.teamId))),
+            path: `/teams/{team_id}/recipients`.replace(`{${"team_id"}}`, encodeURIComponent(String(requestParameters['teamId']))),
             method: 'PUT',
             headers: headerParameters,
             query: queryParameters,
-            body: RecipientsPayloadToJSON(requestParameters.payload),
+            body: RecipientsPayloadToJSON(requestParameters['payload']),
         }, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => jsonValue.map(RecipientFromJSON));

@@ -21,7 +21,7 @@ import type {
   Statscoverage,
   Statsfixed,
   Statsopen,
-} from '../models';
+} from '../models/index';
 import {
     CurrentExposureFromJSON,
     CurrentExposureToJSON,
@@ -35,7 +35,7 @@ import {
     StatsfixedToJSON,
     StatsopenFromJSON,
     StatsopenToJSON,
-} from '../models';
+} from '../models/index';
 
 export interface StatsCoverageRequest {
     teamId: string;
@@ -88,8 +88,11 @@ export class StatsApi extends runtime.BaseAPI {
      * coverage stats
      */
     async statsCoverageRaw(requestParameters: StatsCoverageRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Statscoverage>> {
-        if (requestParameters.teamId === null || requestParameters.teamId === undefined) {
-            throw new runtime.RequiredError('teamId','Required parameter requestParameters.teamId was null or undefined when calling statsCoverage.');
+        if (requestParameters['teamId'] == null) {
+            throw new runtime.RequiredError(
+                'teamId',
+                'Required parameter "teamId" was null or undefined when calling statsCoverage().'
+            );
         }
 
         const queryParameters: any = {};
@@ -97,11 +100,11 @@ export class StatsApi extends runtime.BaseAPI {
         const headerParameters: runtime.HTTPHeaders = {};
 
         if (this.configuration && this.configuration.apiKey) {
-            headerParameters["authorization"] = this.configuration.apiKey("authorization"); // Bearer authentication
+            headerParameters["authorization"] = await this.configuration.apiKey("authorization"); // Bearer authentication
         }
 
         const response = await this.request({
-            path: `/teams/{team_id}/stats/coverage`.replace(`{${"team_id"}}`, encodeURIComponent(String(requestParameters.teamId))),
+            path: `/teams/{team_id}/stats/coverage`.replace(`{${"team_id"}}`, encodeURIComponent(String(requestParameters['teamId']))),
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
@@ -124,28 +127,31 @@ export class StatsApi extends runtime.BaseAPI {
      * current exposure stats
      */
     async statsCurrentExposureRaw(requestParameters: StatsCurrentExposureRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<CurrentExposure>> {
-        if (requestParameters.teamId === null || requestParameters.teamId === undefined) {
-            throw new runtime.RequiredError('teamId','Required parameter requestParameters.teamId was null or undefined when calling statsCurrentExposure.');
+        if (requestParameters['teamId'] == null) {
+            throw new runtime.RequiredError(
+                'teamId',
+                'Required parameter "teamId" was null or undefined when calling statsCurrentExposure().'
+            );
         }
 
         const queryParameters: any = {};
 
-        if (requestParameters.maxScore !== undefined) {
-            queryParameters['maxScore'] = requestParameters.maxScore;
+        if (requestParameters['maxScore'] != null) {
+            queryParameters['maxScore'] = requestParameters['maxScore'];
         }
 
-        if (requestParameters.minScore !== undefined) {
-            queryParameters['minScore'] = requestParameters.minScore;
+        if (requestParameters['minScore'] != null) {
+            queryParameters['minScore'] = requestParameters['minScore'];
         }
 
         const headerParameters: runtime.HTTPHeaders = {};
 
         if (this.configuration && this.configuration.apiKey) {
-            headerParameters["authorization"] = this.configuration.apiKey("authorization"); // Bearer authentication
+            headerParameters["authorization"] = await this.configuration.apiKey("authorization"); // Bearer authentication
         }
 
         const response = await this.request({
-            path: `/teams/{team_id}/stats/exposure/current`.replace(`{${"team_id"}}`, encodeURIComponent(String(requestParameters.teamId))),
+            path: `/teams/{team_id}/stats/exposure/current`.replace(`{${"team_id"}}`, encodeURIComponent(String(requestParameters['teamId']))),
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
@@ -168,32 +174,35 @@ export class StatsApi extends runtime.BaseAPI {
      * exposure stats
      */
     async statsExposureRaw(requestParameters: StatsExposureRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Exposure>> {
-        if (requestParameters.teamId === null || requestParameters.teamId === undefined) {
-            throw new runtime.RequiredError('teamId','Required parameter requestParameters.teamId was null or undefined when calling statsExposure.');
+        if (requestParameters['teamId'] == null) {
+            throw new runtime.RequiredError(
+                'teamId',
+                'Required parameter "teamId" was null or undefined when calling statsExposure().'
+            );
         }
 
         const queryParameters: any = {};
 
-        if (requestParameters.atDate !== undefined) {
-            queryParameters['atDate'] = requestParameters.atDate;
+        if (requestParameters['atDate'] != null) {
+            queryParameters['atDate'] = requestParameters['atDate'];
         }
 
-        if (requestParameters.maxScore !== undefined) {
-            queryParameters['maxScore'] = requestParameters.maxScore;
+        if (requestParameters['maxScore'] != null) {
+            queryParameters['maxScore'] = requestParameters['maxScore'];
         }
 
-        if (requestParameters.minScore !== undefined) {
-            queryParameters['minScore'] = requestParameters.minScore;
+        if (requestParameters['minScore'] != null) {
+            queryParameters['minScore'] = requestParameters['minScore'];
         }
 
         const headerParameters: runtime.HTTPHeaders = {};
 
         if (this.configuration && this.configuration.apiKey) {
-            headerParameters["authorization"] = this.configuration.apiKey("authorization"); // Bearer authentication
+            headerParameters["authorization"] = await this.configuration.apiKey("authorization"); // Bearer authentication
         }
 
         const response = await this.request({
-            path: `/teams/{team_id}/stats/exposure`.replace(`{${"team_id"}}`, encodeURIComponent(String(requestParameters.teamId))),
+            path: `/teams/{team_id}/stats/exposure`.replace(`{${"team_id"}}`, encodeURIComponent(String(requestParameters['teamId']))),
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
@@ -216,40 +225,43 @@ export class StatsApi extends runtime.BaseAPI {
      * fixed stats
      */
     async statsFixedRaw(requestParameters: StatsFixedRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Statsfixed>> {
-        if (requestParameters.teamId === null || requestParameters.teamId === undefined) {
-            throw new runtime.RequiredError('teamId','Required parameter requestParameters.teamId was null or undefined when calling statsFixed.');
+        if (requestParameters['teamId'] == null) {
+            throw new runtime.RequiredError(
+                'teamId',
+                'Required parameter "teamId" was null or undefined when calling statsFixed().'
+            );
         }
 
         const queryParameters: any = {};
 
-        if (requestParameters.atDate !== undefined) {
-            queryParameters['atDate'] = requestParameters.atDate;
+        if (requestParameters['atDate'] != null) {
+            queryParameters['atDate'] = requestParameters['atDate'];
         }
 
-        if (requestParameters.identifiers !== undefined) {
-            queryParameters['identifiers'] = requestParameters.identifiers;
+        if (requestParameters['identifiers'] != null) {
+            queryParameters['identifiers'] = requestParameters['identifiers'];
         }
 
-        if (requestParameters.labels !== undefined) {
-            queryParameters['labels'] = requestParameters.labels;
+        if (requestParameters['labels'] != null) {
+            queryParameters['labels'] = requestParameters['labels'];
         }
 
-        if (requestParameters.maxDate !== undefined) {
-            queryParameters['maxDate'] = requestParameters.maxDate;
+        if (requestParameters['maxDate'] != null) {
+            queryParameters['maxDate'] = requestParameters['maxDate'];
         }
 
-        if (requestParameters.minDate !== undefined) {
-            queryParameters['minDate'] = requestParameters.minDate;
+        if (requestParameters['minDate'] != null) {
+            queryParameters['minDate'] = requestParameters['minDate'];
         }
 
         const headerParameters: runtime.HTTPHeaders = {};
 
         if (this.configuration && this.configuration.apiKey) {
-            headerParameters["authorization"] = this.configuration.apiKey("authorization"); // Bearer authentication
+            headerParameters["authorization"] = await this.configuration.apiKey("authorization"); // Bearer authentication
         }
 
         const response = await this.request({
-            path: `/teams/{team_id}/stats/fixed`.replace(`{${"team_id"}}`, encodeURIComponent(String(requestParameters.teamId))),
+            path: `/teams/{team_id}/stats/fixed`.replace(`{${"team_id"}}`, encodeURIComponent(String(requestParameters['teamId']))),
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
@@ -272,28 +284,31 @@ export class StatsApi extends runtime.BaseAPI {
      * mttr stats
      */
     async statsMttrRaw(requestParameters: StatsMttrRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Mttr>> {
-        if (requestParameters.teamId === null || requestParameters.teamId === undefined) {
-            throw new runtime.RequiredError('teamId','Required parameter requestParameters.teamId was null or undefined when calling statsMttr.');
+        if (requestParameters['teamId'] == null) {
+            throw new runtime.RequiredError(
+                'teamId',
+                'Required parameter "teamId" was null or undefined when calling statsMttr().'
+            );
         }
 
         const queryParameters: any = {};
 
-        if (requestParameters.maxDate !== undefined) {
-            queryParameters['maxDate'] = requestParameters.maxDate;
+        if (requestParameters['maxDate'] != null) {
+            queryParameters['maxDate'] = requestParameters['maxDate'];
         }
 
-        if (requestParameters.minDate !== undefined) {
-            queryParameters['minDate'] = requestParameters.minDate;
+        if (requestParameters['minDate'] != null) {
+            queryParameters['minDate'] = requestParameters['minDate'];
         }
 
         const headerParameters: runtime.HTTPHeaders = {};
 
         if (this.configuration && this.configuration.apiKey) {
-            headerParameters["authorization"] = this.configuration.apiKey("authorization"); // Bearer authentication
+            headerParameters["authorization"] = await this.configuration.apiKey("authorization"); // Bearer authentication
         }
 
         const response = await this.request({
-            path: `/teams/{team_id}/stats/mttr`.replace(`{${"team_id"}}`, encodeURIComponent(String(requestParameters.teamId))),
+            path: `/teams/{team_id}/stats/mttr`.replace(`{${"team_id"}}`, encodeURIComponent(String(requestParameters['teamId']))),
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
@@ -316,40 +331,43 @@ export class StatsApi extends runtime.BaseAPI {
      * open stats
      */
     async statsOpenRaw(requestParameters: StatsOpenRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Statsopen>> {
-        if (requestParameters.teamId === null || requestParameters.teamId === undefined) {
-            throw new runtime.RequiredError('teamId','Required parameter requestParameters.teamId was null or undefined when calling statsOpen.');
+        if (requestParameters['teamId'] == null) {
+            throw new runtime.RequiredError(
+                'teamId',
+                'Required parameter "teamId" was null or undefined when calling statsOpen().'
+            );
         }
 
         const queryParameters: any = {};
 
-        if (requestParameters.atDate !== undefined) {
-            queryParameters['atDate'] = requestParameters.atDate;
+        if (requestParameters['atDate'] != null) {
+            queryParameters['atDate'] = requestParameters['atDate'];
         }
 
-        if (requestParameters.identifiers !== undefined) {
-            queryParameters['identifiers'] = requestParameters.identifiers;
+        if (requestParameters['identifiers'] != null) {
+            queryParameters['identifiers'] = requestParameters['identifiers'];
         }
 
-        if (requestParameters.labels !== undefined) {
-            queryParameters['labels'] = requestParameters.labels;
+        if (requestParameters['labels'] != null) {
+            queryParameters['labels'] = requestParameters['labels'];
         }
 
-        if (requestParameters.maxDate !== undefined) {
-            queryParameters['maxDate'] = requestParameters.maxDate;
+        if (requestParameters['maxDate'] != null) {
+            queryParameters['maxDate'] = requestParameters['maxDate'];
         }
 
-        if (requestParameters.minDate !== undefined) {
-            queryParameters['minDate'] = requestParameters.minDate;
+        if (requestParameters['minDate'] != null) {
+            queryParameters['minDate'] = requestParameters['minDate'];
         }
 
         const headerParameters: runtime.HTTPHeaders = {};
 
         if (this.configuration && this.configuration.apiKey) {
-            headerParameters["authorization"] = this.configuration.apiKey("authorization"); // Bearer authentication
+            headerParameters["authorization"] = await this.configuration.apiKey("authorization"); // Bearer authentication
         }
 
         const response = await this.request({
-            path: `/teams/{team_id}/stats/open`.replace(`{${"team_id"}}`, encodeURIComponent(String(requestParameters.teamId))),
+            path: `/teams/{team_id}/stats/open`.replace(`{${"team_id"}}`, encodeURIComponent(String(requestParameters['teamId']))),
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
